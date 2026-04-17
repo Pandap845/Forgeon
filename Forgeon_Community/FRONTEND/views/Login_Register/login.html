@@ -1,114 +1,124 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
+  <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Forgeon — Sign in</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="./styles/login_register.css" />
-</head>
-
-<body class="fg-split">
+    <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/686/686589.png">
+  </head>
+  <body class="fg-split">
     <div class="fg-split-layout">
-        <aside class="fg-split-brand">
+      <aside class="fg-split-brand">
+        <div>
+          <div class="fg-split-brand__logo">
+            <div class="fg-split-brand__logo">
+                <div class="fg-split-brand__mark">
+                    <img src="https://cdn-icons-png.flaticon.com/512/686/686589.png" alt="logo" class="logo-img">
+                </div>
+            </div>
             <div>
-                <div class="fg-split-brand__logo">
-                    <div class="fg-split-brand__mark" aria-hidden="true">
-                        <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path
-                                d="M9 11c0-2.21 1.79-4 4-4h7c2.21 0 4 1.79 4 4v5c0 2.21-1.79 4-4 4h-3.2L13 23v-3h-1c-2.21 0-4-1.79-4-4v-5z"
-                                fill="#ffffff" />
-                            <circle cx="14" cy="13.5" r="1.35" fill="#8b2323" />
-                            <circle cx="17.5" cy="13.5" r="1.35" fill="#8b2323" />
-                            <circle cx="21" cy="13.5" r="1.35" fill="#8b2323" />
-                        </svg>
-                    </div>
-                    <div>
-                        <div class="fg-split-brand__name">Forgeon</div>
-                        <span class="fg-split-brand__tag">Gaming Community</span>
-                    </div>
-                </div>
-                <div class="fg-split-brand__headline">
-                    <h1>Welcome back</h1>
-                    <p>Sign in to squad up, track events, and keep the conversation going with the same energy as your
-                        lobby.</p>
-                </div>
+              <div class="fg-split-brand__name">Forgeon</div>
+              <span class="fg-split-brand__tag">Gaming Community</span>
             </div>
-            <p class="fg-split-brand__footer">© 2026 Forgeon</p>
-        </aside>
+          </div>
+          <div class="fg-split-brand__headline">
+            <h1>Welcome back</h1>
+            <p>Sign in to squad up, track events, and keep the conversation going with the same energy as your lobby.</p>
+          </div>
+        </div>
+        <p class="fg-split-brand__footer">© 2026 Forgeon</p>
+      </aside>
 
-        <main class="fg-split-panel">
-            <div class="fg-split-card">
-                <div class="fg-split-card__mobile-brand">
-                    <div class="fg-split-brand__mark" aria-hidden="true">
-                        <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path
-                                d="M9 11c0-2.21 1.79-4 4-4h7c2.21 0 4 1.79 4 4v5c0 2.21-1.79 4-4 4h-3.2L13 23v-3h-1c-2.21 0-4-1.79-4-4v-5z"
-                                fill="#ffffff" />
-                            <circle cx="14" cy="13.5" r="1.35" fill="#8b2323" />
-                            <circle cx="17.5" cy="13.5" r="1.35" fill="#8b2323" />
-                            <circle cx="21" cy="13.5" r="1.35" fill="#8b2323" />
-                        </svg>
-                    </div>
-                    <div>
-                        <div class="fg-split-brand__name">Forgeon</div>
-                        <span class="fg-split-brand__tag">Gaming Community</span>
-                    </div>
-                </div>
-
-                <h2 class="fg-split-card__title">Sign in</h2>
-                <p class="fg-split-card__subtitle">Sign in to continue to your account</p>
-
-                <div id="authError" class="fg-split-error" role="alert"></div>
-
-                <form id="loginForm" action="#" method="post" novalidate>
-                    <div class="fg-split-field">
-                        <label class="fg-split-label" for="identifier">Email or Username</label>
-                        <input class="fg-split-input" id="identifier" name="identifier" type="text"
-                            autocomplete="username" placeholder="Enter your email or username" required />
-                    </div>
-                    <div class="fg-split-field">
-                        <label class="fg-split-label" for="password">Password</label>
-                        <input class="fg-split-input" id="password" name="password" type="password"
-                            autocomplete="current-password" placeholder="Enter your password" required />
-                    </div>
-
-                    <div class="fg-split-row">
-                        <label class="fg-split-checkbox">
-                            <input type="checkbox" name="remember" />
-                            Remember me
-                        </label>
-                        <a class="fg-split-link" href="#">Forgot password?</a>
-                    </div>
-
-                    <button class="fg-split-btn" type="submit">Sign In</button>
-                </form>
-
-                <p class="fg-split-footer">
-                    Don&apos;t have an account?
-                    <a href="./register.html">Sign up</a>
-                </p>
+      <main class="fg-split-panel">
+        <div class="fg-split-card">
+          <div class="fg-split-card__mobile-brand">
+            <div class="fg-split-brand__mark" aria-hidden="true">
+              <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path
+                  d="M9 11c0-2.21 1.79-4 4-4h7c2.21 0 4 1.79 4 4v5c0 2.21-1.79 4-4 4h-3.2L13 23v-3h-1c-2.21 0-4-1.79-4-4v-5z"
+                  fill="#ffffff"
+                />
+                <circle cx="14" cy="13.5" r="1.35" fill="#8b2323" />
+                <circle cx="17.5" cy="13.5" r="1.35" fill="#8b2323" />
+                <circle cx="21" cy="13.5" r="1.35" fill="#8b2323" />
+              </svg>
             </div>
-        </main>
+            <div>
+              <div class="fg-split-brand__name">Forgeon</div>
+              <span class="fg-split-brand__tag">Gaming Community</span>
+            </div>
+          </div>
+
+          <h2 class="fg-split-card__title">Sign in</h2>
+          <p class="fg-split-card__subtitle">Sign in to continue to your account</p>
+
+          <div id="authError" class="fg-split-error" role="alert"></div>
+
+          <form id="loginForm" action="#" method="post" novalidate>
+            <div class="fg-split-field">
+              <label class="fg-split-label" for="identifier">Email or Username</label>
+              <input
+                class="fg-split-input"
+                id="identifier"
+                name="identifier"
+                type="text"
+                autocomplete="username"
+                placeholder="Enter your email or username"
+                required
+              />
+            </div>
+            <div class="fg-split-field">
+              <label class="fg-split-label" for="password">Password</label>
+              <input
+                class="fg-split-input"
+                id="password"
+                name="password"
+                type="password"
+                autocomplete="current-password"
+                placeholder="Enter your password"
+                required
+              />
+            </div>
+
+            <div class="fg-split-row">
+              <label class="fg-split-checkbox">
+                <input type="checkbox" name="remember" />
+                Remember me
+              </label>
+              <a class="fg-split-link" href="#">Forgot password?</a>
+            </div>
+
+            <button class="fg-split-btn" type="submit">Sign In</button>
+          </form>
+
+          <p class="fg-split-footer">
+            Don&apos;t have an account?
+            <a href="./register.html">Sign up</a>
+          </p>
+        </div>
+      </main>
     </div>
 
     <script>
-        document.getElementById("loginForm").addEventListener("submit", function (e) {
-            e.preventDefault();
-            var err = document.getElementById("authError");
-            var id = document.getElementById("identifier");
-            var pass = document.getElementById("password");
-            if (!id.value.trim() || !pass.value) {
-                err.textContent = "Please enter your email or username and password.";
-                err.classList.add("is-visible");
-                return;
-            }
-            err.classList.remove("is-visible");
-        });
+      document.getElementById("loginForm").addEventListener("submit", function (e) {
+        e.preventDefault();
+        var err = document.getElementById("authError");
+        var id = document.getElementById("identifier");
+        var pass = document.getElementById("password");
+        if (!id.value.trim() || !pass.value) {
+          err.textContent = "Please enter your email or username and password.";
+          err.classList.add("is-visible");
+          return;
+        }
+        err.classList.remove("is-visible");
+      });
     </script>
-</body>
-
+  </body>
 </html>
