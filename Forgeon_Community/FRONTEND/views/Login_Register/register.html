@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Forgeon — Create account</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="./styles/login_register.css" />
+</head>
+
+<body class="fg-split">
+    <div class="fg-split-layout">
+        <aside class="fg-split-brand">
+            <div>
+                <div class="fg-split-brand__logo">
+                    <div class="fg-split-brand__mark" aria-hidden="true">
+                        <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M9 11c0-2.21 1.79-4 4-4h7c2.21 0 4 1.79 4 4v5c0 2.21-1.79 4-4 4h-3.2L13 23v-3h-1c-2.21 0-4-1.79-4-4v-5z"
+                                fill="#ffffff" />
+                            <circle cx="14" cy="13.5" r="1.35" fill="#8b2323" />
+                            <circle cx="17.5" cy="13.5" r="1.35" fill="#8b2323" />
+                            <circle cx="21" cy="13.5" r="1.35" fill="#8b2323" />
+                        </svg>
+                    </div>
+                    <div>
+                        <div class="fg-split-brand__name">Forgeon</div>
+                        <span class="fg-split-brand__tag">Gaming Community</span>
+                    </div>
+                </div>
+                <div class="fg-split-brand__headline">
+                    <h1>Create your account</h1>
+                    <p>Join the gaming community today.</p>
+                </div>
+            </div>
+            <p class="fg-split-brand__footer">© 2026 Forgeon</p>
+        </aside>
+
+        <main class="fg-split-panel">
+            <div class="fg-split-card">
+                <div class="fg-split-card__mobile-brand">
+                    <div class="fg-split-brand__mark" aria-hidden="true">
+                        <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M9 11c0-2.21 1.79-4 4-4h7c2.21 0 4 1.79 4 4v5c0 2.21-1.79 4-4 4h-3.2L13 23v-3h-1c-2.21 0-4-1.79-4-4v-5z"
+                                fill="#ffffff" />
+                            <circle cx="14" cy="13.5" r="1.35" fill="#8b2323" />
+                            <circle cx="17.5" cy="13.5" r="1.35" fill="#8b2323" />
+                            <circle cx="21" cy="13.5" r="1.35" fill="#8b2323" />
+                        </svg>
+                    </div>
+                    <div>
+                        <div class="fg-split-brand__name">Forgeon</div>
+                        <span class="fg-split-brand__tag">Gaming Community</span>
+                    </div>
+                </div>
+
+                <h2 class="fg-split-card__title">Create account</h2>
+                <p class="fg-split-card__subtitle">Join the gaming community today</p>
+
+                <div id="authError" class="fg-split-error" role="alert"></div>
+
+                <form id="registerForm" action="#" method="post" novalidate>
+                    <div class="fg-split-field">
+                        <label class="fg-split-label" for="username">Username</label>
+                        <input class="fg-split-input" id="username" name="username" type="text" autocomplete="username"
+                            placeholder="Choose a username" required />
+                    </div>
+                    <div class="fg-split-field">
+                        <label class="fg-split-label" for="email">Email</label>
+                        <input class="fg-split-input" id="email" name="email" type="email" autocomplete="email"
+                            placeholder="Enter your email" required />
+                    </div>
+                    <div class="fg-split-field">
+                        <label class="fg-split-label" for="password">Password</label>
+                        <input class="fg-split-input" id="password" name="password" type="password"
+                            autocomplete="new-password" placeholder="Create a password" required minlength="8" />
+                    </div>
+                    <div class="fg-split-field">
+                        <label class="fg-split-label" for="confirmPassword">Confirm Password</label>
+                        <input class="fg-split-input" id="confirmPassword" name="confirmPassword" type="password"
+                            autocomplete="new-password" placeholder="Confirm your password" required minlength="8" />
+                    </div>
+
+                    <label class="fg-split-checkbox fg-split-checkbox--legal">
+                        <input type="checkbox" id="terms" name="terms" required />
+                        <span>
+                            I agree to the
+                            <a class="fg-split-link" href="./terms.html">Terms of Service</a>
+                            and
+                            <a class="fg-split-link" href="./privacy.html">Privacy Policy</a>.
+                        </span>
+                    </label>
+
+                    <button class="fg-split-btn" type="submit">Create Account</button>
+                </form>
+
+                <p class="fg-split-footer">
+                    Already have an account?
+                    <a href="./login.html">Sign in</a>
+                </p>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        document.getElementById("registerForm").addEventListener("submit", function (e) {
+            e.preventDefault();
+            var err = document.getElementById("authError");
+            var p1 = document.getElementById("password").value;
+            var p2 = document.getElementById("confirmPassword").value;
+            var terms = document.getElementById("terms");
+            var form = e.target;
+            if (!form.checkValidity()) {
+                err.textContent = "Please fill in all fields and accept the terms.";
+                err.classList.add("is-visible");
+                return;
+            }
+            if (!terms.checked) {
+                err.textContent = "You must agree to the Terms of Service and Privacy Policy.";
+                err.classList.add("is-visible");
+                return;
+            }
+            if (p1 !== p2) {
+                err.textContent = "Passwords do not match.";
+                err.classList.add("is-visible");
+                return;
+            }
+            err.classList.remove("is-visible");
+        });
+    </script>
+</body>
+
+</html>
