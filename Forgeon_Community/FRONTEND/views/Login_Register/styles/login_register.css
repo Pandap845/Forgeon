@@ -68,6 +68,7 @@ body.fg-split {
     align-items: center;
     gap: 0.875rem;
     margin-bottom: 2rem;
+    margin-top: 2rem;
 }
 
 .fg-split-brand__mark {
