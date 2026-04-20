@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Forgeon — Search</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles/groups.css" />
+  </head>
+  <body class="dg-page dg-page--search">
+    <main class="dg-main sr-main">
+      <header class="sr-header">
+        <h1 class="sr-title">Search</h1>
+        <p class="sr-subtitle">Find groups, threads, and users</p>
+      </header>
+
+      <div class="sr-search">
+        <label class="sr-search__label visually-hidden" for="globalSearch">Search</label>
+        <span class="sr-search__icon" aria-hidden="true">
+          <img src="https://www.figma.com/api/mcp/asset/1d43e0de-49db-48bc-a2b1-fffb208bdf4e" alt="" width="20" height="20" />
+        </span>
+        <input
+          id="globalSearch"
+          class="sr-search__input"
+          type="search"
+          placeholder="Search for groups, threads, or users..."
+          autocomplete="off"
+          spellcheck="false"
+        />
+      </div>
+
+      <div class="sr-filters">
+        <div class="sr-tabs" role="tablist" aria-label="Search scope">
+          <button
+            type="button"
+            id="sr-tab-all"
+            class="sr-tab sr-tab--active"
+            role="tab"
+            aria-selected="true"
+            aria-controls="sr-panel-all"
+          >
+            All Results
+          </button>
+          <button type="button" id="sr-tab-groups" class="sr-tab" role="tab" aria-selected="false" aria-controls="sr-panel-all">
+            <span class="sr-tab__content">
+              <img src="https://www.figma.com/api/mcp/asset/6c3bbb66-c10f-4da9-b461-2b0aa8135b87" alt="" width="16" height="16" />
+              Groups
+            </span>
+          </button>
+          <button type="button" id="sr-tab-threads" class="sr-tab" role="tab" aria-selected="false" aria-controls="sr-panel-all">
+            <span class="sr-tab__content">
+              <img src="https://www.figma.com/api/mcp/asset/08040916-332e-423b-83b8-379e4788e09c" alt="" width="16" height="16" />
+              Threads
+            </span>
+          </button>
+          <button type="button" id="sr-tab-users" class="sr-tab" role="tab" aria-selected="false" aria-controls="sr-panel-all">
+            <span class="sr-tab__content">
+              <img src="https://www.figma.com/api/mcp/asset/00ccb94b-aa42-4c53-90bb-a1e2934d62b6" alt="" width="16" height="16" />
+              Users
+            </span>
+          </button>
+        </div>
+
+        <section id="sr-panel-all" class="sr-empty dg-surface-card" role="tabpanel" aria-labelledby="sr-tab-all">
+          <img
+            class="sr-empty__icon"
+            src="https://www.figma.com/api/mcp/asset/2ec120f2-a579-4b81-b357-5c1b37701b3b"
+            alt=""
+            width="48"
+            height="48"
+          />
+          <h2 class="sr-empty__title">Start Searching</h2>
+          <p class="sr-empty__hint">Type in the search bar above to find groups, threads, or users</p>
+          <a class="sr-empty__link" href="./discover_groups.html">Browse Discover Groups</a>
+        </section>
+      </div>
+    </main>
+
+    <script src="./scripts/search_page.js"></script>
+  </body>
+</html>

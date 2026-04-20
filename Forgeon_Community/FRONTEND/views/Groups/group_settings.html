@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Forgeon — Group Settings</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles/groups.css" />
+  </head>
+  <body class="dg-page dg-page--group-settings">
+    <main class="dg-main gs-main">
+      <header class="gs-header">
+        <div class="gs-header__row">
+          <h1 class="gs-title">Group Settings</h1>
+          <span class="gs-badge-owner">Owner</span>
+        </div>
+        <p class="gs-subtitle">Manage your group configuration and settings</p>
+      </header>
+
+      <form id="groupSettingsForm" action="#" method="post" novalidate>
+        <section class="gs-card dg-surface-card" aria-labelledby="basic-heading">
+          <h2 id="basic-heading" class="gs-section-title">Basic Information</h2>
+
+          <div class="gs-field">
+            <label class="gs-label" for="coverInput">Cover Image</label>
+            <div class="gs-cover">
+              <img
+                class="gs-cover__img"
+                src="https://www.figma.com/api/mcp/asset/91985f62-8b0c-4635-b2b5-f7506e04f1af"
+                alt=""
+                width="1200"
+                height="475"
+              />
+              <label class="visually-hidden" for="coverInput">Replace cover image</label>
+              <input id="coverInput" class="gs-file-input" type="file" accept="image/*" />
+            </div>
+          </div>
+
+          <div class="gs-field">
+            <span class="gs-label">Group Icon</span>
+            <div class="gs-icon-row">
+              <div class="gs-icon-preview">
+                <img
+                  src="https://www.figma.com/api/mcp/asset/c966ed5c-7865-4850-bf65-8fcf694fcacd"
+                  alt=""
+                  width="94"
+                  height="94"
+                />
+              </div>
+              <div class="gs-icon-copy">
+                <p class="gs-icon-copy__primary">Upload a group icon</p>
+                <p class="gs-icon-copy__hint">Square image, at least 200×200px</p>
+                <input id="iconInput" class="gs-file-input" type="file" accept="image/*" aria-label="Upload group icon" />
+                <button type="button" class="gs-btn-remove">
+                  <img src="https://www.figma.com/api/mcp/asset/fcb72571-9b4c-4e56-98f3-24e2f8f09bd6" alt="" width="16" height="16" />
+                  Remove Icon
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="gs-divider" aria-hidden="true"></div>
+
+          <div class="gs-field gs-field--compact">
+            <label class="gs-label" for="groupName">Group Name <span class="gs-req">*</span></label>
+            <input
+              id="groupName"
+              name="name"
+              class="gs-input"
+              type="text"
+              required
+              value="React Developers Community"
+              autocomplete="off"
+            />
+          </div>
+
+          <div class="gs-field gs-field--compact">
+            <label class="gs-label" for="groupDesc">Description <span class="gs-req">*</span></label>
+            <textarea id="groupDesc" name="description" class="gs-textarea" rows="5" required>A vibrant community of React developers sharing knowledge, best practices, and helping each other build amazing applications with React and its ecosystem.</textarea>
+            <p id="charCount" class="gs-hint gs-hint--count" aria-live="polite">0 characters</p>
+          </div>
+
+          <div class="gs-field gs-field--compact">
+            <label class="gs-label" for="category">Category <span class="gs-req">*</span></label>
+            <div class="gs-select-wrap">
+              <select id="category" name="category" class="gs-select" required>
+                <option value="technology" selected>Technology</option>
+                <option value="business">Business</option>
+                <option value="gaming">Gaming</option>
+                <option value="health">Health &amp; Fitness</option>
+                <option value="other">Other</option>
+              </select>
+              <span class="gs-select-chevron" aria-hidden="true">
+                <img src="https://www.figma.com/api/mcp/asset/474947ff-f470-4bf2-8c61-be02526b5f31" alt="" width="16" height="16" />
+              </span>
+            </div>
+          </div>
+
+          <div class="gs-field gs-field--compact">
+            <label class="gs-label" for="slug">URL Slug <span class="gs-req">*</span></label>
+            <div class="gs-slug-row">
+              <span class="gs-slug-prefix" aria-hidden="true">yourapp.com/group/</span>
+              <input
+                id="slug"
+                name="slug"
+                class="gs-input gs-input--slug"
+                type="text"
+                required
+                value="react-developers-community"
+                pattern="[a-z0-9]+(?:-[a-z0-9]+)*"
+                autocomplete="off"
+              />
+            </div>
+            <p class="gs-hint">Must be unique and URL-safe (lowercase, alphanumeric, hyphens only)</p>
+          </div>
+        </section>
+
+        <section class="gs-card dg-surface-card" aria-labelledby="privacy-heading">
+          <h2 id="privacy-heading" class="gs-section-title">Privacy &amp; Access</h2>
+
+          <div class="gs-panel-row">
+            <div class="gs-panel-row__main">
+              <img src="https://www.figma.com/api/mcp/asset/9ae342bc-eb0b-4611-92c4-157139467323" alt="" width="20" height="20" />
+              <div class="gs-panel-row__text">
+                <span class="gs-panel-row__title">Group Visibility</span>
+                <span class="gs-panel-row__desc">Anyone can find and view this group</span>
+              </div>
+            </div>
+            <div class="gs-select-wrap gs-select-wrap--narrow">
+              <select id="visibility" name="visibility" class="gs-select">
+                <option value="public" selected>Public</option>
+                <option value="private">Private</option>
+                <option value="hidden">Hidden</option>
+              </select>
+              <span class="gs-select-chevron" aria-hidden="true">
+                <img src="https://www.figma.com/api/mcp/asset/474947ff-f470-4bf2-8c61-be02526b5f31" alt="" width="16" height="16" />
+              </span>
+            </div>
+          </div>
+
+          <div class="gs-panel-row gs-panel-row--toggle">
+            <div class="gs-panel-row__text">
+              <span class="gs-panel-row__title">Require Join Approval</span>
+              <span class="gs-panel-row__desc">Members must be approved before joining</span>
+            </div>
+            <label class="gs-switch">
+              <input id="joinApproval" name="join_approval" type="checkbox" class="gs-switch__input" />
+              <span class="gs-switch__track" aria-hidden="true"></span>
+            </label>
+          </div>
+        </section>
+
+        <section class="gs-card gs-card--danger dg-surface-card" aria-labelledby="danger-heading">
+          <div class="gs-danger-head">
+            <img src="https://www.figma.com/api/mcp/asset/3a9c0b0a-d423-415a-a3e8-1c9cce2293b6" alt="" width="20" height="20" />
+            <h2 id="danger-heading" class="gs-section-title gs-section-title--danger">Danger Zone</h2>
+          </div>
+          <p class="gs-danger-lead">Irreversible actions that will affect your group</p>
+
+          <div class="gs-danger-row">
+            <div class="gs-danger-row__text">
+              <span class="gs-panel-row__title">Archive Group</span>
+              <span class="gs-panel-row__desc">Make group read-only. No new posts or members allowed.</span>
+            </div>
+            <button type="button" class="gs-btn-archive">
+              <img src="https://www.figma.com/api/mcp/asset/87570d4f-4c21-4c4f-a13a-f2dca36f1c47" alt="" width="16" height="16" />
+              Archive
+            </button>
+          </div>
+
+          <div class="gs-danger-row gs-danger-row--delete">
+            <div class="gs-danger-row__text">
+              <span class="gs-panel-row__title">Delete Group</span>
+              <span class="gs-panel-row__desc">Permanently delete this group and all its content.</span>
+            </div>
+            <button type="button" class="gs-btn-delete">
+              <img src="https://www.figma.com/api/mcp/asset/2765145d-a7fa-4820-8c38-242169ca22b6" alt="" width="16" height="16" />
+              Delete
+            </button>
+          </div>
+        </section>
+
+        <div class="gs-actions">
+          <a href="./group_management.html" class="gs-footer-btn gs-footer-btn--secondary">Cancel</a>
+          <button type="submit" class="gs-footer-btn gs-footer-btn--primary">
+            <img src="https://www.figma.com/api/mcp/asset/ccfb4951-be0d-49da-848e-0bfe5aa65127" alt="" width="16" height="16" />
+            Save Changes
+          </button>
+        </div>
+      </form>
+    </main>
+
+    <script src="./scripts/group_settings.js"></script>
+  </body>
+</html>

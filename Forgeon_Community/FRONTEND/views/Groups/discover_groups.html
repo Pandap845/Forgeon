@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Forgeon — Discover Groups</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles/groups.css" />
+  </head>
+  <body class="dg-page">
+    <main class="dg-main">
+      <header class="dg-header">
+        <h1 class="dg-title">Discover Groups</h1>
+        <p class="dg-subtitle">Find and join communities that match your interests</p>
+      </header>
+
+      <section class="dg-toolbar" aria-label="Search and filters">
+        <div class="dg-search-wrap">
+          <span class="dg-search-icon" aria-hidden="true">
+            <img src="https://www.figma.com/api/mcp/asset/7fbe92ab-1622-4606-8b96-16a3263926e6" alt="" width="20" height="20" />
+          </span>
+          <input
+            id="groupSearch"
+            class="dg-search-input"
+            type="search"
+            placeholder="Search groups by name, description, or category..."
+            autocomplete="off"
+          />
+        </div>
+
+        <div class="dg-toolbar-row">
+          <div class="dg-sort">
+            <label class="dg-sort-label" for="sortSelect">Sort by:</label>
+            <div class="dg-sort-control">
+              <span class="dg-sort-icon" aria-hidden="true">
+                <img src="https://www.figma.com/api/mcp/asset/8a7c50c3-6063-4bc2-bf3d-3b88dfbb48c0" alt="" width="16" height="16" />
+              </span>
+              <select id="sortSelect" class="dg-select" aria-label="Sort groups">
+                <option value="active" selected>Most Active</option>
+                <option value="members">Most Members</option>
+                <option value="newest">Newest</option>
+              </select>
+              <span class="dg-select-chevron" aria-hidden="true">
+                <img src="https://www.figma.com/api/mcp/asset/0410da67-41e5-4bcd-8895-af38439ebee3" alt="" width="16" height="16" />
+              </span>
+            </div>
+          </div>
+
+          <div class="dg-view-toggle" role="group" aria-label="Layout">
+            <button type="button" id="btnGridView" class="dg-view-btn dg-view-btn--active" aria-pressed="true" title="Grid view">
+              <img src="https://www.figma.com/api/mcp/asset/1ef5e593-6380-439a-bdb1-eb5c085364e6" alt="" width="16" height="16" />
+            </button>
+            <button type="button" id="btnListView" class="dg-view-btn" aria-pressed="false" title="List view">
+              <img src="https://www.figma.com/api/mcp/asset/030df371-14bf-479d-a5b0-31e1eeb999f1" alt="" width="16" height="16" />
+            </button>
+          </div>
+          <a class="dg-btn dg-btn--ghost dg-btn--search-page" href="./search.html">Advanced Search</a>
+        </div>
+
+        <p id="groupCount" class="dg-count">Showing 12 of 12 groups</p>
+      </section>
+
+      <section class="dg-groups" aria-label="Groups">
+        <div id="groupsGrid" class="dg-cards dg-cards--grid">
+          <!-- Card 1 -->
+          <article class="dg-card" data-category="Technology">
+            <div class="dg-card-media">
+              <img
+                class="dg-card-img"
+                src="https://www.figma.com/api/mcp/asset/2f60eda0-a2ad-48a3-adbc-c9057072c54b"
+                alt=""
+                width="344"
+                height="194"
+              />
+            </div>
+            <div class="dg-card-body">
+              <div class="dg-card-main">
+                <span class="dg-badge dg-badge--category">Technology</span>
+                <h2 class="dg-card-title">AI &amp; Machine Learning</h2>
+                <p class="dg-card-desc">
+                  Explore the cutting edge of artificial intelligence and machine learning. Share research, discuss implementations, and learn from peers worldwide.
+                </p>
+              </div>
+              <footer class="dg-card-footer">
+                <div class="dg-members">
+                  <img src="https://www.figma.com/api/mcp/asset/d5e6a745-8662-4731-ac2b-2c89194e5702" alt="" width="16" height="16" />
+                  <span>11.2k members</span>
+                </div>
+                <div class="dg-card-actions">
+                  <button type="button" class="dg-btn dg-btn--ghost">View</button>
+                  <button type="button" class="dg-btn dg-btn--primary">Join</button>
+                </div>
+              </footer>
+            </div>
+          </article>
+
+          <!-- Card 2 — joined -->
+          <article class="dg-card dg-card--joined" data-category="Technology">
+            <div class="dg-card-media">
+              <img
+                class="dg-card-img dg-card-img--cover"
+                src="https://www.figma.com/api/mcp/asset/890f7afa-0cd3-4f8d-830f-2d26646ede02"
+                alt=""
+                width="344"
+                height="194"
+              />
+              <span class="dg-badge dg-badge--joined">
+                <img src="https://www.figma.com/api/mcp/asset/357865d5-6ba0-4fc6-ad44-ec6d5a035272" alt="" width="12" height="12" />
+                Joined
+              </span>
+            </div>
+            <div class="dg-card-body">
+              <div class="dg-card-main">
+                <span class="dg-badge dg-badge--category">Technology</span>
+                <h2 class="dg-card-title">React Developers Community</h2>
+                <p class="dg-card-desc">
+                  A vibrant community of React developers sharing knowledge, best practices, and helping each other build amazing applications.
+                </p>
+              </div>
+              <footer class="dg-card-footer">
+                <div class="dg-members">
+                  <img src="https://www.figma.com/api/mcp/asset/d5e6a745-8662-4731-ac2b-2c89194e5702" alt="" width="16" height="16" />
+                  <span>12.8k members</span>
+                </div>
+                <div class="dg-card-actions">
+                  <button type="button" class="dg-btn dg-btn--ghost">View</button>
+                  <button type="button" class="dg-btn dg-btn--secondary">Leave</button>
+                </div>
+              </footer>
+            </div>
+          </article>
+
+          <!-- Card 3 -->
+          <article class="dg-card" data-category="Business">
+            <div class="dg-card-media">
+              <img
+                class="dg-card-img"
+                src="https://www.figma.com/api/mcp/asset/c0643049-665a-4800-9fa0-6884bf3bf0f5"
+                alt=""
+                width="344"
+                height="194"
+              />
+            </div>
+            <div class="dg-card-body">
+              <div class="dg-card-main">
+                <span class="dg-badge dg-badge--category">Business</span>
+                <h2 class="dg-card-title">Startup Founders Network</h2>
+                <p class="dg-card-desc">
+                  Connect with fellow entrepreneurs, share experiences, find co-founders, and get advice on building successful startups.
+                </p>
+              </div>
+              <footer class="dg-card-footer">
+                <div class="dg-members">
+                  <img src="https://www.figma.com/api/mcp/asset/d5e6a745-8662-4731-ac2b-2c89194e5702" alt="" width="16" height="16" />
+                  <span>4.9k members</span>
+                </div>
+                <div class="dg-card-actions">
+                  <button type="button" class="dg-btn dg-btn--ghost">View</button>
+                  <button type="button" class="dg-btn dg-btn--primary">Join</button>
+                </div>
+              </footer>
+            </div>
+          </article>
+
+          <!-- Card 4 -->
+          <article class="dg-card" data-category="Health &amp; Fitness">
+            <div class="dg-card-media">
+              <img
+                class="dg-card-img"
+                src="https://www.figma.com/api/mcp/asset/c82ec0ba-1348-4af4-8f39-a9e98020dfa0"
+                alt=""
+                width="344"
+                height="194"
+              />
+            </div>
+            <div class="dg-card-body">
+              <div class="dg-card-main">
+                <span class="dg-badge dg-badge--category">Health &amp; Fitness</span>
+                <h2 class="dg-card-title">Fitness &amp; Wellness Warriors</h2>
+                <p class="dg-card-desc">
+                  Transform your life with our supportive fitness community. Share workout routines, nutrition tips, and motivate each other every day.
+                </p>
+              </div>
+              <footer class="dg-card-footer">
+                <div class="dg-members">
+                  <img src="https://www.figma.com/api/mcp/asset/d5e6a745-8662-4731-ac2b-2c89194e5702" alt="" width="16" height="16" />
+                  <span>15.2k members</span>
+                </div>
+                <div class="dg-card-actions">
+                  <button type="button" class="dg-btn dg-btn--ghost">View</button>
+                  <button type="button" class="dg-btn dg-btn--primary">Join</button>
+                </div>
+              </footer>
+            </div>
+          </article>
+
+          <!-- Card 5 -->
+          <article class="dg-card" data-category="Technology">
+            <div class="dg-card-media">
+              <img
+                class="dg-card-img"
+                src="https://www.figma.com/api/mcp/asset/e27c72d2-c1f4-424c-8da3-d65279ad85a4"
+                alt=""
+                width="344"
+                height="194"
+              />
+            </div>
+            <div class="dg-card-body">
+              <div class="dg-card-main">
+                <span class="dg-badge dg-badge--category">Technology</span>
+                <h2 class="dg-card-title">Game Developers Unite</h2>
+                <p class="dg-card-desc">
+                  From indie to AAA, share your game dev journey, get feedback on projects, discuss game design, and collaborate with others.
+                </p>
+              </div>
+              <footer class="dg-card-footer">
+                <div class="dg-members">
+                  <img src="https://www.figma.com/api/mcp/asset/d5e6a745-8662-4731-ac2b-2c89194e5702" alt="" width="16" height="16" />
+                  <span>9.9k members</span>
+                </div>
+                <div class="dg-card-actions">
+                  <button type="button" class="dg-btn dg-btn--ghost">View</button>
+                  <button type="button" class="dg-btn dg-btn--primary">Join</button>
+                </div>
+              </footer>
+            </div>
+          </article>
+
+          <!-- Card 6 -->
+          <article class="dg-card" data-category="Food &amp; Cooking">
+            <div class="dg-card-media">
+              <img
+                class="dg-card-img"
+                src="https://www.figma.com/api/mcp/asset/e99d2789-a9d3-4d4d-9180-9f43c4e7809b"
+                alt=""
+                width="344"
+                height="194"
+              />
+            </div>
+            <div class="dg-card-body">
+              <div class="dg-card-main">
+                <span class="dg-badge dg-badge--category">Food &amp; Cooking</span>
+                <h2 class="dg-card-title">Home Chefs &amp; Foodies</h2>
+                <p class="dg-card-desc">
+                  Share recipes, cooking techniques, food photography, and your culinary adventures. From beginner to master chef, everyone is welcome.
+                </p>
+              </div>
+              <footer class="dg-card-footer">
+                <div class="dg-members">
+                  <img src="https://www.figma.com/api/mcp/asset/d5e6a745-8662-4731-ac2b-2c89194e5702" alt="" width="16" height="16" />
+                  <span>10.6k members</span>
+                </div>
+                <div class="dg-card-actions">
+                  <button type="button" class="dg-btn dg-btn--ghost">View</button>
+                  <button type="button" class="dg-btn dg-btn--primary">Join</button>
+                </div>
+              </footer>
+            </div>
+          </article>
+
+          <!-- Card 7 -->
+          <article class="dg-card" data-category="Arts &amp; Photography">
+            <div class="dg-card-media">
+              <img
+                class="dg-card-img"
+                src="https://www.figma.com/api/mcp/asset/b6ad29cb-5cc2-4354-ba13-9430e20320fd"
+                alt=""
+                width="344"
+                height="194"
+              />
+            </div>
+            <div class="dg-card-body">
+              <div class="dg-card-main">
+                <span class="dg-badge dg-badge--category">Arts &amp; Photography</span>
+                <h2 class="dg-card-title">Photography Enthusiasts</h2>
+                <p class="dg-card-desc">
+                  Share your best shots, learn new techniques, and connect with photographers from around the world. All skill levels welcome.
+                </p>
+              </div>
+              <footer class="dg-card-footer">
+                <div class="dg-members">
+                  <img src="https://www.figma.com/api/mcp/asset/d5e6a745-8662-4731-ac2b-2c89194e5702" alt="" width="16" height="16" />
+                  <span>8.9k members</span>
+                </div>
+                <div class="dg-card-actions">
+                  <button type="button" class="dg-btn dg-btn--ghost">View</button>
+                  <button type="button" class="dg-btn dg-btn--primary">Join</button>
+                </div>
+              </footer>
+            </div>
+          </article>
+
+          <!-- Card 8 -->
+          <article class="dg-card" data-category="Travel">
+            <div class="dg-card-media">
+              <img
+                class="dg-card-img"
+                src="https://www.figma.com/api/mcp/asset/f63f26eb-7189-4626-9660-61460e7ba16d"
+                alt=""
+                width="344"
+                height="194"
+              />
+            </div>
+            <div class="dg-card-body">
+              <div class="dg-card-main">
+                <span class="dg-badge dg-badge--category">Travel</span>
+                <h2 class="dg-card-title">Travel Nomads</h2>
+                <p class="dg-card-desc">
+                  Share travel stories, destination guides, photography, and tips for budget travelers and digital nomads exploring the world.
+                </p>
+              </div>
+              <footer class="dg-card-footer">
+                <div class="dg-members">
+                  <img src="https://www.figma.com/api/mcp/asset/d5e6a745-8662-4731-ac2b-2c89194e5702" alt="" width="16" height="16" />
+                  <span>13.4k members</span>
+                </div>
+                <div class="dg-card-actions">
+                  <button type="button" class="dg-btn dg-btn--ghost">View</button>
+                  <button type="button" class="dg-btn dg-btn--primary">Join</button>
+                </div>
+              </footer>
+            </div>
+          </article>
+
+          <!-- Card 9 — joined -->
+          <article class="dg-card dg-card--joined" data-category="Arts &amp; Photography">
+            <div class="dg-card-media">
+              <img
+                class="dg-card-img dg-card-img--cover"
+                src="https://www.figma.com/api/mcp/asset/6c4087b6-95a8-4057-b53e-25ae0a51da03"
+                alt=""
+                width="344"
+                height="194"
+              />
+              <span class="dg-badge dg-badge--joined">
+                <img src="https://www.figma.com/api/mcp/asset/357865d5-6ba0-4fc6-ad44-ec6d5a035272" alt="" width="12" height="12" />
+                Joined
+              </span>
+            </div>
+            <div class="dg-card-body">
+              <div class="dg-card-main">
+                <span class="dg-badge dg-badge--category">Arts &amp; Photography</span>
+                <h2 class="dg-card-title">Digital Artists Hub</h2>
+                <p class="dg-card-desc">
+                  A creative space for digital artists to showcase their work, get feedback, and learn from industry professionals and peers.
+                </p>
+              </div>
+              <footer class="dg-card-footer">
+                <div class="dg-members">
+                  <img src="https://www.figma.com/api/mcp/asset/d5e6a745-8662-4731-ac2b-2c89194e5702" alt="" width="16" height="16" />
+                  <span>6.4k members</span>
+                </div>
+                <div class="dg-card-actions">
+                  <button type="button" class="dg-btn dg-btn--ghost">View</button>
+                  <button type="button" class="dg-btn dg-btn--secondary">Leave</button>
+                </div>
+              </footer>
+            </div>
+          </article>
+
+          <!-- Card 10 — joined -->
+          <article class="dg-card dg-card--joined" data-category="Environment">
+            <div class="dg-card-media">
+              <img
+                class="dg-card-img dg-card-img--cover"
+                src="https://www.figma.com/api/mcp/asset/dd883ede-b6fd-4feb-8173-e6847d3f146d"
+                alt=""
+                width="344"
+                height="194"
+              />
+              <span class="dg-badge dg-badge--joined">
+                <img src="https://www.figma.com/api/mcp/asset/357865d5-6ba0-4fc6-ad44-ec6d5a035272" alt="" width="12" height="12" />
+                Joined
+              </span>
+            </div>
+            <div class="dg-card-body">
+              <div class="dg-card-main">
+                <span class="dg-badge dg-badge--category">Environment</span>
+                <h2 class="dg-card-title">Sustainable Living</h2>
+                <p class="dg-card-desc">
+                  Learn and share tips for eco-friendly living, reduce your carbon footprint, and make a positive impact on our planet together.
+                </p>
+              </div>
+              <footer class="dg-card-footer">
+                <div class="dg-members">
+                  <img src="https://www.figma.com/api/mcp/asset/d5e6a745-8662-4731-ac2b-2c89194e5702" alt="" width="16" height="16" />
+                  <span>7.5k members</span>
+                </div>
+                <div class="dg-card-actions">
+                  <button type="button" class="dg-btn dg-btn--ghost">View</button>
+                  <button type="button" class="dg-btn dg-btn--secondary">Leave</button>
+                </div>
+              </footer>
+            </div>
+          </article>
+
+          <!-- Card 11 -->
+          <article class="dg-card" data-category="Music">
+            <div class="dg-card-media">
+              <img
+                class="dg-card-img"
+                src="https://www.figma.com/api/mcp/asset/fc149902-f68d-4f2a-8874-09359b6b21d7"
+                alt=""
+                width="344"
+                height="194"
+              />
+            </div>
+            <div class="dg-card-body">
+              <div class="dg-card-main">
+                <span class="dg-badge dg-badge--category">Music</span>
+                <h2 class="dg-card-title">Music Production &amp; Audio</h2>
+                <p class="dg-card-desc">
+                  For producers, sound engineers, and music enthusiasts. Share your tracks, get mixing feedback, and discuss production techniques.
+                </p>
+              </div>
+              <footer class="dg-card-footer">
+                <div class="dg-members">
+                  <img src="https://www.figma.com/api/mcp/asset/d5e6a745-8662-4731-ac2b-2c89194e5702" alt="" width="16" height="16" />
+                  <span>5.7k members</span>
+                </div>
+                <div class="dg-card-actions">
+                  <button type="button" class="dg-btn dg-btn--ghost">View</button>
+                  <button type="button" class="dg-btn dg-btn--primary">Join</button>
+                </div>
+              </footer>
+            </div>
+          </article>
+
+          <!-- Card 12 -->
+          <article class="dg-card" data-category="Literature">
+            <div class="dg-card-media">
+              <img
+                class="dg-card-img"
+                src="https://www.figma.com/api/mcp/asset/4fd5f82e-a55a-4e16-9920-c2bc7f74d700"
+                alt=""
+                width="344"
+                height="194"
+              />
+            </div>
+            <div class="dg-card-body">
+              <div class="dg-card-main">
+                <span class="dg-badge dg-badge--category">Literature</span>
+                <h2 class="dg-card-title">Book Club Collective</h2>
+                <p class="dg-card-desc">
+                  Monthly book discussions, reading recommendations, and a community of book lovers. Currently reading contemporary fiction picks together.
+                </p>
+              </div>
+              <footer class="dg-card-footer">
+                <div class="dg-members">
+                  <img src="https://www.figma.com/api/mcp/asset/d5e6a745-8662-4731-ac2b-2c89194e5702" alt="" width="16" height="16" />
+                  <span>3.2k members</span>
+                </div>
+                <div class="dg-card-actions">
+                  <button type="button" class="dg-btn dg-btn--ghost">View</button>
+                  <button type="button" class="dg-btn dg-btn--primary">Join</button>
+                </div>
+              </footer>
+            </div>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <script src="./scripts/groups.js"></script>
+  </body>
+</html>

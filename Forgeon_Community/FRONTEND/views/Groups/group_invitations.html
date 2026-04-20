@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Forgeon — Group Invitations</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles/groups.css" />
+  </head>
+  <body class="dg-page dg-page--group-invitations">
+    <main class="dg-main gi-main">
+      <header class="gi-header">
+        <h1 class="gi-title">Group Invitations</h1>
+        <p class="gi-subtitle">Invite users to join your group</p>
+      </header>
+
+      <section class="gi-card dg-surface-card" aria-labelledby="inviteUsersTitle">
+        <div class="gi-title-row">
+          <span class="gi-title-icon" aria-hidden="true">
+            <svg viewBox="0 0 20 20">
+              <path d="M10 10.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Z" />
+              <path d="M4.2 16.5a5.8 5.8 0 0 1 11.6 0M16 5v4M14 7h4" />
+            </svg>
+          </span>
+          <h2 id="inviteUsersTitle" class="gi-card-title">Invite Users</h2>
+        </div>
+
+        <label class="visually-hidden" for="inviteSearch">Search users</label>
+        <div class="gi-search-wrap">
+          <span class="gi-search-icon" aria-hidden="true">
+            <svg viewBox="0 0 20 20">
+              <circle cx="9" cy="9" r="5.5" />
+              <path d="m13 13 4 4" />
+            </svg>
+          </span>
+          <input
+            id="inviteSearch"
+            class="gi-search-input"
+            type="search"
+            placeholder="Search by username or email..."
+            autocomplete="off"
+          />
+        </div>
+        <p class="gi-help">Start typing to search for users or enter an email address to send an invite</p>
+      </section>
+
+      <section class="gi-card dg-surface-card" aria-labelledby="pendingTitle">
+        <div class="gi-head">
+          <div class="gi-title-row">
+            <span class="gi-title-icon" aria-hidden="true">
+              <svg viewBox="0 0 20 20">
+                <circle cx="10" cy="10" r="7" />
+                <path d="M10 6v4l2.5 1.7" />
+              </svg>
+            </span>
+            <h2 id="pendingTitle" class="gi-card-title">Pending Invites</h2>
+          </div>
+          <span id="inviteCountBadge" class="gi-count">2</span>
+        </div>
+
+        <div class="gi-divider" aria-hidden="true"></div>
+
+        <ul id="inviteList" class="gi-list">
+          <li class="gi-item" data-invite-item data-search="henry_hacker henry@example.com">
+            <img
+              class="gi-avatar"
+              src="https://www.figma.com/api/mcp/asset/3639504b-33ae-4bbd-a1da-fb1dd947bbc0"
+              alt=""
+              width="48"
+              height="48"
+            />
+            <div class="gi-user">
+              <div class="gi-user-line">
+                <span class="gi-name">henry_hacker</span>
+                <span class="gd-level">Lvl 62</span>
+              </div>
+              <p class="gi-email">henry@example.com</p>
+              <p class="gi-time">Invited 1d ago</p>
+            </div>
+            <div class="gi-actions">
+              <span class="gi-status">Pending</span>
+              <button type="button" class="gi-btn gi-btn--revoke" data-revoke>
+                <span aria-hidden="true">&times;</span>
+                Revoke
+              </button>
+            </div>
+          </li>
+
+          <li class="gi-item" data-invite-item data-search="iris_artist iris@example.com">
+            <img
+              class="gi-avatar"
+              src="https://www.figma.com/api/mcp/asset/4a4c9dfa-a5b4-4882-8d90-95290e629c5b"
+              alt=""
+              width="48"
+              height="48"
+            />
+            <div class="gi-user">
+              <div class="gi-user-line">
+                <span class="gi-name">iris_artist</span>
+                <span class="gd-level">Lvl 47</span>
+              </div>
+              <p class="gi-email">iris@example.com</p>
+              <p class="gi-time">Invited 2d ago</p>
+            </div>
+            <div class="gi-actions">
+              <span class="gi-status">Pending</span>
+              <button type="button" class="gi-btn gi-btn--revoke" data-revoke>
+                <span aria-hidden="true">&times;</span>
+                Revoke
+              </button>
+            </div>
+          </li>
+        </ul>
+
+        <div class="gi-divider" aria-hidden="true"></div>
+
+        <button id="revokeAllBtn" type="button" class="gi-btn gi-btn--all">
+          <span aria-hidden="true">&times;</span>
+          Revoke All Invites
+        </button>
+        <p id="giEmpty" class="gi-empty" hidden>No pending invites found.</p>
+      </section>
+
+      <aside class="gi-note dg-surface-card" aria-label="Invite note">
+        <span class="gi-note-icon" aria-hidden="true">
+          <svg viewBox="0 0 16 16">
+            <circle cx="8" cy="8" r="6.4" />
+            <path d="M8 7v4M8 4.8h.01" />
+          </svg>
+        </span>
+        <div>
+          <p class="gi-note-title">Note:</p>
+          <p class="gi-note-text">
+            Invited users will receive a notification and email. Invitations expire after 7 days if not accepted.
+          </p>
+        </div>
+      </aside>
+    </main>
+
+    <script src="./scripts/group_invitations.js"></script>
+  </body>
+</html>

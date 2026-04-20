@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Forgeon — Group Management</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles/groups.css" />
+  </head>
+  <body class="dg-page dg-page--group-mgmt">
+    <main class="dg-main gm-main">
+      <header class="gm-header">
+        <h1 class="gm-title">Group Management</h1>
+        <p class="gm-subtitle">Create and manage your community groups</p>
+      </header>
+
+      <article class="gm-card dg-surface-card">
+        <div class="gm-card__head gm-card__head--inline">
+          <h2 class="gm-card__title gm-card__title--plain">Validate account</h2>
+          <img
+            class="gm-title-accent"
+            src="https://www.figma.com/api/mcp/asset/a4d7f8b2-16cb-483f-8f44-002a8cda4d50"
+            alt=""
+            width="17"
+            height="8"
+          />
+        </div>
+        <div class="gm-well">
+          <p class="gm-account-line">
+            <span class="gm-muted-label">Current Account:</span>
+            <strong class="gm-account-name">veteran_user</strong>
+          </p>
+          <p class="gm-meta-line">Created: 31/12/2025</p>
+          <p class="gm-meta-line gm-meta-line--status">
+            <span>Status:</span>
+            <span class="gm-status-ok">✓ Eligible to create groups</span>
+          </p>
+        </div>
+      </article>
+
+      <article class="gm-card dg-surface-card">
+        <div class="gm-card__head gm-card__head--icon">
+          <img src="https://www.figma.com/api/mcp/asset/dd084f96-0900-4835-8faa-92ff94af3c0f" alt="" width="20" height="20" />
+          <h2 class="gm-card__title">My Groups</h2>
+        </div>
+        <ul class="gm-group-list">
+          <li>
+            <a href="./group_detail.html" class="gm-group-pill">
+              <span class="gm-group-pill__name">Dorx: is the new MrBeast?</span>
+              <span class="gm-group-pill__meta">23 members</span>
+            </a>
+          </li>
+          <li>
+            <a href="./group_detail.html" class="gm-group-pill">
+              <span class="gm-group-pill__name">Tech Innovators</span>
+              <span class="gm-group-pill__meta">47 members</span>
+            </a>
+          </li>
+        </ul>
+      </article>
+
+      <article class="gm-card dg-surface-card">
+        <h2 class="gm-card__title gm-card__title--block">Create New Group</h2>
+        <p class="gm-lead">
+          Ready to start your own community? Create a new group and invite members to join.
+        </p>
+        <a class="gm-btn-create" href="./group_Creation.html">
+          <img src="https://www.figma.com/api/mcp/asset/80464f30-b2d0-4ea8-a9bd-f5b949abdaca" alt="" width="16" height="16" />
+          Create Group
+        </a>
+      </article>
+
+      <article class="gm-card dg-surface-card gm-card--steps">
+        <h2 class="gm-card__title gm-card__title--block">How Group Creation Works</h2>
+        <ol class="gm-steps">
+          <li class="gm-step">
+            <div class="gm-step__num" aria-hidden="true">1</div>
+            <p class="gm-step__title"><a class="gm-step__link" href="./discover_groups.html">Check Eligibility</a></p>
+            <p class="gm-step__hint">Account must be 1+ week old</p>
+          </li>
+          <li class="gm-step">
+            <div class="gm-step__num" aria-hidden="true">2</div>
+            <p class="gm-step__title"><a class="gm-step__link" href="./group_Creation.html">Fill Details</a></p>
+            <p class="gm-step__hint">Name, description &amp; image</p>
+          </li>
+          <li class="gm-step">
+            <div class="gm-step__num" aria-hidden="true">3</div>
+            <p class="gm-step__title"><a class="gm-step__link" href="./group_invitations.html">Invite Users</a></p>
+            <p class="gm-step__hint">Add members to your group</p>
+          </li>
+          <li class="gm-step">
+            <div class="gm-step__num" aria-hidden="true">4</div>
+            <p class="gm-step__title"><a class="gm-step__link" href="./group_detail.html">Create &amp; Launch</a></p>
+            <p class="gm-step__hint">Your group goes live!</p>
+          </li>
+        </ol>
+      </article>
+    </main>
+  </body>
+</html>
