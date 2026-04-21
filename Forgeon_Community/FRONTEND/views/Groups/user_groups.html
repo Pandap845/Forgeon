@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+    <title>Forgeon — My Groups</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles/groups.css" />
+    <link rel="stylesheet" href="./styles/header.css" />
+  </head>
+  <body class="dg-page dg-page--user-groups">
+    <header class="forgeon-navbar">
+      <nav class="navbar navbar-expand-lg py-3">
+        <div class="container-fluid px-4">
+          <a class="navbar-brand d-flex align-items-center gap-3" href="#">
+            <span class="forgeon-brand-badge d-inline-flex align-items-center justify-content-center">
+              <img src="https://cdn-icons-png.flaticon.com/512/686/686589.png" alt="logo" class="logo-img" />
+            </span>
+            <span class="d-flex flex-column lh-sm">
+              <span class="fw-medium">Forgeon</span>
+              <small class="text-muted-2">Gaming Community</small>
+            </span>
+          </a>
+
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#forgeonNav"
+            aria-controls="forgeonNav"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+
+          <div class="collapse navbar-collapse" id="forgeonNav">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0 gap-lg-3">
+              <li class="nav-item">
+                <a class="nav-link text-muted-2" href="#">Forums</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link text-muted-2" href="#">Groups</a>
+              </li>
+            </ul>
+
+            <div class="d-flex align-items-center gap-2">
+              <button class="btn btn-link text-muted-2 px-2" type="button" aria-label="Search">
+                <i class="bi bi-search fs-5"></i>
+              </button>
+              <button
+                class="btn btn-link text-muted-2 px-2"
+                type="button"
+                aria-label="Notifications"
+                data-bs-toggle="modal"
+                data-bs-target="#notificationsModal"
+              >
+                <i class="bi bi-bell fs-5"></i>
+              </button>
+              <button class="btn btn-link text-muted-2 px-2" type="button" aria-label="Profile">
+                <i class="bi bi-person-circle fs-5"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+    <main class="dg-main ug-main">
+      <header class="dg-header ug-header">
+        <h1 class="dg-title">My Groups</h1>
+        <p class="dg-subtitle">Manage the groups you belong to</p>
+      </header>
+
+      <section class="ug-toolbar" aria-label="Search your groups">
+        <div class="dg-search-wrap">
+          <label class="visually-hidden" for="userGroupsSearch">Search your groups</label>
+          <span class="dg-search-icon" aria-hidden="true">
+            <img src="https://www.figma.com/api/mcp/asset/7fbe92ab-1622-4606-8b96-16a3263926e6" alt="" width="20" height="20" />
+          </span>
+          <input id="userGroupsSearch" class="dg-search-input" type="search" placeholder="Search your groups..." autocomplete="off" />
+        </div>
+        <p class="dg-count ug-count">6 groups</p>
+      </section>
+
+      <section class="ug-list" aria-label="Your joined groups">
+        <article class="ug-card">
+          <div class="ug-card__top">
+            <img class="ug-thumb" src="https://www.figma.com/api/mcp/asset/890f7afa-0cd3-4f8d-830f-2d26646ede02" alt="" width="64" height="64" />
+            <div class="ug-content">
+              <h2 class="ug-title">React Developers Community</h2>
+              <p class="ug-desc">A vibrant community of React developers sharing knowledge and best practices</p>
+              <div class="ug-meta">
+                <span class="dg-badge dg-badge--category">Technology</span>
+                <span class="dg-members">
+                  <img src="https://www.figma.com/api/mcp/asset/d5e6a745-8662-4731-ac2b-2c89194e5702" alt="" width="12" height="12" />
+                  <span>12.8k members</span>
+                </span>
+              </div>
+            </div>
+            <div class="ug-actions">
+              <button type="button" class="dg-btn dg-btn--ghost ug-btn">View</button>
+              <button type="button" class="dg-btn dg-btn--secondary ug-btn ug-btn--leave">
+                <span class="ug-leave-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" focusable="false">
+                    <path d="M14 8L18 12L14 16" />
+                    <path d="M18 12H9" />
+                    <path d="M11 4H6A2 2 0 0 0 4 6V18A2 2 0 0 0 6 20H11" />
+                  </svg>
+                </span>
+                Leave
+              </button>
+            </div>
+          </div>
+        </article>
+
+        <article class="ug-card">
+          <div class="ug-card__top">
+            <img class="ug-thumb" src="https://www.figma.com/api/mcp/asset/b6ad29cb-5cc2-4354-ba13-9430e20320fd" alt="" width="64" height="64" />
+            <div class="ug-content">
+              <h2 class="ug-title">Photography Enthusiasts</h2>
+              <p class="ug-desc">Share your best shots, learn new techniques, and connect with photographers worldwide</p>
+              <div class="ug-meta">
+                <span class="dg-badge dg-badge--category">Arts &amp; Photography</span>
+                <span class="dg-members">
+                  <img src="https://www.figma.com/api/mcp/asset/d5e6a745-8662-4731-ac2b-2c89194e5702" alt="" width="12" height="12" />
+                  <span>8.9k members</span>
+                </span>
+              </div>
+            </div>
+            <div class="ug-actions">
+              <button type="button" class="dg-btn dg-btn--ghost ug-btn">View</button>
+              <button type="button" class="dg-btn dg-btn--secondary ug-btn ug-btn--leave">
+                <span class="ug-leave-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" focusable="false">
+                    <path d="M14 8L18 12L14 16" />
+                    <path d="M18 12H9" />
+                    <path d="M11 4H6A2 2 0 0 0 4 6V18A2 2 0 0 0 6 20H11" />
+                  </svg>
+                </span>
+                Leave
+              </button>
+            </div>
+          </div>
+        </article>
+
+        <article class="ug-card ug-card--owner">
+          <div class="ug-card__top">
+            <img class="ug-thumb" src="https://www.figma.com/api/mcp/asset/2f60eda0-a2ad-48a3-adbc-c9057072c54b" alt="" width="64" height="64" />
+            <div class="ug-content">
+              <h2 class="ug-title">AI &amp; Machine Learning</h2>
+              <p class="ug-desc">Explore cutting edge artificial intelligence and machine learning technologies</p>
+              <div class="ug-meta">
+                <span class="dg-badge dg-badge--category">Technology</span>
+                <span class="dg-members">
+                  <img src="https://www.figma.com/api/mcp/asset/d5e6a745-8662-4731-ac2b-2c89194e5702" alt="" width="12" height="12" />
+                  <span>11.2k members</span>
+                </span>
+              </div>
+            </div>
+            <div class="ug-actions">
+              <button type="button" class="dg-btn dg-btn--ghost ug-btn">View</button>
+              <button type="button" class="dg-btn dg-btn--secondary ug-btn ug-btn--leave" disabled>
+                <span class="ug-leave-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" focusable="false">
+                    <path d="M14 8L18 12L14 16" />
+                    <path d="M18 12H9" />
+                    <path d="M11 4H6A2 2 0 0 0 4 6V18A2 2 0 0 0 6 20H11" />
+                  </svg>
+                </span>
+                Leave
+              </button>
+            </div>
+          </div>
+          <p class="ug-note">You cannot leave a group you own. Transfer ownership or delete the group first.</p>
+        </article>
+
+        <article class="ug-card">
+          <div class="ug-card__top">
+            <img class="ug-thumb" src="https://www.figma.com/api/mcp/asset/e27c72d2-c1f4-424c-8da3-d65279ad85a4" alt="" width="64" height="64" />
+            <div class="ug-content">
+              <h2 class="ug-title">Digital Artists Hub</h2>
+              <p class="ug-desc">Creative space for digital artists to showcase work and get feedback</p>
+              <div class="ug-meta">
+                <span class="dg-badge dg-badge--category">Arts &amp; Photography</span>
+                <span class="dg-members">
+                  <img src="https://www.figma.com/api/mcp/asset/d5e6a745-8662-4731-ac2b-2c89194e5702" alt="" width="12" height="12" />
+                  <span>6.4k members</span>
+                </span>
+              </div>
+            </div>
+            <div class="ug-actions">
+              <button type="button" class="dg-btn dg-btn--ghost ug-btn">View</button>
+              <button type="button" class="dg-btn dg-btn--secondary ug-btn ug-btn--leave">
+                <span class="ug-leave-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" focusable="false">
+                    <path d="M14 8L18 12L14 16" />
+                    <path d="M18 12H9" />
+                    <path d="M11 4H6A2 2 0 0 0 4 6V18A2 2 0 0 0 6 20H11" />
+                  </svg>
+                </span>
+                Leave
+              </button>
+            </div>
+          </div>
+        </article>
+
+        <article class="ug-card">
+          <div class="ug-card__top">
+            <img class="ug-thumb" src="https://www.figma.com/api/mcp/asset/c82ec0ba-1348-4af4-8f39-a9e98020dfa0" alt="" width="64" height="64" />
+            <div class="ug-content">
+              <h2 class="ug-title">Fitness &amp; Wellness Warriors</h2>
+              <p class="ug-desc">Transform your life with our supportive fitness community</p>
+              <div class="ug-meta">
+                <span class="dg-badge dg-badge--category">Health &amp; Fitness</span>
+                <span class="dg-members">
+                  <img src="https://www.figma.com/api/mcp/asset/d5e6a745-8662-4731-ac2b-2c89194e5702" alt="" width="12" height="12" />
+                  <span>15.2k members</span>
+                </span>
+              </div>
+            </div>
+            <div class="ug-actions">
+              <button type="button" class="dg-btn dg-btn--ghost ug-btn">View</button>
+              <button type="button" class="dg-btn dg-btn--secondary ug-btn ug-btn--leave">
+                <span class="ug-leave-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" focusable="false">
+                    <path d="M14 8L18 12L14 16" />
+                    <path d="M18 12H9" />
+                    <path d="M11 4H6A2 2 0 0 0 4 6V18A2 2 0 0 0 6 20H11" />
+                  </svg>
+                </span>
+                Leave
+              </button>
+            </div>
+          </div>
+        </article>
+
+        <article class="ug-card">
+          <div class="ug-card__top">
+            <img class="ug-thumb" src="https://www.figma.com/api/mcp/asset/c0643049-665a-4800-9fa0-6884bf3bf0f5" alt="" width="64" height="64" />
+            <div class="ug-content">
+              <h2 class="ug-title">Startup Founders Network</h2>
+              <p class="ug-desc">Connect with fellow entrepreneurs and get advice on building successful startups</p>
+              <div class="ug-meta">
+                <span class="dg-badge dg-badge--category">Business</span>
+                <span class="dg-members">
+                  <img src="https://www.figma.com/api/mcp/asset/d5e6a745-8662-4731-ac2b-2c89194e5702" alt="" width="12" height="12" />
+                  <span>4.9k members</span>
+                </span>
+              </div>
+            </div>
+            <div class="ug-actions">
+              <button type="button" class="dg-btn dg-btn--ghost ug-btn">View</button>
+              <button type="button" class="dg-btn dg-btn--secondary ug-btn ug-btn--leave">
+                <span class="ug-leave-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" focusable="false">
+                    <path d="M14 8L18 12L14 16" />
+                    <path d="M18 12H9" />
+                    <path d="M11 4H6A2 2 0 0 0 4 6V18A2 2 0 0 0 6 20H11" />
+                  </svg>
+                </span>
+                Leave
+              </button>
+            </div>
+          </div>
+        </article>
+      </section>
+    </main>
+  </body>
+</html>

@@ -188,6 +188,38 @@ body.dg-page {
   background: var(--dg-surface);
 }
 
+:root {
+  --groups-btn-color: #6b1a1a;
+  --groups-btn-color-hover: #581515;
+}
+
+input[type="button"],
+input[type="submit"],
+input[type="reset"],
+a.gc-btn,
+a[class*="btn"],
+button[class*="btn"] {
+  background-color: var(--groups-btn-color) !important;
+  border-color: var(--groups-btn-color) !important;
+  color: #fff !important;
+}
+
+input[type="button"]:hover,
+input[type="submit"]:hover,
+input[type="reset"]:hover,
+a.gc-btn:hover,
+a[class*="btn"]:hover,
+button[class*="btn"]:hover {
+  background-color: var(--groups-btn-color-hover) !important;
+  border-color: var(--groups-btn-color-hover) !important;
+}
+
+input:disabled,
+a.gc-btn[aria-disabled="true"] {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
 .dg-view-btn {
   width: 36px;
   height: 32px;
@@ -2748,5 +2780,164 @@ body.dg-page--group-creation .dg-main.gc-main {
 
   .gc-upload-box {
     min-height: 300px;
+  }
+}
+
+/* -------------------------------------------------------------------------- */
+/* User Groups - Figma node 131:39                                             */
+/* -------------------------------------------------------------------------- */
+
+body.dg-page--user-groups .ug-main {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.ug-header {
+  margin-bottom: 0;
+}
+
+.ug-toolbar {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+body.dg-page--user-groups .dg-search-input {
+  height: 36px;
+  background: linear-gradient(90deg, #16161f 0%, #18181b 100%);
+}
+
+.ug-count {
+  margin: 0;
+}
+
+.ug-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.ug-card {
+  border-radius: var(--dg-radius-card);
+  border: 0.8px solid var(--dg-border);
+  background: var(--dg-surface);
+  padding: 20px;
+}
+
+.ug-card__top {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.ug-thumb {
+  width: 64px;
+  height: 64px;
+  border-radius: 10px;
+  border: 0.8px solid var(--dg-border-muted);
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.ug-content {
+  min-width: 0;
+  flex: 1;
+}
+
+.ug-title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 27px;
+  color: var(--dg-text);
+}
+
+.ug-desc {
+  margin: 4px 0 8px;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--dg-muted);
+}
+
+.ug-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+body.dg-page--user-groups .dg-badge--category {
+  border: 0;
+}
+
+body.dg-page--user-groups .dg-members {
+  font-size: 14px;
+  line-height: 20px;
+  gap: 4px;
+  color: var(--dg-placeholder);
+}
+
+.ug-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.ug-btn {
+  min-width: 64px;
+  height: 36px;
+}
+
+.ug-btn--leave {
+  min-width: 90px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.ug-leave-icon {
+  width: 16px;
+  height: 16px;
+  display: inline-flex;
+}
+
+.ug-leave-icon svg {
+  width: 100%;
+  height: 100%;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.ug-note {
+  margin: 12px 0 0;
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--dg-placeholder);
+}
+
+@media (max-width: 980px) {
+  .ug-card__top {
+    flex-wrap: wrap;
+    align-items: flex-start;
+  }
+
+  .ug-actions {
+    margin-left: 80px;
+  }
+}
+
+@media (max-width: 640px) {
+  .ug-card {
+    padding: 16px;
+  }
+
+  .ug-actions {
+    margin-left: 0;
   }
 }
