@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Forgeon - My Profile</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/686/686589.png" />
+    <link rel="stylesheet" href="./styles/profile.css" />
+  </head>
+  <body class="profile-page">
+    <main class="profile-wrapper">
+      <header class="profile-header">
+        <h1>My Profile</h1>
+        <p>Manage your personal information and achievements</p>
+      </header>
+
+      <section class="profile-card">
+        <div class="avatar-zone">
+          <button type="button" class="avatar-btn" id="avatarButton" aria-label="Change profile picture">
+            <img
+              id="avatarPreview"
+              src="https://i.pinimg.com/736x/b1/21/18/b1211897266308c27112a58eacad7482.jpg"
+              alt="Profile picture"
+            />
+          </button>
+          <p class="avatar-hint">Click to change profile picture</p>
+          <input id="avatarInput" type="file" accept="image/*" hidden />
+        </div>
+
+        <div class="field-block">
+          <label for="username">Username</label>
+          <div class="username-row">
+            <input class="text-input" id="username" type="text" value="Miku39" />
+            <button class="edit-btn" type="button" aria-label="Edit username">✎</button>
+          </div>
+        </div>
+
+        <div class="field-block">
+          <label for="birthday">Birthday</label>
+          <input class="text-input" id="birthday" type="date" />
+        </div>
+
+        <h2 class="section-title">Statistics</h2>
+        <div class="stats-list">
+          <article class="stats-item">
+            <div class="stat-icon">📝</div>
+            <div>
+              <p class="stat-label">Posts Published</p>
+              <p class="stat-value">142</p>
+            </div>
+          </article>
+          <article class="stats-item">
+            <div class="stat-icon">👥</div>
+            <div>
+              <p class="stat-label">Groups</p>
+              <p class="stat-value">8</p>
+            </div>
+          </article>
+        </div>
+
+        <h2 class="badge-header">
+          <span>My Badges</span>
+          <span class="badge-count">(3 of 60)</span>
+        </h2>
+        <div class="badge-list">
+          <article class="badge-item">
+            <div class="emoji">🚀</div>
+            <p>Early Adopter</p>
+          </article>
+          <article class="badge-item">
+            <div class="emoji">⭐</div>
+            <p>Top Contributor</p>
+          </article>
+          <article class="badge-item badge-item--highlight">
+            <div class="emoji">🏆</div>
+            <p>Community Hero</p>
+          </article>
+        </div>
+        <p class="more-badges">+2 more badges earned</p>
+      </section>
+
+      <section class="profile-card account-card">
+        <h2 class="section-title">Account Settings</h2>
+        <p class="account-subtitle">Update your account data and security preferences.</p>
+
+        <div class="field-block">
+          <label for="newUsername">Change Username</label>
+          <div class="username-row">
+            <input
+              class="text-input"
+              id="newUsername"
+              type="text"
+              placeholder="Enter a new username"
+              autocomplete="username"
+            />
+            <button class="check-btn" type="button">Check</button>
+          </div>
+          <p class="field-hint">Username must be unique. Availability check will be connected next.</p>
+        </div>
+
+        <div class="field-block">
+          <label for="newPassword">New Password</label>
+          <input
+            class="text-input"
+            id="newPassword"
+            type="password"
+            placeholder="Create a new password"
+            autocomplete="new-password"
+          />
+        </div>
+
+        <div class="field-block">
+          <label for="confirmNewPassword">Confirm New Password</label>
+          <input
+            class="text-input"
+            id="confirmNewPassword"
+            type="password"
+            placeholder="Repeat the new password"
+            autocomplete="new-password"
+          />
+          <p class="field-hint">Both password fields must match.</p>
+        </div>
+
+        <div class="account-actions">
+          <button type="button" class="primary-action">Save Changes</button>
+        </div>
+
+        <div class="danger-zone">
+          <h3>Danger Zone</h3>
+          <p>This action permanently deletes your account and all related data.</p>
+          <button type="button" class="danger-action">Delete Account</button>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      (function () {
+        var avatarButton = document.getElementById("avatarButton");
+        var avatarInput = document.getElementById("avatarInput");
+        var avatarPreview = document.getElementById("avatarPreview");
+
+        avatarButton.addEventListener("click", function () {
+          avatarInput.click();
+        });
+
+        avatarInput.addEventListener("change", function (event) {
+          var file = event.target.files && event.target.files[0];
+          if (!file) return;
+          avatarPreview.src = URL.createObjectURL(file);
+        });
+      })();
+    </script>
+  </body>
+</html>
