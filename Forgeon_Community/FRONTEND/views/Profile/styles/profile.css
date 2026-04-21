@@ -347,6 +347,26 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     border-color: rgba(113, 163, 241, 0.35);
 }
 
+.badge-item[data-badge-rarity="Common"] {
+    background: linear-gradient(180deg, rgba(158, 165, 176, 0.16), rgba(97, 103, 113, 0.22)), #1b1f27;
+    border-color: rgba(176, 184, 196, 0.38);
+}
+
+.badge-item[data-badge-rarity="Rare"] {
+    background: linear-gradient(180deg, rgba(66, 124, 225, 0.22), rgba(39, 72, 128, 0.3)), #1b1f27;
+    border-color: rgba(108, 156, 241, 0.46);
+}
+
+.badge-item[data-badge-rarity="Epic"] {
+    background: linear-gradient(180deg, rgba(126, 77, 193, 0.24), rgba(80, 47, 126, 0.3)), #1b1f27;
+    border-color: rgba(180, 124, 250, 0.46);
+}
+
+.badge-item[data-badge-rarity="Legendary"] {
+    background: linear-gradient(180deg, rgba(223, 171, 61, 0.26), rgba(145, 100, 24, 0.34)), #1b1f27;
+    border-color: rgba(248, 205, 94, 0.55);
+}
+
 .more-badges {
     margin: 0.6rem 0 0.15rem;
     text-align: center;
