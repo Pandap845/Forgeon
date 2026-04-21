@@ -9,6 +9,7 @@
     --forgeon-muted: rgba(255, 255, 255, 0.6);
     --forgeon-muted-2: rgba(255, 255, 255, 0.4);
     --forgeon-muted-3: rgba(255, 255, 255, 0.3);
+    --split-logo-box: #6b1a1a;
 }
 
 html,
@@ -30,22 +31,15 @@ body {
     width: 40px;
     height: 40px;
     border-radius: 10px;
-    background: linear-gradient(135deg,
-            #e60012 0%,
-            #df2e2f 7.1429%,
-            #d74241 14.286%,
-            #cf5151 21.429%,
-            #c65d60 28.571%,
-            #bd676e 35.714%,
-            #b3707b 42.857%,
-            #a97988 50%,
-            #9e8095 57.143%,
-            #9187a2 64.286%,
-            #838dae 71.429%,
-            #7393bb 78.571%,
-            #5f99c7 85.714%,
-            #439ed4 92.857%,
-            #00a3e0 100%);
+    background: var(--split-logo-box);
+}
+
+.logo-img {
+    width: 22px;
+    height: 22px;
+    object-fit: contain;
+    display: block;
+    filter: brightness(0) invert(1);
 }
 
 .forgeon-card {
