@@ -1,0 +1,234 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap");
+
+:root {
+    --forgeon-bg: #0a0a0f;
+    --forgeon-surface: #12121a;
+    --forgeon-card: rgba(255, 255, 255, 0.02);
+    --forgeon-border: rgba(255, 255, 255, 0.08);
+    --forgeon-border-soft: rgba(255, 255, 255, 0.05);
+    --forgeon-muted: rgba(255, 255, 255, 0.6);
+    --forgeon-muted-2: rgba(255, 255, 255, 0.4);
+    --forgeon-muted-3: rgba(255, 255, 255, 0.3);
+}
+
+html,
+body {
+    height: 100%;
+}
+
+body {
+    font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    background: var(--forgeon-bg);
+}
+
+.forgeon-navbar {
+    background: var(--forgeon-surface);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.forgeon-brand-badge {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background: linear-gradient(135deg,
+            #e60012 0%,
+            #df2e2f 7.1429%,
+            #d74241 14.286%,
+            #cf5151 21.429%,
+            #c65d60 28.571%,
+            #bd676e 35.714%,
+            #b3707b 42.857%,
+            #a97988 50%,
+            #9e8095 57.143%,
+            #9187a2 64.286%,
+            #838dae 71.429%,
+            #7393bb 78.571%,
+            #5f99c7 85.714%,
+            #439ed4 92.857%,
+            #00a3e0 100%);
+}
+
+.forgeon-card {
+    background: var(--forgeon-card);
+    border: 1px solid var(--forgeon-border-soft);
+    border-radius: 10px;
+}
+
+.forgeon-thread {
+    transition: background-color 120ms ease, border-color 120ms ease;
+}
+
+.forgeon-thread:hover {
+    background: rgba(255, 255, 255, 0.03);
+    border-color: rgba(255, 255, 255, 0.09);
+}
+
+.forgeon-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 999px;
+    object-fit: cover;
+}
+
+.text-muted-2 {
+    color: var(--forgeon-muted-2) !important;
+}
+
+.text-muted-3 {
+    color: var(--forgeon-muted-3) !important;
+}
+
+.btn-gradient-red {
+    border: 0;
+    color: #fff;
+    background: linear-gradient(90deg, #e60012 0%, #c4000f 100%);
+    box-shadow: 0 10px 28px rgba(230, 0, 18, 0.12);
+}
+
+.btn-gradient-red:hover,
+.btn-gradient-red:focus {
+    color: #fff;
+    background: linear-gradient(90deg, #ff0015 0%, #d30011 100%);
+}
+
+.forgeon-sidebar-title {
+    letter-spacing: -0.2px;
+}
+
+.forgeon-featured {
+    min-height: 180px;
+    border-radius: 12px;
+    border: 1px solid var(--forgeon-border-soft);
+    overflow: hidden;
+    background-size: cover;
+    background-position: center;
+}
+
+.forgeon-featured::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(10, 10, 15, 0.1), rgba(10, 10, 15, 0.85));
+}
+
+.forgeon-modal {
+    background: #1a1919;
+    border: 1px solid rgba(229, 229, 229, 0.35);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.forgeon-upload {
+    border: 1px dashed rgba(255, 255, 255, 0.25);
+    border-radius: 10px;
+    padding: 14px 16px;
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.forgeon-upload-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.06);
+    color: rgba(255, 255, 255, 0.8);
+    flex: 0 0 auto;
+}
+
+.forgeon-file {
+    max-width: 220px;
+    background: rgba(255, 255, 255, 0.03);
+    border-color: rgba(255, 255, 255, 0.15);
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.forgeon-icon-btn {
+    color: rgba(255, 255, 255, 0.5);
+    text-decoration: none;
+    line-height: 1;
+}
+
+.forgeon-icon-btn:hover,
+.forgeon-icon-btn:focus {
+    color: rgba(255, 255, 255, 0.85);
+}
+
+.forgeon-icon-btn i {
+    font-size: 1.05rem;
+}
+
+.forgeon-input {
+    border-radius: 10px;
+    padding: 12px 16px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(251, 44, 54, 0.9);
+    color: #fff;
+}
+
+.forgeon-input::placeholder {
+    color: rgba(255, 255, 255, 0.4);
+}
+
+.forgeon-input:focus {
+    box-shadow: 0 0 0 0.25rem rgba(251, 44, 54, 0.15);
+    border-color: rgba(251, 44, 54, 1);
+}
+
+.forgeon-radio-card {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px;
+    border-radius: 10px;
+    border: 1px solid rgba(212, 212, 212, 0.55);
+    background: rgba(255, 255, 255, 0.01);
+    cursor: pointer;
+    user-select: none;
+}
+
+.forgeon-radio-card input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.forgeon-radio-dot {
+    width: 16px;
+    height: 16px;
+    border-radius: 999px;
+    border: 1px solid rgba(212, 212, 212, 0.8);
+    display: inline-block;
+    position: relative;
+    flex: 0 0 auto;
+}
+
+.forgeon-radio-card input:checked+.forgeon-radio-dot::after {
+    content: "";
+    position: absolute;
+    inset: 3px;
+    border-radius: 999px;
+    background: #fff;
+}
+
+.forgeon-radio-card:has(input:checked) {
+    border-color: rgba(255, 255, 255, 0.7);
+}
+
+.forgeon-publish-btn {
+    height: 48px;
+    border-radius: 10px;
+    background: #5c4e4e;
+    color: #a1a1a1;
+    border: 0;
+}
+
+.forgeon-publish-btn:disabled {
+    opacity: 1;
+}
+
+.forgeon-publish-btn:not(:disabled) {
+    background: linear-gradient(90deg, #e60012 0%, #c4000f 100%);
+    color: #fff;
+}
