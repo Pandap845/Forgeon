@@ -75,14 +75,14 @@ body {
 .btn-gradient-red {
     border: 0;
     color: #fff;
-    background: linear-gradient(90deg, #e60012 0%, #c4000f 100%);
+    background: linear-gradient(90deg,#6b1a1a 0%, #6b1a1a 100%);
     box-shadow: 0 10px 28px rgba(230, 0, 18, 0.12);
 }
 
 .btn-gradient-red:hover,
 .btn-gradient-red:focus {
     color: #fff;
-    background: linear-gradient(90deg, #ff0015 0%, #d30011 100%);
+    background: linear-gradient(90deg, #6b1a1a 0%,#6b1a1a 100%);
 }
 
 .forgeon-sidebar-title {
