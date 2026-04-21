@@ -456,10 +456,6 @@ a.dg-btn {
   }
 }
 
-/* -------------------------------------------------------------------------- */
-/* Group detail — Figma node 71:793 (reuses tokens & patterns above)          */
-/* -------------------------------------------------------------------------- */
-
 .dg-surface-card {
   border-radius: var(--dg-radius-card);
   border: 0.8px solid var(--dg-border);
