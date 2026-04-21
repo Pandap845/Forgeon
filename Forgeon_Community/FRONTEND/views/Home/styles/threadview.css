@@ -119,6 +119,19 @@ body {
     color: rgba(255, 255, 255, 0.9);
 }
 
+.tv-notif-dot {
+    width: 38px;
+    height: 38px;
+    border-radius: 12px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.8);
+    flex: 0 0 auto;
+}
+
 .forgeon-reply-box {
     border-radius: 12px;
     border: 1px solid rgba(255, 255, 255, 0.14);
