@@ -55,7 +55,7 @@
               <p class="stat-value">142</p>
             </div>
           </article>
-          <article class="stats-item">
+          <article class="stats-item stats-clickable" id="groupsCard" tabindex="0" role="button" aria-label="View joined groups">
             <div class="stat-icon">👥</div>
             <div>
               <p class="stat-label">Groups</p>
@@ -64,25 +64,109 @@
           </article>
         </div>
 
-        <h2 class="badge-header">
-          <span>My Badges</span>
-          <span class="badge-count">(3 of 60)</span>
-        </h2>
+        <div class="badge-header-row">
+          <h2 class="badge-header">
+            <span>My Badges</span>
+            <span class="badge-count">(3 of 60)</span>
+          </h2>
+          <div class="badge-actions-inline">
+            <div class="badge-controls">
+              <label class="badge-filter-label" for="badgeFilterSelect">Filter badges:</label>
+              <select id="badgeFilterSelect" class="badge-filter-select">
+                <option value="recent">Most recent first</option>
+                <option value="rarity">By rarity</option>
+              </select>
+            </div>
+            <button type="button" class="all-badges-btn" id="allBadgesButton">All my badges</button>
+          </div>
+        </div>
         <div class="badge-list">
-          <article class="badge-item">
+          <article
+            class="badge-item badge-clickable"
+            data-badge-name="First Review Drop"
+            data-badge-description="Awarded for publishing your first videogame review post."
+            data-badge-method="Posted your first complete game review in the community feed."
+            data-badge-date="2025-02-12"
+            data-badge-rarity="rare"
+            tabindex="0"
+            role="button"
+            aria-label="View details for First Review Drop badge"
+          >
             <div class="emoji">🚀</div>
-            <p>Early Adopter</p>
+            <p>First Review Drop</p>
           </article>
-          <article class="badge-item">
+          <article
+            class="badge-item badge-clickable"
+            data-badge-name="Lore Master"
+            data-badge-description="Recognizes top-quality posts explaining game lore and storylines."
+            data-badge-method="Published 15 lore posts with strong engagement from readers."
+            data-badge-date="2025-08-19"
+            data-badge-rarity="epic"
+            tabindex="0"
+            role="button"
+            aria-label="View details for Lore Master badge"
+          >
             <div class="emoji">⭐</div>
-            <p>Top Contributor</p>
+            <p>Lore Master</p>
           </article>
-          <article class="badge-item badge-item--highlight">
+          <article
+            class="badge-item badge-item--highlight badge-clickable"
+            data-badge-name="Legend Hunter"
+            data-badge-description="Special badge for high-impact posts about legendary game moments."
+            data-badge-method="Created viral posts around major boss fights and hidden endings."
+            data-badge-date="2026-01-07"
+            data-badge-rarity="legendary"
+            tabindex="0"
+            role="button"
+            aria-label="View details for Legend Hunter badge"
+          >
             <div class="emoji">🏆</div>
-            <p>Community Hero</p>
+            <p>Legend Hunter</p>
+          </article>
+          <article
+            class="badge-item badge-clickable"
+            data-badge-name="Patch Notes Pro"
+            data-badge-description="Given to users who publish clear and useful game update summaries."
+            data-badge-method="Published weekly patch notes breakdowns for 2 months."
+            data-badge-date="2026-02-15"
+            data-badge-rarity="epic"
+            tabindex="0"
+            role="button"
+            aria-label="View details for Patch Notes Pro badge"
+          >
+            <div class="emoji">🧠</div>
+            <p>Patch Notes Pro</p>
+          </article>
+          <article
+            class="badge-item badge-clickable"
+            data-badge-name="Speedrun Reporter"
+            data-badge-description="Awarded for posts covering speedrun records and route strategies."
+            data-badge-method="Published 10 speedrun highlight posts with top reactions."
+            data-badge-date="2025-11-03"
+            data-badge-rarity="rare"
+            tabindex="0"
+            role="button"
+            aria-label="View details for Speedrun Reporter badge"
+          >
+            <div class="emoji">⚡</div>
+            <p>Speedrun Reporter</p>
+          </article>
+          <article
+            class="badge-item badge-clickable"
+            data-badge-name="Indie Spotlight"
+            data-badge-description="Starter badge for publishing your first indie game recommendation."
+            data-badge-method="Posted a featured indie game thread with screenshots and opinions."
+            data-badge-date="2025-01-10"
+            data-badge-rarity="common"
+            tabindex="0"
+            role="button"
+            aria-label="View details for Indie Spotlight badge"
+          >
+            <div class="emoji">✨</div>
+            <p>Indie Spotlight</p>
           </article>
         </div>
-        <p class="more-badges">+2 more badges earned</p>
+        <button type="button" class="more-badges-toggle" id="toggleMoreBadgesButton">Show more badges ▾</button>
       </section>
 
       <section class="profile-card account-card">
@@ -134,16 +218,142 @@
         <div class="danger-zone">
           <h3>Danger Zone</h3>
           <p>This action permanently deletes your account and all related data.</p>
-          <button type="button" class="danger-action">Delete Account</button>
+          <button type="button" class="danger-action" id="deleteAccountButton">Delete Account</button>
         </div>
       </section>
     </main>
+
+    <div class="modal-backdrop is-hidden" id="deleteModalBackdrop" aria-hidden="true">
+      <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="deleteModalTitle">
+        <h3 id="deleteModalTitle">Confirm account deletion</h3>
+        <p>
+          This action cannot be undone. To continue, type the message:
+          <span class="required-message" id="requiredDeleteMessage">DELETE MY ACCOUNT</span>
+        </p>
+        <label for="deleteConfirmInput">Verification message</label>
+        <input
+          class="text-input"
+          id="deleteConfirmInput"
+          type="text"
+          placeholder="Type the exact message"
+          autocomplete="off"
+        />
+        <p class="modal-feedback" id="deleteModalFeedback"></p>
+        <div class="modal-actions">
+          <button type="button" class="modal-btn modal-btn-secondary" id="cancelDeleteButton">Cancel</button>
+          <button type="button" class="modal-btn modal-btn-danger" id="confirmDeleteButton">
+            Confirm delete
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-backdrop is-hidden" id="deletedModalBackdrop" aria-hidden="true">
+      <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="deletedModalTitle">
+        <h3 id="deletedModalTitle">Account deleted (Interface Demo)</h3>
+        <p>
+          The verification message matched correctly. In the final backend integration, this step will trigger the
+          permanent account deletion.
+        </p>
+        <div class="modal-actions">
+          <button type="button" class="modal-btn modal-btn-primary" id="closeDeletedModalButton">Close</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-backdrop is-hidden" id="allBadgesModalBackdrop" aria-hidden="true">
+      <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="allBadgesModalTitle">
+        <h3 id="allBadgesModalTitle">All my badges</h3>
+        <p>You currently have 6 unlocked badges out of 60 total badges.</p>
+        <ul class="all-badges-list">
+          <li>🚀 First Review Drop</li>
+          <li>⭐ Lore Master</li>
+          <li>🏆 Legend Hunter</li>
+          <li>🧠 Patch Notes Pro</li>
+          <li>⚡ Speedrun Reporter</li>
+          <li>✨ Indie Spotlight</li>
+        </ul>
+        <div class="modal-actions">
+          <button type="button" class="modal-btn modal-btn-primary" id="closeAllBadgesModalButton">Close</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-backdrop is-hidden" id="badgeDetailsModalBackdrop" aria-hidden="true">
+      <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="badgeDetailsTitle">
+        <h3 id="badgeDetailsTitle">Badge details</h3>
+        <p class="badge-detail-line"><strong>Name:</strong> <span id="badgeDetailName"></span></p>
+        <p class="badge-detail-line"><strong>Description:</strong> <span id="badgeDetailDescription"></span></p>
+        <p class="badge-detail-line"><strong>Rarity:</strong> <span id="badgeDetailRarity"></span></p>
+        <p class="badge-detail-line"><strong>How it was obtained:</strong> <span id="badgeDetailMethod"></span></p>
+        <p class="badge-detail-line"><strong>Date obtained:</strong> <span id="badgeDetailDate"></span></p>
+        <div class="modal-actions">
+          <button type="button" class="modal-btn modal-btn-primary" id="closeBadgeDetailsModalButton">Close</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-backdrop is-hidden" id="groupsModalBackdrop" aria-hidden="true">
+      <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="groupsModalTitle">
+        <h3 id="groupsModalTitle">Groups joined</h3>
+        <p>These are the groups where you are currently active:</p>
+        <ul class="all-badges-list">
+          <li>🎮 RPG Guild</li>
+          <li>🕹️ Retro Arcade Club</li>
+          <li>⚔️ Boss Raid Hunters</li>
+          <li>🚗 Racing Legends Hub</li>
+          <li>👾 Indie Pixel Squad</li>
+          <li>🔫 FPS Tactics Room</li>
+          <li>🧩 Puzzle Masters Arena</li>
+          <li>🌌 Open World Explorers</li>
+        </ul>
+        <div class="modal-actions">
+          <button type="button" class="modal-btn modal-btn-primary" id="closeGroupsModalButton">Close</button>
+        </div>
+      </div>
+    </div>
 
     <script>
       (function () {
         var avatarButton = document.getElementById("avatarButton");
         var avatarInput = document.getElementById("avatarInput");
         var avatarPreview = document.getElementById("avatarPreview");
+        var deleteAccountButton = document.getElementById("deleteAccountButton");
+        var deleteModalBackdrop = document.getElementById("deleteModalBackdrop");
+        var deletedModalBackdrop = document.getElementById("deletedModalBackdrop");
+        var deleteConfirmInput = document.getElementById("deleteConfirmInput");
+        var deleteModalFeedback = document.getElementById("deleteModalFeedback");
+        var cancelDeleteButton = document.getElementById("cancelDeleteButton");
+        var confirmDeleteButton = document.getElementById("confirmDeleteButton");
+        var closeDeletedModalButton = document.getElementById("closeDeletedModalButton");
+        var requiredDeleteMessage = "DELETE MY ACCOUNT";
+        var allBadgesButton = document.getElementById("allBadgesButton");
+        var allBadgesModalBackdrop = document.getElementById("allBadgesModalBackdrop");
+        var closeAllBadgesModalButton = document.getElementById("closeAllBadgesModalButton");
+        var badgeDetailsModalBackdrop = document.getElementById("badgeDetailsModalBackdrop");
+        var closeBadgeDetailsModalButton = document.getElementById("closeBadgeDetailsModalButton");
+        var badgeDetailName = document.getElementById("badgeDetailName");
+        var badgeDetailDescription = document.getElementById("badgeDetailDescription");
+        var badgeDetailRarity = document.getElementById("badgeDetailRarity");
+        var badgeDetailMethod = document.getElementById("badgeDetailMethod");
+        var badgeDetailDate = document.getElementById("badgeDetailDate");
+        var clickableBadges = Array.from(document.querySelectorAll(".badge-clickable"));
+        var badgeList = document.querySelector(".badge-list");
+        var badgeFilterSelect = document.getElementById("badgeFilterSelect");
+        var toggleMoreBadgesButton = document.getElementById("toggleMoreBadgesButton");
+        var groupsCard = document.getElementById("groupsCard");
+        var groupsModalBackdrop = document.getElementById("groupsModalBackdrop");
+        var closeGroupsModalButton = document.getElementById("closeGroupsModalButton");
+
+        function openModal(modal) {
+          modal.classList.remove("is-hidden");
+          modal.setAttribute("aria-hidden", "false");
+        }
+
+        function closeModal(modal) {
+          modal.classList.add("is-hidden");
+          modal.setAttribute("aria-hidden", "true");
+        }
 
         avatarButton.addEventListener("click", function () {
           avatarInput.click();
@@ -154,6 +364,144 @@
           if (!file) return;
           avatarPreview.src = URL.createObjectURL(file);
         });
+
+        deleteAccountButton.addEventListener("click", function () {
+          deleteConfirmInput.value = "";
+          deleteModalFeedback.textContent = "";
+          deleteModalFeedback.classList.remove("is-error");
+          openModal(deleteModalBackdrop);
+          deleteConfirmInput.focus();
+        });
+
+        cancelDeleteButton.addEventListener("click", function () {
+          closeModal(deleteModalBackdrop);
+        });
+
+        confirmDeleteButton.addEventListener("click", function () {
+          var typedMessage = deleteConfirmInput.value.trim();
+          if (typedMessage !== requiredDeleteMessage) {
+            deleteModalFeedback.textContent = "The message does not match. Please type it exactly.";
+            deleteModalFeedback.classList.add("is-error");
+            return;
+          }
+
+          closeModal(deleteModalBackdrop);
+          openModal(deletedModalBackdrop);
+        });
+
+        closeDeletedModalButton.addEventListener("click", function () {
+          closeModal(deletedModalBackdrop);
+        });
+
+        deleteModalBackdrop.addEventListener("click", function (event) {
+          if (event.target === deleteModalBackdrop) closeModal(deleteModalBackdrop);
+        });
+
+        deletedModalBackdrop.addEventListener("click", function (event) {
+          if (event.target === deletedModalBackdrop) closeModal(deletedModalBackdrop);
+        });
+
+        allBadgesButton.addEventListener("click", function () {
+          openModal(allBadgesModalBackdrop);
+        });
+
+        closeAllBadgesModalButton.addEventListener("click", function () {
+          closeModal(allBadgesModalBackdrop);
+        });
+
+        allBadgesModalBackdrop.addEventListener("click", function (event) {
+          if (event.target === allBadgesModalBackdrop) closeModal(allBadgesModalBackdrop);
+        });
+
+        function openBadgeDetailsModal(badge) {
+          badgeDetailName.textContent = badge.getAttribute("data-badge-name") || "Unknown badge";
+          badgeDetailDescription.textContent = badge.getAttribute("data-badge-description") || "No description.";
+          badgeDetailRarity.textContent = badge.getAttribute("data-badge-rarity") || "Unknown rarity";
+          badgeDetailMethod.textContent = badge.getAttribute("data-badge-method") || "No method provided.";
+          badgeDetailDate.textContent = badge.getAttribute("data-badge-date") || "Unknown date";
+          openModal(badgeDetailsModalBackdrop);
+        }
+
+        clickableBadges.forEach(function (badge) {
+          badge.addEventListener("click", function () {
+            openBadgeDetailsModal(badge);
+          });
+
+          badge.addEventListener("keydown", function (event) {
+            if (event.key === "Enter" || event.key === " ") {
+              event.preventDefault();
+              openBadgeDetailsModal(badge);
+            }
+          });
+        });
+
+        closeBadgeDetailsModalButton.addEventListener("click", function () {
+          closeModal(badgeDetailsModalBackdrop);
+        });
+
+        badgeDetailsModalBackdrop.addEventListener("click", function (event) {
+          if (event.target === badgeDetailsModalBackdrop) closeModal(badgeDetailsModalBackdrop);
+        });
+
+        function parseDate(dateString) {
+          return new Date(dateString + "T00:00:00").getTime();
+        }
+
+        function sortBadges(criteria) {
+          var rarityOrder = { legendary: 4, epic: 3, rare: 2, common: 1 };
+          clickableBadges.sort(function (badgeA, badgeB) {
+            var dateA = parseDate(badgeA.getAttribute("data-badge-date") || "1970-01-01");
+            var dateB = parseDate(badgeB.getAttribute("data-badge-date") || "1970-01-01");
+
+            if (criteria === "rarity") {
+              var rarityA = rarityOrder[badgeA.getAttribute("data-badge-rarity")] || 0;
+              var rarityB = rarityOrder[badgeB.getAttribute("data-badge-rarity")] || 0;
+              if (rarityB !== rarityA) return rarityB - rarityA;
+            }
+
+            return dateB - dateA;
+          });
+
+          clickableBadges.forEach(function (badge) {
+            badgeList.appendChild(badge);
+          });
+        }
+
+        function updateMoreBadgesButton() {
+          var expanded = badgeList.classList.contains("show-all");
+          toggleMoreBadgesButton.textContent = expanded ? "Show fewer badges ▴" : "Show more badges ▾";
+        }
+
+        badgeFilterSelect.addEventListener("change", function () {
+          sortBadges(badgeFilterSelect.value);
+        });
+
+        toggleMoreBadgesButton.addEventListener("click", function () {
+          badgeList.classList.toggle("show-all");
+          updateMoreBadgesButton();
+        });
+
+        groupsCard.addEventListener("click", function () {
+          openModal(groupsModalBackdrop);
+        });
+
+        groupsCard.addEventListener("keydown", function (event) {
+          if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            openModal(groupsModalBackdrop);
+          }
+        });
+
+        closeGroupsModalButton.addEventListener("click", function () {
+          closeModal(groupsModalBackdrop);
+        });
+
+        groupsModalBackdrop.addEventListener("click", function (event) {
+          if (event.target === groupsModalBackdrop) closeModal(groupsModalBackdrop);
+        });
+
+        sortBadges("recent");
+        updateMoreBadgesButton();
       })();
     </script>
   </body>

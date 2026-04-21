@@ -132,6 +132,12 @@ body.profile-page {
     box-shadow: 0 0 0 3px rgba(125, 143, 245, 0.22);
 }
 
+input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: brightness(0) invert(1);
+    opacity: 1;
+    cursor: pointer;
+}
+
 .edit-btn {
     width: 42px;
     border: 1px solid var(--profile-border);
@@ -193,6 +199,17 @@ body.profile-page {
     padding: 0.88rem 0.95rem;
 }
 
+.stats-clickable {
+    cursor: pointer;
+    transition: border-color 0.15s ease, transform 0.12s ease;
+}
+
+.stats-clickable:hover,
+.stats-clickable:focus-visible {
+    border-color: rgba(125, 143, 245, 0.5);
+    transform: translateY(-1px);
+}
+
 .stat-icon {
     width: 40px;
     height: 40px;
@@ -225,9 +242,45 @@ body.profile-page {
     letter-spacing: -0.03em;
 }
 
+.badge-header-row {
+    margin-top: 1.35rem;
+    margin-bottom: 0.65rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.65rem;
+}
+
+.badge-header-row .badge-header {
+    margin: 0;
+}
+
+.badge-actions-inline {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
 .badge-count {
     font-size: 1.05rem;
     color: var(--profile-muted);
+}
+
+.all-badges-btn {
+    border: 1px solid rgba(113, 163, 241, 0.42);
+    border-radius: 10px;
+    padding: 0.5rem 0.75rem;
+    background: #253457;
+    color: #ebf3ff;
+    font-size: 0.85rem;
+    font-weight: 700;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.15s ease;
+}
+
+.all-badges-btn:hover {
+    background: #2e4170;
 }
 
 .badge-list {
@@ -235,9 +288,48 @@ body.profile-page {
     gap: 0.7rem;
 }
 
+.badge-list .badge-item:nth-child(n + 4) {
+    display: none;
+}
+
+.badge-list.show-all .badge-item:nth-child(n + 4) {
+    display: block;
+}
+
+.badge-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.badge-filter-label {
+    font-size: 0.84rem;
+    color: var(--profile-muted);
+}
+
+.badge-filter-select {
+    border: 1px solid var(--profile-border);
+    border-radius: 9px;
+    padding: 0.45rem 0.7rem;
+    background: #242a35;
+    color: var(--profile-text);
+    font-size: 0.84rem;
+}
+
 .badge-item {
     text-align: center;
     padding: 1.05rem 0.75rem;
+}
+
+.badge-clickable {
+    cursor: pointer;
+    transition: transform 0.13s ease, border-color 0.15s ease;
+}
+
+.badge-clickable:hover,
+.badge-clickable:focus-visible {
+    transform: translateY(-1px);
+    border-color: rgba(125, 143, 245, 0.6);
 }
 
 .badge-item .emoji {
@@ -256,10 +348,28 @@ body.profile-page {
 }
 
 .more-badges {
-    margin: 0.9rem 0 0.15rem;
+    margin: 0.6rem 0 0.15rem;
     text-align: center;
     color: var(--profile-muted);
-    font-size: 1.52rem;
+    font-size: 0.92rem;
+}
+
+.more-badges-toggle {
+    display: block;
+    margin: 0.92rem auto 0;
+    border: 1px solid rgba(113, 163, 241, 0.35);
+    border-radius: 10px;
+    padding: 0.52rem 0.85rem;
+    background: #27385f;
+    color: #eef4ff;
+    font-size: 0.86rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.15s ease;
+}
+
+.more-badges-toggle:hover {
+    background: #30497d;
 }
 
 .account-card {
@@ -337,6 +447,128 @@ body.profile-page {
     background: #631919;
 }
 
+.modal-backdrop {
+    position: fixed;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    background: rgba(2, 4, 8, 0.72);
+    backdrop-filter: blur(3px);
+    padding: 1rem;
+    z-index: 200;
+}
+
+.modal-backdrop.is-hidden {
+    display: none;
+}
+
+.modal-card {
+    width: min(470px, 100%);
+    border-radius: 14px;
+    border: 1px solid var(--profile-border);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(0, 0, 0, 0.16)), #181c24;
+    box-shadow: 0 20px 48px rgba(0, 0, 0, 0.45);
+    padding: 1rem;
+}
+
+.modal-card h3 {
+    margin: 0;
+    font-size: 1.15rem;
+}
+
+.modal-card p {
+    margin: 0.72rem 0 0.82rem;
+    color: #cfd6e2;
+    line-height: 1.5;
+    font-size: 0.95rem;
+}
+
+.modal-card label {
+    display: block;
+    margin-bottom: 0.45rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.required-message {
+    display: inline-block;
+    margin-top: 0.45rem;
+    font-weight: 700;
+    color: #ffd2d2;
+}
+
+.modal-feedback {
+    min-height: 1.2rem;
+    margin: 0.55rem 0 0;
+    color: #cfd6e2;
+    font-size: 0.84rem;
+}
+
+.modal-feedback.is-error {
+    color: #ff9f9f;
+}
+
+.modal-actions {
+    margin-top: 0.95rem;
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.55rem;
+}
+
+.all-badges-list {
+    margin: 0.15rem 0 0;
+    padding-left: 1.1rem;
+    color: #d7deeb;
+}
+
+.all-badges-list li {
+    margin: 0.3rem 0;
+}
+
+.badge-detail-line {
+    margin: 0.45rem 0;
+}
+
+.modal-btn {
+    border: 1px solid transparent;
+    border-radius: 10px;
+    padding: 0.64rem 0.9rem;
+    font-size: 0.9rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.modal-btn-secondary {
+    border-color: var(--profile-border);
+    background: #252b36;
+    color: #e7ecf7;
+}
+
+.modal-btn-secondary:hover {
+    background: #2f3642;
+}
+
+.modal-btn-danger {
+    border-color: rgba(255, 120, 120, 0.45);
+    background: #7c2323;
+    color: #ffe7e7;
+}
+
+.modal-btn-danger:hover {
+    background: #992b2b;
+}
+
+.modal-btn-primary {
+    border-color: rgba(113, 163, 241, 0.4);
+    background: #334f93;
+    color: #f2f7ff;
+}
+
+.modal-btn-primary:hover {
+    background: #3f63b5;
+}
+
 @media (max-width: 600px) {
     .profile-wrapper {
         width: min(760px, 100% - 1.2rem);
@@ -351,12 +583,29 @@ body.profile-page {
         font-size: 1.35rem;
     }
 
-    .badge-item p,
-    .more-badges {
+    .badge-header-row {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .badge-actions-inline {
+        width: 100%;
+        flex-wrap: wrap;
+    }
+
+    .badge-controls {
+        flex-wrap: wrap;
+    }
+
+    .badge-item p {
         font-size: 1.2rem;
     }
 
     .danger-zone {
         padding: 0.82rem;
+    }
+
+    .modal-card {
+        padding: 0.9rem;
     }
 }
