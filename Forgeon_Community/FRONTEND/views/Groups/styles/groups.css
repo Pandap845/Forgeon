@@ -493,6 +493,45 @@ a.dg-btn {
   border: 0.8px solid var(--dg-border);
   background: var(--dg-surface);
 }
+
+/* Notifications modal (match Home modal look) */
+.forgeon-modal {
+  background: #1a1919;
+  border: 1px solid rgba(229, 229, 229, 0.35);
+  border-radius: 12px;
+  overflow: hidden;
+  color: #ffffff;
+}
+
+.forgeon-card {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+}
+
+.forgeon-modal .card {
+  background: rgba(255, 255, 255, 0.02) !important;
+  border: 1px solid rgba(255, 255, 255, 0.05) !important;
+  border-radius: 10px;
+}
+
+.tv-notif-dot {
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.8);
+  flex: 0 0 auto;
+}
+
+.text-muted-3 {
+  color: rgba(255, 255, 255, 0.3) !important;
+}
+
 4
 body.dg-page--detail {
   padding-bottom: 48px;
