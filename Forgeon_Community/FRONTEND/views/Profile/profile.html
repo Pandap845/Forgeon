@@ -21,24 +21,44 @@
       </header>
 
       <section class="profile-card">
-        <div class="avatar-zone">
-          <button type="button" class="avatar-btn" id="avatarButton" aria-label="Change profile picture">
-            <img
-              id="avatarPreview"
-              src="https://i.pinimg.com/736x/b1/21/18/b1211897266308c27112a58eacad7482.jpg"
-              alt="Profile picture"
-            />
-          </button>
+        <div class="avatar-zone" id="avatarZone" data-user-level="25">
+          <div class="user-level-badge" id="userLevelBadge" aria-label="User level 70">Lvl 70</div>
+          <div
+            class="avatar-shell"
+            id="avatarShell"
+            data-frame-tier="0"
+            title="Profile frames unlock every 10 levels up to Mythic Legend at level 70."
+          >
+            <div class="avatar-frame" id="avatarFrame" aria-hidden="true"></div>
+            <button type="button" class="avatar-btn" id="avatarButton" aria-label="Change profile picture">
+              <img
+                id="avatarPreview"
+                src="https://i.pinimg.com/736x/b1/21/18/b1211897266308c27112a58eacad7482.jpg"
+                alt="Profile picture"
+              />
+            </button>
+          </div>
+          <div class="avatar-frame-row">
+            <p class="avatar-frame-name" id="avatarFrameName" aria-live="polite"></p>
+            <button type="button" class="frame-edit-btn" id="openFramePickerButton">
+              Edit frame
+            </button>
+          </div>
           <p class="avatar-hint">Click to change profile picture</p>
           <input id="avatarInput" type="file" accept="image/*" hidden />
         </div>
 
         <div class="field-block">
           <label for="username">Username</label>
-          <div class="username-row">
-            <input class="text-input" id="username" type="text" value="Miku39" />
-            <button class="edit-btn" type="button" aria-label="Edit username">✎</button>
-          </div>
+          <input
+            class="text-input text-input--readonly"
+            id="username"
+            type="text"
+            value="Miku39"
+            readonly
+            aria-readonly="true"
+            title="Change your username in Account Settings below"
+          />
         </div>
 
         <div class="field-block">
@@ -87,7 +107,7 @@
             data-badge-description="Awarded for publishing your first videogame review post."
             data-badge-method="Posted your first complete game review in the community feed."
             data-badge-date="2025-02-12"
-            data-badge-rarity="Rare"
+            data-badge-rarity="rare"
             tabindex="0"
             role="button"
             aria-label="View details for First Review Drop badge"
@@ -101,7 +121,7 @@
             data-badge-description="Recognizes top-quality posts explaining game lore and storylines."
             data-badge-method="Published 15 lore posts with strong engagement from readers."
             data-badge-date="2025-08-19"
-            data-badge-rarity="Epic"
+            data-badge-rarity="epic"
             tabindex="0"
             role="button"
             aria-label="View details for Lore Master badge"
@@ -115,7 +135,7 @@
             data-badge-description="Special badge for high-impact posts about legendary game moments."
             data-badge-method="Created viral posts around major boss fights and hidden endings."
             data-badge-date="2026-01-07"
-            data-badge-rarity="Legendary"
+            data-badge-rarity="legendary"
             tabindex="0"
             role="button"
             aria-label="View details for Legend Hunter badge"
@@ -129,7 +149,7 @@
             data-badge-description="Given to users who publish clear and useful game update summaries."
             data-badge-method="Published weekly patch notes breakdowns for 2 months."
             data-badge-date="2026-02-15"
-            data-badge-rarity="Epic"
+            data-badge-rarity="epic"
             tabindex="0"
             role="button"
             aria-label="View details for Patch Notes Pro badge"
@@ -143,7 +163,7 @@
             data-badge-description="Awarded for posts covering speedrun records and route strategies."
             data-badge-method="Published 10 speedrun highlight posts with top reactions."
             data-badge-date="2025-11-03"
-            data-badge-rarity="Rare"
+            data-badge-rarity="rare"
             tabindex="0"
             role="button"
             aria-label="View details for Speedrun Reporter badge"
@@ -157,7 +177,7 @@
             data-badge-description="Starter badge for publishing your first indie game recommendation."
             data-badge-method="Posted a featured indie game thread with screenshots and opinions."
             data-badge-date="2025-01-10"
-            data-badge-rarity="Common"
+            data-badge-rarity="common"
             tabindex="0"
             role="button"
             aria-label="View details for Indie Spotlight badge"
@@ -167,6 +187,7 @@
           </article>
         </div>
         <button type="button" class="more-badges-toggle" id="toggleMoreBadgesButton">Show more badges ▾</button>
+        <p class="more-badges">Showing 3 badges by default. Expand to view the rest.</p>
       </section>
 
       <section class="profile-card account-card">
@@ -293,6 +314,25 @@
       </div>
     </div>
 
+    <div class="modal-backdrop is-hidden" id="framePickerModalBackdrop" aria-hidden="true">
+      <div
+        class="modal-card modal-card--frame-picker"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="framePickerModalTitle"
+      >
+        <h3 id="framePickerModalTitle">Profile frames</h3>
+        <p class="frame-picker-intro">
+          Pick any frame unlocked for your level (every 10 levels through 60, then Mythic Legend at 70).
+          Locked cards show the level you still need.
+        </p>
+        <div class="frame-picker-grid" id="framePickerGrid" aria-label="Profile frames"></div>
+        <div class="modal-actions">
+          <button type="button" class="modal-btn modal-btn-primary" id="closeFramePickerButton">Done</button>
+        </div>
+      </div>
+    </div>
+
     <div class="modal-backdrop is-hidden" id="groupsModalBackdrop" aria-hidden="true">
       <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="groupsModalTitle">
         <h3 id="groupsModalTitle">Groups joined</h3>
@@ -344,6 +384,176 @@
         var groupsCard = document.getElementById("groupsCard");
         var groupsModalBackdrop = document.getElementById("groupsModalBackdrop");
         var closeGroupsModalButton = document.getElementById("closeGroupsModalButton");
+        var avatarZone = document.getElementById("avatarZone");
+        var avatarShell = document.getElementById("avatarShell");
+        var avatarFrame = document.getElementById("avatarFrame");
+        var avatarFrameName = document.getElementById("avatarFrameName");
+        var userLevelBadge = document.getElementById("userLevelBadge");
+        var openFramePickerButton = document.getElementById("openFramePickerButton");
+        var framePickerModalBackdrop = document.getElementById("framePickerModalBackdrop");
+        var framePickerGrid = document.getElementById("framePickerGrid");
+        var closeFramePickerButton = document.getElementById("closeFramePickerButton");
+        var FRAME_STORAGE_KEY = "forgeon_avatar_frame_key";
+
+        var FRAME_TIERS = [
+          { tier: 0, minLevel: 0, key: "starter", name: "Rookie ring", shellTitle: "Default frame. Reach level 10 for your first unlock." },
+          { tier: 1, minLevel: 10, key: "pixel", name: "8-Bit Spawn", shellTitle: "Unlocked at level 10 — retro pixel hero frame." },
+          { tier: 2, minLevel: 20, key: "neon", name: "Neon Drift", shellTitle: "Unlocked at level 20 — smooth neon arcade ring." },
+          { tier: 3, minLevel: 30, key: "boss", name: "Boss Slayer", shellTitle: "Unlocked at level 30 — raid boss gold & crimson crest." },
+          { tier: 4, minLevel: 40, key: "cyber", name: "Cyber Raid", shellTitle: "Unlocked at level 40 — glitch-tech HUD frame." },
+          { tier: 5, minLevel: 50, key: "void", name: "Void Veil", shellTitle: "Unlocked at level 50 — void energy and violet rift ring." },
+          { tier: 6, minLevel: 60, key: "titan", name: "Titan Forge", shellTitle: "Unlocked at level 60 — molten steel and forge ember ring." },
+          {
+            tier: 7,
+            minLevel: 70,
+            key: "mythic",
+            name: "Mythic Legend",
+            shellTitle: "Unlocked at level 70 — regal gold gear crown (max tier).",
+          },
+        ];
+
+        function getFrameTierForLevel(level) {
+          var best = FRAME_TIERS[0];
+          for (var i = 0; i < FRAME_TIERS.length; i++) {
+            if (level >= FRAME_TIERS[i].minLevel) best = FRAME_TIERS[i];
+          }
+          return best;
+        }
+
+        function getFrameByKey(key) {
+          for (var i = 0; i < FRAME_TIERS.length; i++) {
+            if (FRAME_TIERS[i].key === key) return FRAME_TIERS[i];
+          }
+          return null;
+        }
+
+        function readStoredFrameKey() {
+          try {
+            return localStorage.getItem(FRAME_STORAGE_KEY);
+          } catch (err) {
+            return null;
+          }
+        }
+
+        function writeStoredFrameKey(key) {
+          try {
+            if (key) localStorage.setItem(FRAME_STORAGE_KEY, key);
+            else localStorage.removeItem(FRAME_STORAGE_KEY);
+          } catch (err) {}
+        }
+
+        function getResolvedEquippedFrame(level) {
+          var stored = readStoredFrameKey();
+          if (!stored) return getFrameTierForLevel(level);
+          var picked = getFrameByKey(stored);
+          if (!picked || level < picked.minLevel) {
+            writeStoredFrameKey(null);
+            return getFrameTierForLevel(level);
+          }
+          return picked;
+        }
+
+        function getProfileLevel() {
+          var raw = avatarZone && avatarZone.getAttribute("data-user-level");
+          var level = parseInt(raw, 10);
+          if (isNaN(level) || level < 1) level = 1;
+          return level;
+        }
+
+        function syncProfileLevelUI() {
+          var level = getProfileLevel();
+          var info = getResolvedEquippedFrame(level);
+          if (userLevelBadge) {
+            userLevelBadge.textContent = "Lvl " + level;
+            userLevelBadge.setAttribute("aria-label", "User level " + level);
+          }
+          if (avatarShell) {
+            avatarShell.setAttribute("data-frame-tier", String(info.tier));
+            avatarShell.setAttribute("title", info.shellTitle);
+          }
+          if (avatarFrame) {
+            avatarFrame.className = "avatar-frame avatar-frame--" + info.key;
+          }
+          if (avatarFrameName) {
+            avatarFrameName.textContent = "Equipped: " + info.name;
+          }
+        }
+
+        function buildFramePickerGrid() {
+          if (!framePickerGrid) return;
+          var level = getProfileLevel();
+          var equipped = getResolvedEquippedFrame(level).key;
+          framePickerGrid.innerHTML = "";
+
+          FRAME_TIERS.forEach(function (f) {
+            var unlocked = level >= f.minLevel;
+            var card = document.createElement("button");
+            card.type = "button";
+            card.className = "frame-picker-card" + (f.key === equipped ? " frame-picker-card--active" : "");
+            card.disabled = !unlocked;
+            card.setAttribute(
+              "aria-label",
+              unlocked
+                ? (f.key === equipped ? f.name + " (equipped)" : "Equip " + f.name)
+                : f.name + ", locked until level " + f.minLevel
+            );
+
+            var wrap = document.createElement("div");
+            wrap.className = "frame-picker-preview-wrap";
+
+            var shell = document.createElement("div");
+            shell.className = "avatar-shell frame-picker-mini-shell";
+            shell.setAttribute("aria-hidden", "true");
+
+            var frameEl = document.createElement("div");
+            frameEl.className = "avatar-frame avatar-frame--" + f.key;
+
+            var standin = document.createElement("div");
+            standin.className = "frame-picker-standin";
+
+            shell.appendChild(frameEl);
+            shell.appendChild(standin);
+            wrap.appendChild(shell);
+
+            if (!unlocked) {
+              var lock = document.createElement("div");
+              lock.className = "frame-picker-lock-overlay";
+              lock.setAttribute("aria-hidden", "true");
+              lock.innerHTML =
+                '<span class="frame-picker-lock-icon" aria-hidden="true">' +
+                '<svg class="frame-picker-lock-svg" viewBox="0 0 24 24" fill="none" focusable="false" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
+                '<rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>' +
+                '<path d="M7 11V7a5 5 0 0 1 10 0v4"/>' +
+                "</svg></span>" +
+                '<span class="frame-picker-lock-meta">Lvl ' +
+                f.minLevel +
+                "</span>";
+              wrap.appendChild(lock);
+            }
+
+            var label = document.createElement("span");
+            label.className = "frame-picker-card-title";
+            label.textContent = f.name;
+
+            var meta = document.createElement("span");
+            meta.className = "frame-picker-card-meta";
+            meta.textContent = f.minLevel === 0 ? "Always" : "Unlocks Lv " + f.minLevel;
+
+            card.appendChild(wrap);
+            card.appendChild(label);
+            card.appendChild(meta);
+
+            if (unlocked) {
+              card.addEventListener("click", function () {
+                writeStoredFrameKey(f.key);
+                syncProfileLevelUI();
+                closeModal(framePickerModalBackdrop);
+              });
+            }
+
+            framePickerGrid.appendChild(card);
+          });
+        }
 
         function openModal(modal) {
           modal.classList.remove("is-hidden");
@@ -448,7 +658,7 @@
         }
 
         function sortBadges(criteria) {
-          var rarityOrder = { Legendary: 4, Epic: 3, Rare: 2, Common: 1 };
+          var rarityOrder = { legendary: 4, epic: 3, rare: 2, common: 1 };
           clickableBadges.sort(function (badgeA, badgeB) {
             var dateA = parseDate(badgeA.getAttribute("data-badge-date") || "1970-01-01");
             var dateB = parseDate(badgeB.getAttribute("data-badge-date") || "1970-01-01");
@@ -500,8 +710,28 @@
           if (event.target === groupsModalBackdrop) closeModal(groupsModalBackdrop);
         });
 
+        if (openFramePickerButton) {
+          openFramePickerButton.addEventListener("click", function () {
+            buildFramePickerGrid();
+            openModal(framePickerModalBackdrop);
+          });
+        }
+
+        if (closeFramePickerButton) {
+          closeFramePickerButton.addEventListener("click", function () {
+            closeModal(framePickerModalBackdrop);
+          });
+        }
+
+        if (framePickerModalBackdrop) {
+          framePickerModalBackdrop.addEventListener("click", function (event) {
+            if (event.target === framePickerModalBackdrop) closeModal(framePickerModalBackdrop);
+          });
+        }
+
         sortBadges("recent");
         updateMoreBadgesButton();
+        syncProfileLevelUI();
       })();
     </script>
   </body>
