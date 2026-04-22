@@ -165,58 +165,6 @@
             </div>
           </div>
 
-          <div class="gs-field gs-field--compact">
-            <label class="gs-label" for="slug">URL Slug <span class="gs-req">*</span></label>
-            <div class="gs-slug-row">
-              <span class="gs-slug-prefix" aria-hidden="true">yourapp.com/group/</span>
-              <input
-                id="slug"
-                name="slug"
-                class="gs-input gs-input--slug"
-                type="text"
-                required
-                value="react-developers-community"
-                pattern="[a-z0-9]+(?:-[a-z0-9]+)*"
-                autocomplete="off"
-              />
-            </div>
-            <p class="gs-hint">Must be unique and URL-safe (lowercase, alphanumeric, hyphens only)</p>
-          </div>
-        </section>
-
-        <section class="gs-card dg-surface-card" aria-labelledby="privacy-heading">
-          <h2 id="privacy-heading" class="gs-section-title">Privacy &amp; Access</h2>
-
-          <div class="gs-panel-row">
-            <div class="gs-panel-row__main">
-              <img src="https://www.figma.com/api/mcp/asset/9ae342bc-eb0b-4611-92c4-157139467323" alt="" width="20" height="20" />
-              <div class="gs-panel-row__text">
-                <span class="gs-panel-row__title">Group Visibility</span>
-                <span class="gs-panel-row__desc">Anyone can find and view this group</span>
-              </div>
-            </div>
-            <div class="gs-select-wrap gs-select-wrap--narrow">
-              <select id="visibility" name="visibility" class="gs-select">
-                <option value="public" selected>Public</option>
-                <option value="private">Private</option>
-                <option value="hidden">Hidden</option>
-              </select>
-              <span class="gs-select-chevron" aria-hidden="true">
-                <img src="https://www.figma.com/api/mcp/asset/474947ff-f470-4bf2-8c61-be02526b5f31" alt="" width="16" height="16" />
-              </span>
-            </div>
-          </div>
-
-          <div class="gs-panel-row gs-panel-row--toggle">
-            <div class="gs-panel-row__text">
-              <span class="gs-panel-row__title">Require Join Approval</span>
-              <span class="gs-panel-row__desc">Members must be approved before joining</span>
-            </div>
-            <label class="gs-switch">
-              <input id="joinApproval" name="join_approval" type="checkbox" class="gs-switch__input" />
-              <span class="gs-switch__track" aria-hidden="true"></span>
-            </label>
-          </div>
         </section>
 
         <section class="gs-card gs-card--danger dg-surface-card" aria-labelledby="danger-heading">
