@@ -1,5 +1,6 @@
 :root {
   --forgeon-surface: #12121a;
+  --forgeon-text: #ffffff;
   --forgeon-muted-2: rgba(255, 255, 255, 0.4);
   --split-logo-box: #6b1a1a;
 }
@@ -26,4 +27,32 @@
 
 .text-muted-2 {
   color: var(--forgeon-muted-2) !important;
+}
+
+.forgeon-navbar .navbar-brand,
+.forgeon-navbar .navbar-brand:hover,
+.forgeon-navbar .navbar-brand:focus,
+.forgeon-navbar .fw-medium {
+  color: var(--forgeon-text) !important;
+}
+
+.forgeon-navbar .nav-link {
+  color: var(--forgeon-muted-2) !important;
+}
+
+.forgeon-navbar .nav-link:hover,
+.forgeon-navbar .nav-link:focus {
+  color: var(--forgeon-text) !important;
+}
+
+.forgeon-navbar .btn.btn-link {
+  background: transparent !important;
+  border-color: transparent !important;
+  color: var(--forgeon-muted-2) !important;
+  box-shadow: none !important;
+}
+
+.forgeon-navbar .btn.btn-link:hover,
+.forgeon-navbar .btn.btn-link:focus {
+  color: var(--forgeon-text) !important;
 }
