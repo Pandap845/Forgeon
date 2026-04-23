@@ -1802,9 +1802,6 @@ a.gm-btn-create {
   color: var(--dg-muted);
 }
 
-/* -------------------------------------------------------------------------- */
-/* Group Settings / Create — Figma node 89:44                                   */
-/* -------------------------------------------------------------------------- */
 
 body.dg-page--group-settings .dg-main.gs-main {
   max-width: 896px;
@@ -2348,9 +2345,6 @@ body.dg-page--group-settings .dg-main.gs-main {
   }
 }
 
-/* -------------------------------------------------------------------------- */
-/* Group Invitations — Figma node 90:297                                      */
-/* -------------------------------------------------------------------------- */
 
 body.dg-page--group-invitations .dg-main.gi-main {
   max-width: 896px;
@@ -2696,9 +2690,6 @@ body.dg-page--group-invitations .dg-main.gi-main {
   }
 }
 
-/* -------------------------------------------------------------------------- */
-/* Group Creation — Figma node 97:35                                          */
-/* -------------------------------------------------------------------------- */
 
 body.dg-page--group-creation .dg-main.gc-main {
   max-width: 896px;
@@ -2935,10 +2926,6 @@ body.dg-page--group-creation .dg-main.gc-main {
     min-height: 300px;
   }
 }
-
-/* -------------------------------------------------------------------------- */
-/* User Groups - Figma node 131:39                                             */
-/* -------------------------------------------------------------------------- */
 
 body.dg-page--user-groups .ug-main {
   display: flex;
