@@ -17,14 +17,15 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="./styles/groups.css" />
-    <link rel="stylesheet" href="./styles/header.css" />
+    <link rel="stylesheet" href="../../assets/styles/groups.css" />
+    <link rel="stylesheet" href="../../assets/styles/avatar-frames.css" />
+    <link rel="stylesheet" href="../../assets/styles/header.css" />
   </head>
   <body class="dg-page dg-page--detail">
     <header class="forgeon-navbar">
       <nav class="navbar navbar-expand-lg py-3">
         <div class="container-fluid px-4">
-          <a class="navbar-brand d-flex align-items-center gap-3" href="#">
+          <a class="navbar-brand d-flex align-items-center gap-3" href="../Home/homepage.html" title="Home">
             <span class="forgeon-brand-badge d-inline-flex align-items-center justify-content-center">
               <img src="https://cdn-icons-png.flaticon.com/512/686/686589.png" alt="logo" class="logo-img" />
             </span>
@@ -69,8 +70,24 @@
               >
                 <i class="bi bi-bell fs-5"></i>
               </button>
-              <a class="btn btn-link text-muted-2 px-2" href="../Profile/profile.html" aria-label="Profile">
-                <i class="bi bi-person-circle fs-5"></i>
+              <a class="btn btn-link text-muted-2 px-2" href="../Groups/friend_requests.html" aria-label="Friend Requests">
+                <i class="bi bi-people fs-5"></i>
+              </a>
+              <a class="btn btn-link text-muted-2 px-2 nav-logout-btn" href="../Login_Register/login.html" aria-label="Log out" title="Log out">
+                <i class="bi bi-box-arrow-right fs-5"></i>
+              </a>
+              <a
+                class="btn btn-link text-muted-2 px-2 d-inline-flex align-items-center justify-content-center nav-profile-avatar"
+                href="../Profile/profile.html"
+                aria-label="Profile"
+              >
+                <img
+                  class="nav-profile-img"
+                  src="https://i.pinimg.com/736x/b1/21/18/b1211897266308c27112a58eacad7482.jpg"
+                  alt=""
+                  width="36"
+                  height="36"
+                />
               </a>
             </div>
           </div>
@@ -80,6 +97,7 @@
     <header class="gd-hero" aria-hidden="false">
       <img
         class="gd-hero__img"
+        id="groupHeroImg"
         src="https://www.figma.com/api/mcp/asset/4fcad457-04f0-4be1-99e8-8b20fe5dc9dc"
         alt=""
         width="1200"
@@ -93,6 +111,7 @@
         <div class="gd-avatar-wrap">
           <img
             class="gd-avatar"
+            id="groupAvatarImg"
             src="https://www.figma.com/api/mcp/asset/146bf17e-d8c8-4940-922c-e62a3a383410"
             alt="React Developers Community avatar"
             width="120"
@@ -100,24 +119,24 @@
           />
         </div>
         <div class="gd-identity__text">
-          <span class="dg-badge dg-badge--category">Technology</span>
+          <span class="dg-badge dg-badge--category" id="groupCategoryBadge">Technology</span>
           <h1 id="groupTitle" class="gd-group-name">React Developers Community</h1>
           <div class="gd-meta-row">
             <span class="gd-meta">
               <img src="https://www.figma.com/api/mcp/asset/24756138-4976-4a3e-974d-3702838401e7" alt="" width="16" height="16" />
-              12.8k members
+              <span id="groupMembersCount">12.8k members</span>
             </span>
             <span class="gd-meta-sep" aria-hidden="true">•</span>
-            <span class="gd-meta">Created by Sarah Chen</span>
+            <span class="gd-meta" id="groupCreatorLine">Created by Sarah Chen</span>
           </div>
         </div>
         <div class="gd-identity__actions">
-          <a href="./group_management.html" class="dg-btn dg-btn--primary gd-btn-join">Join Group</a>
+          <a href="./group_management.html" id="groupJoinLink" class="dg-btn dg-btn--primary gd-btn-join">Join Group</a>
         </div>
       </section>
 
       <section class="gd-about dg-surface-card" aria-label="About this group">
-        <p class="gd-about__text">
+        <p class="gd-about__text" id="groupAboutText">
           A vibrant community of React developers sharing knowledge, best practices, and helping each other build amazing applications with React and its ecosystem. Whether you're a beginner learning the basics or an expert pushing the boundaries of what's possible, you'll find a welcoming community here ready to support your journey.
         </p>
       </section>
@@ -159,13 +178,16 @@
           <ul class="gd-thread-list">
             <li>
               <article class="gd-thread dg-surface-card">
-                <img
+                <div class="avatar-shell avatar-shell--gd-thread avatar-shell--border flex-shrink-0" data-forgeon-avatar data-user-level="42">
+                  <div class="avatar-frame" aria-hidden="true"></div>
+                  <img
                   class="gd-thread__avatar"
                   src="https://www.figma.com/api/mcp/asset/4f20a796-a989-446c-9fb0-5dd0fda4d1c7"
                   alt=""
                   width="45"
                   height="45"
                 />
+                </div>
                 <div class="gd-thread__body">
                   <div class="gd-thread__head">
                     <h2 class="gd-thread__title">
@@ -200,13 +222,16 @@
             </li>
             <li>
               <article class="gd-thread dg-surface-card">
-                <img
+                <div class="avatar-shell avatar-shell--gd-thread avatar-shell--border flex-shrink-0" data-forgeon-avatar data-user-level="35">
+                  <div class="avatar-frame" aria-hidden="true"></div>
+                  <img
                   class="gd-thread__avatar"
                   src="https://www.figma.com/api/mcp/asset/8ca8c085-6cbf-4bf8-b53b-fd694c442811"
                   alt=""
                   width="45"
                   height="45"
                 />
+                </div>
                 <div class="gd-thread__body">
                   <div class="gd-thread__head">
                     <h2 class="gd-thread__title">
@@ -241,13 +266,16 @@
             </li>
             <li>
               <article class="gd-thread dg-surface-card">
-                <img
+                <div class="avatar-shell avatar-shell--gd-thread avatar-shell--border flex-shrink-0" data-forgeon-avatar data-user-level="51">
+                  <div class="avatar-frame" aria-hidden="true"></div>
+                  <img
                   class="gd-thread__avatar"
                   src="https://www.figma.com/api/mcp/asset/c14a7631-f7de-456f-9add-de58d175cb1b"
                   alt=""
                   width="45"
                   height="45"
                 />
+                </div>
                 <div class="gd-thread__body">
                   <div class="gd-thread__head">
                     <h2 class="gd-thread__title">
@@ -281,13 +309,16 @@
             </li>
             <li>
               <article class="gd-thread dg-surface-card">
-                <img
+                <div class="avatar-shell avatar-shell--gd-thread avatar-shell--border flex-shrink-0" data-forgeon-avatar data-user-level="28">
+                  <div class="avatar-frame" aria-hidden="true"></div>
+                  <img
                   class="gd-thread__avatar"
                   src="https://www.figma.com/api/mcp/asset/fa081830-5c63-414f-9eb4-63c43c44865d"
                   alt=""
                   width="45"
                   height="45"
                 />
+                </div>
                 <div class="gd-thread__body">
                   <div class="gd-thread__head">
                     <h2 class="gd-thread__title">
@@ -321,13 +352,16 @@
             </li>
             <li>
               <article class="gd-thread dg-surface-card">
-                <img
+                <div class="avatar-shell avatar-shell--gd-thread avatar-shell--border flex-shrink-0" data-forgeon-avatar data-user-level="63">
+                  <div class="avatar-frame" aria-hidden="true"></div>
+                  <img
                   class="gd-thread__avatar"
                   src="https://www.figma.com/api/mcp/asset/0ae29f26-3022-4038-b2c3-13f9321067d8"
                   alt=""
                   width="45"
                   height="45"
                 />
+                </div>
                 <div class="gd-thread__body">
                   <div class="gd-thread__head">
                     <h2 class="gd-thread__title">
@@ -361,13 +395,16 @@
             </li>
             <li>
               <article class="gd-thread dg-surface-card">
-                <img
+                <div class="avatar-shell avatar-shell--gd-thread avatar-shell--border flex-shrink-0" data-forgeon-avatar data-user-level="19">
+                  <div class="avatar-frame" aria-hidden="true"></div>
+                  <img
                   class="gd-thread__avatar"
                   src="https://www.figma.com/api/mcp/asset/defc3428-5396-4324-afef-2c5abb4186aa"
                   alt=""
                   width="45"
                   height="45"
                 />
+                </div>
                 <div class="gd-thread__body">
                   <div class="gd-thread__head">
                     <h2 class="gd-thread__title">
@@ -401,13 +438,16 @@
             </li>
             <li>
               <article class="gd-thread dg-surface-card">
-                <img
+                <div class="avatar-shell avatar-shell--gd-thread avatar-shell--border flex-shrink-0" data-forgeon-avatar data-user-level="45">
+                  <div class="avatar-frame" aria-hidden="true"></div>
+                  <img
                   class="gd-thread__avatar"
                   src="https://www.figma.com/api/mcp/asset/08d7e0a1-2450-4634-8232-e607130e9609"
                   alt=""
                   width="45"
                   height="45"
                 />
+                </div>
                 <div class="gd-thread__body">
                   <div class="gd-thread__head">
                     <h2 class="gd-thread__title">
@@ -448,7 +488,8 @@
               <article class="profile-card gd-profile-card">
                 <div class="gd-profile-card__avatar-zone">
                   <span class="gd-profile-card__level">Lvl 42</span>
-                  <div class="gd-profile-card__avatar-shell">
+                  <div class="avatar-shell avatar-shell--gd-profile avatar-shell--border" data-forgeon-avatar data-user-level="42">
+                    <div class="avatar-frame" aria-hidden="true"></div>
                     <img
                       class="gd-profile-card__avatar"
                       src="https://www.figma.com/api/mcp/asset/4f20a796-a989-446c-9fb0-5dd0fda4d1c7"
@@ -470,7 +511,8 @@
               <article class="profile-card gd-profile-card">
                 <div class="gd-profile-card__avatar-zone">
                   <span class="gd-profile-card__level">Lvl 35</span>
-                  <div class="gd-profile-card__avatar-shell">
+                  <div class="avatar-shell avatar-shell--gd-profile avatar-shell--border" data-forgeon-avatar data-user-level="35">
+                    <div class="avatar-frame" aria-hidden="true"></div>
                     <img
                       class="gd-profile-card__avatar"
                       src="https://www.figma.com/api/mcp/asset/8ca8c085-6cbf-4bf8-b53b-fd694c442811"
@@ -492,7 +534,8 @@
               <article class="profile-card gd-profile-card">
                 <div class="gd-profile-card__avatar-zone">
                   <span class="gd-profile-card__level">Lvl 51</span>
-                  <div class="gd-profile-card__avatar-shell">
+                  <div class="avatar-shell avatar-shell--gd-profile avatar-shell--border" data-forgeon-avatar data-user-level="51">
+                    <div class="avatar-frame" aria-hidden="true"></div>
                     <img
                       class="gd-profile-card__avatar"
                       src="https://www.figma.com/api/mcp/asset/c14a7631-f7de-456f-9add-de58d175cb1b"
@@ -514,7 +557,8 @@
               <article class="profile-card gd-profile-card">
                 <div class="gd-profile-card__avatar-zone">
                   <span class="gd-profile-card__level">Lvl 63</span>
-                  <div class="gd-profile-card__avatar-shell">
+                  <div class="avatar-shell avatar-shell--gd-profile avatar-shell--border" data-forgeon-avatar data-user-level="63">
+                    <div class="avatar-frame" aria-hidden="true"></div>
                     <img
                       class="gd-profile-card__avatar"
                       src="https://www.figma.com/api/mcp/asset/0ae29f26-3022-4038-b2c3-13f9321067d8"
@@ -575,6 +619,9 @@
       integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
       crossorigin="anonymous"
     ></script>
-    <script src="./scripts/group_detail.js"></script>
+    <script src="../../assets/scripts/group-detail-data.js"></script>
+    <script src="../../assets/scripts/avatar-frames.js"></script>
+    <script src="../../assets/scripts/group_detail.js"></script>
+    <script src="../../assets/scripts/nav-logout.js"></script>
   </body>
 </html>

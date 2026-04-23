@@ -29,6 +29,7 @@
     var trigger = event.target.closest(".dg-btn");
     if (!trigger) return;
     if (trigger.classList.contains("dg-btn--ghost")) {
+      if (trigger.tagName === "A" && trigger.getAttribute("href")) return;
       window.location.href = "./group_detail.html";
       return;
     }

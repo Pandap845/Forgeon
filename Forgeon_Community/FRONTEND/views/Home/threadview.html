@@ -20,7 +20,8 @@
       href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
     />
 
-    <link rel="stylesheet" href="./styles/threadview.css" />
+    <link rel="stylesheet" href="../../assets/styles/threadview.css" />
+    <link rel="stylesheet" href="../../assets/styles/avatar-frames.css" />
   </head>
 
   <body>
@@ -30,6 +31,7 @@
           <a
             class="navbar-brand d-flex align-items-center gap-3"
             href="./homepage.html"
+            title="Home"
           >
             <span
               class="forgeon-brand-badge d-inline-flex align-items-center justify-content-center"
@@ -78,13 +80,27 @@
                 data-bs-target="#notificationsModal">
                 <i class="bi bi-bell fs-5"></i>
               </button>
-              <button
-                class="btn btn-link text-muted-2 px-2"
-                type="button"
+
+              <a class="btn btn-link text-muted-2 px-2" href="../Groups/friend_requests.html" aria-label="Friend Requests">
+                <i class="bi bi-people fs-5"></i>
+              </a>
+              <a class="btn btn-link text-muted-2 px-2 nav-logout-btn" href="../Login_Register/login.html" aria-label="Log out" title="Log out">
+                <i class="bi bi-box-arrow-right fs-5"></i>
+              </a>
+
+              <a
+                class="btn btn-link text-muted-2 px-2 d-inline-flex align-items-center justify-content-center nav-profile-avatar"
+                href="../Profile/profile.html"
                 aria-label="Profile"
               >
-                <i class="bi bi-person-circle fs-5"></i>
-              </button>
+                <img
+                  class="nav-profile-img"
+                  src="https://i.pinimg.com/736x/b1/21/18/b1211897266308c27112a58eacad7482.jpg"
+                  alt=""
+                  width="36"
+                  height="36"
+                />
+              </a>
             </div>
           </div>
         </div>
@@ -130,11 +146,14 @@
                   <div
                     class="d-flex align-items-center gap-3 flex-wrap tv-author mb-3"
                   >
-                    <img
+                    <div class="avatar-shell avatar-shell--tv-lg avatar-shell--border flex-shrink-0" data-forgeon-avatar data-user-level="42">
+                      <div class="avatar-frame" aria-hidden="true"></div>
+                      <img
                       class="forgeon-avatar tv-avatar-lg"
                       alt="Sarah Chen avatar"
                       src="https://c4.wallpaperflare.com/wallpaper/330/21/172/nintendo-nintendo-switch-video-games-minimalism-hd-wallpaper-preview.jpg"
                     />
+                    </div>
                     <div class="d-flex flex-column">
                       <div class="d-flex align-items-center gap-2">
                         <span class="fw-medium">Sarah Chen</span>
@@ -211,11 +230,14 @@
               <div class="d-flex flex-column gap-4">
                 <article class="tv-comment">
                   <div class="d-flex gap-3">
-                    <img
+                    <div class="avatar-shell avatar-shell--tv avatar-shell--border flex-shrink-0" data-forgeon-avatar data-user-level="35">
+                      <div class="avatar-frame" aria-hidden="true"></div>
+                      <img
                       class="forgeon-avatar"
                       alt="Mike Johnson avatar"
                       src="https://c4.wallpaperflare.com/wallpaper/330/21/172/nintendo-nintendo-switch-video-games-minimalism-hd-wallpaper-preview.jpg"
                     />
+                    </div>
                     <div class="flex-grow-1">
                       <div
                         class="d-flex align-items-center justify-content-between gap-3"
@@ -251,11 +273,14 @@
 
                 <article class="tv-comment">
                   <div class="d-flex gap-3">
-                    <img
+                    <div class="avatar-shell avatar-shell--tv avatar-shell--border flex-shrink-0" data-forgeon-avatar data-user-level="51">
+                      <div class="avatar-frame" aria-hidden="true"></div>
+                      <img
                       class="forgeon-avatar"
                       alt="Emily Rodriguez avatar"
                       src="https://c4.wallpaperflare.com/wallpaper/330/21/172/nintendo-nintendo-switch-video-games-minimalism-hd-wallpaper-preview.jpg"
                     />
+                    </div>
                     <div class="flex-grow-1">
                       <div
                         class="d-flex align-items-center justify-content-between gap-3"
@@ -292,11 +317,14 @@
 
                 <article class="tv-comment">
                   <div class="d-flex gap-3">
-                    <img
+                    <div class="avatar-shell avatar-shell--tv avatar-shell--border flex-shrink-0" data-forgeon-avatar data-user-level="28">
+                      <div class="avatar-frame" aria-hidden="true"></div>
+                      <img
                       class="forgeon-avatar"
                       alt="Alex Kumar avatar"
                       src="https://c4.wallpaperflare.com/wallpaper/330/21/172/nintendo-nintendo-switch-video-games-minimalism-hd-wallpaper-preview.jpg"
                     />
+                    </div>
                     <div class="flex-grow-1">
                       <div
                         class="d-flex align-items-center justify-content-between gap-3"
@@ -333,11 +361,14 @@
 
                 <article class="tv-comment">
                   <div class="d-flex gap-3">
-                    <img
+                    <div class="avatar-shell avatar-shell--tv avatar-shell--border flex-shrink-0" data-forgeon-avatar data-user-level="63">
+                      <div class="avatar-frame" aria-hidden="true"></div>
+                      <img
                       class="forgeon-avatar"
                       alt="Lisa Anderson avatar"
                       src="https://c4.wallpaperflare.com/wallpaper/330/21/172/nintendo-nintendo-switch-video-games-minimalism-hd-wallpaper-preview.jpg"
                     />
+                    </div>
                     <div class="flex-grow-1">
                       <div
                         class="d-flex align-items-center justify-content-between gap-3"
@@ -374,11 +405,14 @@
 
                 <article class="tv-comment">
                   <div class="d-flex gap-3">
-                    <img
+                    <div class="avatar-shell avatar-shell--tv avatar-shell--border flex-shrink-0" data-forgeon-avatar data-user-level="19">
+                      <div class="avatar-frame" aria-hidden="true"></div>
+                      <img
                       class="forgeon-avatar"
                       alt="David Park avatar"
                       src="https://c4.wallpaperflare.com/wallpaper/330/21/172/nintendo-nintendo-switch-video-games-minimalism-hd-wallpaper-preview.jpg"
                     />
+                    </div>
                     <div class="flex-grow-1">
                       <div
                         class="d-flex align-items-center justify-content-between gap-3"
@@ -416,11 +450,14 @@
               <div class="tv-comment-divider my-4"></div>
 
               <div class="d-flex gap-3 align-items-end">
-                <img
+                <div class="avatar-shell avatar-shell--tv avatar-shell--border flex-shrink-0" data-forgeon-avatar data-user-level="25">
+                  <div class="avatar-frame" aria-hidden="true"></div>
+                  <img
                   class="forgeon-avatar"
                   alt="You avatar"
                   src="https://c4.wallpaperflare.com/wallpaper/330/21/172/nintendo-nintendo-switch-video-games-minimalism-hd-wallpaper-preview.jpg"
                 />
+                </div>
                 <div class="flex-grow-1">
                   <div class="tv-comment-input input-group">
                     <span
@@ -608,5 +645,7 @@
       integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
       crossorigin="anonymous"
     ></script>
+    <script src="../../assets/scripts/avatar-frames.js"></script>
+    <script src="../../assets/scripts/nav-logout.js"></script>
   </body>
 </html>

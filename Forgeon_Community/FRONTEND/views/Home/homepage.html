@@ -11,7 +11,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous" />
 
-    <link rel="stylesheet" href="./styles/homepage.css" />
+    <link rel="stylesheet" href="../../assets/styles/homepage.css" />
+    <link rel="stylesheet" href="../../assets/styles/avatar-frames.css" />
 
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
@@ -21,7 +22,7 @@
     <header class="forgeon-navbar">
         <nav class="navbar navbar-expand-lg py-3">
             <div class="container-fluid px-4">
-                <a class="navbar-brand d-flex align-items-center gap-3" href="#">
+                <a class="navbar-brand d-flex align-items-center gap-3" href="./homepage.html" title="Home">
                     <span class="forgeon-brand-badge d-inline-flex align-items-center justify-content-center">
                         <img src="https://cdn-icons-png.flaticon.com/512/686/686589.png" alt="logo" class="logo-img" />
                     </span>
@@ -54,8 +55,26 @@
                             data-bs-toggle="modal" data-bs-target="#notificationsModal">
                             <i class="bi bi-bell fs-5"></i>
                         </button>
-                        <a class="btn btn-link text-muted-2 px-2" href="../Profile/profile.html" aria-label="Profile">
-                            <i class="bi bi-person-circle fs-5"></i>
+
+                        <a class="btn btn-link text-muted-2 px-2" href="../Groups/friend_requests.html" aria-label="Friend Requests">
+                            <i class="bi bi-people fs-5"></i>
+                        </a>
+                        <a class="btn btn-link text-muted-2 px-2 nav-logout-btn" href="../Login_Register/login.html" aria-label="Log out" title="Log out">
+                            <i class="bi bi-box-arrow-right fs-5"></i>
+                        </a>
+
+                        <a
+                            class="btn btn-link text-muted-2 px-2 d-inline-flex align-items-center justify-content-center nav-profile-avatar"
+                            href="../Profile/profile.html"
+                            aria-label="Profile"
+                        >
+                            <img
+                                class="nav-profile-img"
+                                src="https://i.pinimg.com/736x/b1/21/18/b1211897266308c27112a58eacad7482.jpg"
+                                alt=""
+                                width="36"
+                                height="36"
+                            />
                         </a>
                     </div>
                 </div>
@@ -107,8 +126,11 @@
                     <div class="d-flex flex-column gap-3">
                         <article class="forgeon-card forgeon-thread p-3 p-md-4 position-relative">
                             <div class="d-flex gap-3">
-                                <img class="forgeon-avatar" alt="SwitchFan2024 avatar"
+                                <div class="avatar-shell avatar-shell--hp avatar-shell--border flex-shrink-0" data-forgeon-avatar data-user-level="28">
+                                    <div class="avatar-frame" aria-hidden="true"></div>
+                                    <img class="forgeon-avatar" alt="SwitchFan2024 avatar"
                                     src="https://c4.wallpaperflare.com/wallpaper/330/21/172/nintendo-nintendo-switch-video-games-minimalism-hd-wallpaper-preview.jpg" />
+                                </div>
                                 <div class="flex-grow-1">
                                     <div class="d-flex align-items-start gap-2">
                                         <span class="badge rounded-2 text-bg-info-subtle text-info-emphasis">
@@ -154,8 +176,11 @@
 
                         <article class="forgeon-card forgeon-thread p-3 p-md-4 position-relative">
                             <div class="d-flex gap-3">
-                                <img class="forgeon-avatar" alt="TechAnalyst avatar"
+                                <div class="avatar-shell avatar-shell--hp avatar-shell--border flex-shrink-0" data-forgeon-avatar data-user-level="55">
+                                    <div class="avatar-frame" aria-hidden="true"></div>
+                                    <img class="forgeon-avatar" alt="TechAnalyst avatar"
                                     src="https://c4.wallpaperflare.com/wallpaper/330/21/172/nintendo-nintendo-switch-video-games-minimalism-hd-wallpaper-preview.jpg" />
+                                </div>
                                 <div class="flex-grow-1">
                                     <div class="d-flex align-items-start gap-2">
                                         <span class="badge rounded-2 text-bg-danger-subtle text-danger-emphasis">
@@ -198,8 +223,11 @@
 
                         <article class="forgeon-card forgeon-thread p-3 p-md-4 position-relative">
                             <div class="d-flex gap-3">
-                                <img class="forgeon-avatar" alt="NewsBot avatar"
+                                <div class="avatar-shell avatar-shell--hp avatar-shell--border flex-shrink-0" data-forgeon-avatar data-user-level="8">
+                                    <div class="avatar-frame" aria-hidden="true"></div>
+                                    <img class="forgeon-avatar" alt="NewsBot avatar"
                                     src="https://c4.wallpaperflare.com/wallpaper/330/21/172/nintendo-nintendo-switch-video-games-minimalism-hd-wallpaper-preview.jpg" />
+                                </div>
                                 <div class="flex-grow-1">
                                     <div class="d-flex align-items-start gap-2">
                                         <span class="badge rounded-2 text-bg-info-subtle text-info-emphasis">
@@ -450,6 +478,8 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
         crossorigin="anonymous"></script>
+    <script src="../../assets/scripts/avatar-frames.js"></script>
+    <script src="../../assets/scripts/nav-logout.js"></script>
 </body>
 
 </html>

@@ -17,14 +17,15 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="./styles/groups.css" />
-    <link rel="stylesheet" href="./styles/header.css" />
+    <link rel="stylesheet" href="../../assets/styles/groups.css" />
+    <link rel="stylesheet" href="../../assets/styles/avatar-frames.css" />
+    <link rel="stylesheet" href="../../assets/styles/header.css" />
   </head>
   <body class="dg-page dg-page--user-groups">
     <header class="forgeon-navbar">
       <nav class="navbar navbar-expand-lg py-3">
         <div class="container-fluid px-4">
-          <a class="navbar-brand d-flex align-items-center gap-3" href="#">
+          <a class="navbar-brand d-flex align-items-center gap-3" href="../Home/homepage.html" title="Home">
             <span class="forgeon-brand-badge d-inline-flex align-items-center justify-content-center">
               <img src="https://cdn-icons-png.flaticon.com/512/686/686589.png" alt="logo" class="logo-img" />
             </span>
@@ -69,8 +70,24 @@
               >
                 <i class="bi bi-bell fs-5"></i>
               </button>
-              <a class="btn btn-link text-muted-2 px-2" href="../Profile/profile.html" aria-label="Profile">
-                <i class="bi bi-person-circle fs-5"></i>
+              <a class="btn btn-link text-muted-2 px-2" href="../Groups/friend_requests.html" aria-label="Friend Requests">
+                <i class="bi bi-people fs-5"></i>
+              </a>
+              <a class="btn btn-link text-muted-2 px-2 nav-logout-btn" href="../Login_Register/login.html" aria-label="Log out" title="Log out">
+                <i class="bi bi-box-arrow-right fs-5"></i>
+              </a>
+              <a
+                class="btn btn-link text-muted-2 px-2 d-inline-flex align-items-center justify-content-center nav-profile-avatar"
+                href="../Profile/profile.html"
+                aria-label="Profile"
+              >
+                <img
+                  class="nav-profile-img"
+                  src="https://i.pinimg.com/736x/b1/21/18/b1211897266308c27112a58eacad7482.jpg"
+                  alt=""
+                  width="36"
+                  height="36"
+                />
               </a>
             </div>
           </div>
@@ -91,7 +108,7 @@
           </span>
           <input id="userGroupsSearch" class="dg-search-input" type="search" placeholder="Search your groups..." autocomplete="off" />
         </div>
-        <p class="dg-count ug-count">6 groups</p>
+        <p class="dg-count ug-count" id="userGroupsCountLabel">6 groups</p>
       </section>
 
       <section class="ug-list" aria-label="Your joined groups">
@@ -110,7 +127,7 @@
               </div>
             </div>
             <div class="ug-actions">
-              <button type="button" class="dg-btn dg-btn--ghost ug-btn">View</button>
+              <a class="dg-btn dg-btn--ghost ug-btn" href="./group_detail.html?g=react-developers">View</a>
               <button type="button" class="dg-btn dg-btn--secondary ug-btn ug-btn--leave">
                 <span class="ug-leave-icon" aria-hidden="true">
                   <svg viewBox="0 0 24 24" focusable="false">
@@ -140,7 +157,7 @@
               </div>
             </div>
             <div class="ug-actions">
-              <button type="button" class="dg-btn dg-btn--ghost ug-btn">View</button>
+              <a class="dg-btn dg-btn--ghost ug-btn" href="./group_detail.html?g=photography-enthusiasts">View</a>
               <button type="button" class="dg-btn dg-btn--secondary ug-btn ug-btn--leave">
                 <span class="ug-leave-icon" aria-hidden="true">
                   <svg viewBox="0 0 24 24" focusable="false">
@@ -170,7 +187,7 @@
               </div>
             </div>
             <div class="ug-actions">
-              <button type="button" class="dg-btn dg-btn--ghost ug-btn">View</button>
+              <a class="dg-btn dg-btn--ghost ug-btn" href="./group_detail.html?g=ai-machine-learning">View</a>
               <button type="button" class="dg-btn dg-btn--secondary ug-btn ug-btn--leave" disabled>
                 <span class="ug-leave-icon" aria-hidden="true">
                   <svg viewBox="0 0 24 24" focusable="false">
@@ -201,7 +218,7 @@
               </div>
             </div>
             <div class="ug-actions">
-              <button type="button" class="dg-btn dg-btn--ghost ug-btn">View</button>
+              <a class="dg-btn dg-btn--ghost ug-btn" href="./group_detail.html?g=digital-artists-hub">View</a>
               <button type="button" class="dg-btn dg-btn--secondary ug-btn ug-btn--leave">
                 <span class="ug-leave-icon" aria-hidden="true">
                   <svg viewBox="0 0 24 24" focusable="false">
@@ -231,7 +248,7 @@
               </div>
             </div>
             <div class="ug-actions">
-              <button type="button" class="dg-btn dg-btn--ghost ug-btn">View</button>
+              <a class="dg-btn dg-btn--ghost ug-btn" href="./group_detail.html?g=fitness-wellness-warriors">View</a>
               <button type="button" class="dg-btn dg-btn--secondary ug-btn ug-btn--leave">
                 <span class="ug-leave-icon" aria-hidden="true">
                   <svg viewBox="0 0 24 24" focusable="false">
@@ -261,7 +278,7 @@
               </div>
             </div>
             <div class="ug-actions">
-              <button type="button" class="dg-btn dg-btn--ghost ug-btn">View</button>
+              <a class="dg-btn dg-btn--ghost ug-btn" href="./group_detail.html?g=startup-founders-network">View</a>
               <button type="button" class="dg-btn dg-btn--secondary ug-btn ug-btn--leave">
                 <span class="ug-leave-icon" aria-hidden="true">
                   <svg viewBox="0 0 24 24" focusable="false">
@@ -309,10 +326,38 @@
         </div>
       </div>
     </div>
+    <script src="../../assets/scripts/my-groups-sync.js"></script>
+    <script src="../../assets/scripts/avatar-frames.js"></script>
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
       crossorigin="anonymous"
     ></script>
+    <script>
+      (function () {
+        var list = document.querySelector(".ug-list");
+        var label = document.getElementById("userGroupsCountLabel");
+        var MG = window.ForgeonMyGroups;
+        if (!list || !MG) return;
+
+        function paintCount(n) {
+          if (label) label.textContent = n + (n === 1 ? " group" : " groups");
+        }
+
+        paintCount(MG.syncFromList(list));
+
+        list.addEventListener("click", function (e) {
+          var btn = e.target.closest(".ug-btn--leave");
+          if (!btn || btn.disabled) return;
+          e.preventDefault();
+          if (!confirm("Leave this group?")) return;
+          var card = btn.closest(".ug-card");
+          if (!card) return;
+          card.remove();
+          paintCount(MG.syncFromList(list));
+        });
+      })();
+    </script>
+    <script src="../../assets/scripts/nav-logout.js"></script>
   </body>
 </html>
