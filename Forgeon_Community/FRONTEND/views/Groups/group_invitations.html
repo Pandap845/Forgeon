@@ -17,14 +17,15 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="./styles/groups.css" />
-    <link rel="stylesheet" href="./styles/header.css" />
+    <link rel="stylesheet" href="../../assets/styles/groups.css" />
+    <link rel="stylesheet" href="../../assets/styles/avatar-frames.css" />
+    <link rel="stylesheet" href="../../assets/styles/header.css" />
   </head>
   <body class="dg-page dg-page--group-invitations">
     <header class="forgeon-navbar">
       <nav class="navbar navbar-expand-lg py-3">
         <div class="container-fluid px-4">
-          <a class="navbar-brand d-flex align-items-center gap-3" href="#">
+          <a class="navbar-brand d-flex align-items-center gap-3" href="../Home/homepage.html" title="Home">
             <span class="forgeon-brand-badge d-inline-flex align-items-center justify-content-center">
               <img src="https://cdn-icons-png.flaticon.com/512/686/686589.png" alt="logo" class="logo-img" />
             </span>
@@ -72,8 +73,21 @@
               <a class="btn btn-link text-muted-2 px-2" href="../Groups/friend_requests.html" aria-label="Friend Requests">
                 <i class="bi bi-people fs-5"></i>
               </a>
-              <a class="btn btn-link text-muted-2 px-2" href="../Profile/profile.html" aria-label="Profile">
-                <i class="bi bi-person-circle fs-5"></i>
+              <a class="btn btn-link text-muted-2 px-2 nav-logout-btn" href="../Login_Register/login.html" aria-label="Log out" title="Log out">
+                <i class="bi bi-box-arrow-right fs-5"></i>
+              </a>
+              <a
+                class="btn btn-link text-muted-2 px-2 d-inline-flex align-items-center justify-content-center nav-profile-avatar"
+                href="../Profile/profile.html"
+                aria-label="Profile"
+              >
+                <img
+                  class="nav-profile-img"
+                  src="https://i.pinimg.com/736x/b1/21/18/b1211897266308c27112a58eacad7482.jpg"
+                  alt=""
+                  width="36"
+                  height="36"
+                />
               </a>
             </div>
           </div>
@@ -134,13 +148,16 @@
 
         <ul id="inviteList" class="gi-list">
           <li class="gi-item" data-invite-item data-search="henry_hacker henry@example.com">
-            <img
+            <div class="avatar-shell avatar-shell--gi avatar-shell--border flex-shrink-0" data-forgeon-avatar data-user-level="62">
+              <div class="avatar-frame" aria-hidden="true"></div>
+              <img
               class="gi-avatar"
               src="https://www.figma.com/api/mcp/asset/3639504b-33ae-4bbd-a1da-fb1dd947bbc0"
               alt=""
               width="48"
               height="48"
             />
+            </div>
             <div class="gi-user">
               <div class="gi-user-line">
                 <span class="gi-name">henry_hacker</span>
@@ -159,13 +176,16 @@
           </li>
 
           <li class="gi-item" data-invite-item data-search="iris_artist iris@example.com">
-            <img
+            <div class="avatar-shell avatar-shell--gi avatar-shell--border flex-shrink-0" data-forgeon-avatar data-user-level="47">
+              <div class="avatar-frame" aria-hidden="true"></div>
+              <img
               class="gi-avatar"
               src="https://www.figma.com/api/mcp/asset/4a4c9dfa-a5b4-4882-8d90-95290e629c5b"
               alt=""
               width="48"
               height="48"
             />
+            </div>
             <div class="gi-user">
               <div class="gi-user-line">
                 <span class="gi-name">iris_artist</span>
@@ -247,6 +267,8 @@
       integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
       crossorigin="anonymous"
     ></script>
-    <script src="./scripts/group_invitations.js"></script>
+    <script src="../../assets/scripts/avatar-frames.js"></script>
+    <script src="../../assets/scripts/group_invitations.js"></script>
+    <script src="../../assets/scripts/nav-logout.js"></script>
   </body>
 </html>

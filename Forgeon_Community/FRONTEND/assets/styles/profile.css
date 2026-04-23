@@ -131,277 +131,65 @@ body.profile-page::-webkit-scrollbar-corner,
     box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
 }
 
-/* Discord-style avatar + level frames (10–70, Mythic at max level) */
-.avatar-shell {
-    --avatar-inner: 112px;
-    --avatar-shell: 156px;
-    position: relative;
-    z-index: 1;
-    width: var(--avatar-shell);
-    height: var(--avatar-shell);
-    display: grid;
-    place-items: center;
-    flex-shrink: 0;
-}
-
-.avatar-frame {
-    position: absolute;
-    inset: 0;
-    z-index: 1;
-    pointer-events: none;
-    border-radius: 50%;
-}
-
-.avatar-btn {
-    position: relative;
-    z-index: 2;
-    width: var(--avatar-inner, 112px);
-    height: var(--avatar-inner, 112px);
-    border-radius: 50%;
-    border: 3px solid rgba(255, 255, 255, 0.12);
-    outline: 2px solid rgba(0, 0, 0, 0.55);
-    background: #23262e;
-    padding: 0;
-    cursor: pointer;
-    overflow: hidden;
-    transition: transform 0.15s ease, border-color 0.15s ease;
-}
-
-.avatar-shell:hover .avatar-btn {
-    transform: scale(1.02);
-    border-color: var(--profile-accent-soft);
-}
-
-.avatar-btn img {
+.avatar-zone__top-row {
+    align-self: stretch;
     width: 100%;
-    height: 100%;
-    object-fit: cover;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: flex-start;
+    column-gap: 0.75rem;
 }
 
-/* Tier 0 — breathing rookie ring */
-.avatar-frame--starter::before {
-    content: "";
-    position: absolute;
-    inset: 10px;
-    border-radius: 50%;
-    border: 2px solid rgba(255, 255, 255, 0.12);
-    box-shadow:
-        inset 0 0 12px rgba(0, 0, 0, 0.35),
-        0 0 12px rgba(125, 143, 245, 0.12);
-    animation: frame-starter-breathe 3.4s ease-in-out infinite;
+.avatar-zone__avatar-col {
+    grid-column: 2;
+    justify-self: center;
+    display: flex;
+    justify-content: center;
 }
 
-/* L10+ — 8-bit: spinning dash + blinking corners */
-.avatar-frame--pixel::before,
-.avatar-frame--pixel::after {
-    content: "";
-    position: absolute;
-    inset: 4px;
-    border-radius: 50%;
-    pointer-events: none;
+.avatar-zone__header-actions {
+    grid-column: 3;
+    justify-self: end;
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-start;
+    padding-top: 0.45rem;
+    min-width: 0;
 }
 
-.avatar-frame--pixel::before {
-    border: 3px dashed rgba(0, 255, 200, 0.55);
-    box-shadow: 0 0 18px rgba(0, 255, 200, 0.25), inset 0 0 14px rgba(255, 0, 180, 0.12);
-    animation: frame-orbit-spin 16s linear infinite reverse;
+.profile-manage-groups-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.55rem 1rem;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 120, 120, 0.5);
+    background: #4f1313;
+    color: #ffd8d8;
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background 0.15s ease, border-color 0.15s ease;
+    white-space: nowrap;
 }
 
-.avatar-frame--pixel::after {
-    inset: 0;
-    border-radius: 50%;
-    background:
-        linear-gradient(#ff00cc, #ff00cc) 12% 12% / 10px 10px no-repeat,
-        linear-gradient(#ff00cc, #ff00cc) 78% 12% / 10px 10px no-repeat,
-        linear-gradient(#00ffcc, #00ffcc) 12% 78% / 10px 10px no-repeat,
-        linear-gradient(#00ffcc, #00ffcc) 78% 78% / 10px 10px no-repeat;
-    opacity: 0.9;
-    animation: frame-pixel-twinkle 1.4s steps(1, end) infinite;
-    mask: radial-gradient(circle at 50% 50%, transparent 58%, #000 59%);
-    -webkit-mask: radial-gradient(circle at 50% 50%, transparent 58%, #000 59%);
+.profile-manage-groups-btn:hover {
+    background: #631919;
+    border-color: rgba(255, 150, 150, 0.55);
+    color: #fff;
 }
 
-/* L20+ — smooth saturated neon tube (distinct from Mythic’s metallic gear) */
-.avatar-frame--neon::before {
-    content: "";
-    position: absolute;
-    inset: -2px;
-    border-radius: 50%;
-    background: conic-gradient(from 0deg,
-            #ff2d95,
-            #7d8ff5,
-            #00f5ff,
-            #b8ff00,
-            #ff2d95);
-    animation: frame-orbit-spin 5.5s linear infinite;
-    mask: radial-gradient(farthest-side, transparent calc(100% - 6px), #000 calc(100% - 5px));
-    -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 6px), #000 calc(100% - 5px));
+.profile-manage-groups-btn:focus-visible {
+    outline: 2px solid rgba(255, 120, 120, 0.65);
+    outline-offset: 2px;
 }
 
-.avatar-frame--neon::after {
-    content: "";
-    position: absolute;
-    inset: 14px;
-    border-radius: 50%;
-    border: 2px solid rgba(255, 45, 149, 0.45);
-    box-shadow: 0 0 20px rgba(125, 143, 245, 0.4);
-    animation: frame-neon-inner-pulse 2.2s ease-in-out infinite;
-}
-
-/* L30+ — boss: slow rotating crest + counter-spoke shimmer */
-.avatar-frame--boss::before {
-    content: "";
-    position: absolute;
-    inset: -1px;
-    border-radius: 50%;
-    background: conic-gradient(from 45deg,
-            #c9a227,
-            #8b2500,
-            #f7ce59,
-            #5c0a0a,
-            #e8d089,
-            #c9a227);
-    animation: frame-orbit-spin 32s linear infinite;
-    mask: radial-gradient(farthest-side, transparent calc(100% - 9px), #000 calc(100% - 8px));
-    -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 9px), #000 calc(100% - 8px));
-    filter: drop-shadow(0 0 10px rgba(201, 162, 39, 0.45));
-}
-
-.avatar-frame--boss::after {
-    content: "";
-    position: absolute;
-    inset: 6px;
-    border-radius: 50%;
-    background: repeating-conic-gradient(from 0deg,
-            rgba(139, 37, 0, 0.5) 0deg 18deg,
-            transparent 18deg 36deg);
-    mask: radial-gradient(farthest-side, transparent 52%, #000 53%, #000 68%, transparent 69%);
-    -webkit-mask: radial-gradient(farthest-side, transparent 52%, #000 53%, #000 68%, transparent 69%);
-    opacity: 0.85;
-    animation: frame-orbit-spin 48s linear infinite reverse;
-}
-
-/* L40+ — cyber glitch HUD */
-.avatar-frame--cyber::before {
-    content: "";
-    position: absolute;
-    inset: -3px;
-    border-radius: 50%;
-    background: conic-gradient(from 90deg, #00fff2, #7d8ff5, #ff00aa, #00fff2);
-    opacity: 0.85;
-    animation: frame-orbit-spin 14s linear infinite reverse;
-    mask: radial-gradient(farthest-side, transparent calc(100% - 5px), #000 calc(100% - 4px));
-    -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 5px), #000 calc(100% - 4px));
-}
-
-.avatar-frame--cyber::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    border-radius: 50%;
-    box-shadow:
-        inset 0 0 0 1px rgba(0, 255, 242, 0.4),
-        3px 0 0 0 rgba(255, 0, 170, 0.25),
-        -3px 0 0 0 rgba(0, 255, 242, 0.2);
-    animation: frame-glitch-nudge 2.8s steps(2, end) infinite;
-    mask: radial-gradient(circle at 50% 50%, transparent 54%, #000 55%);
-    -webkit-mask: radial-gradient(circle at 50% 50%, transparent 54%, #000 55%);
-}
-
-/* L50+ — void rift (violet, slower spin + inner pulse) */
-.avatar-frame--void::before {
-    content: "";
-    position: absolute;
-    inset: -3px;
-    border-radius: 50%;
-    background: conic-gradient(from 200deg,
-            #0a0218,
-            #4c1d95,
-            #a855f7,
-            #6b21a8,
-            #2e1065,
-            #0a0218);
-    animation: frame-orbit-spin 24s linear infinite;
-    mask: radial-gradient(farthest-side, transparent calc(100% - 8px), #000 calc(100% - 7px));
-    -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 8px), #000 calc(100% - 7px));
-}
-
-.avatar-frame--void::after {
-    content: "";
-    position: absolute;
-    inset: 5px;
-    border-radius: 50%;
-    border: 2px solid rgba(192, 132, 252, 0.4);
-    box-shadow:
-        0 0 18px rgba(168, 85, 247, 0.45),
-        inset 0 0 14px rgba(76, 29, 149, 0.35);
-    animation: frame-void-pulse 2.6s ease-in-out infinite;
-}
-
-/* L60+ — titan forge (ember / steel, heat shimmer) */
-.avatar-frame--titan::before {
-    content: "";
-    position: absolute;
-    inset: -2px;
-    border-radius: 50%;
-    background: conic-gradient(from 0deg,
-            #3f3f46,
-            #ea580c,
-            #fbbf24,
-            #57534e,
-            #78716c,
-            #f97316,
-            #3f3f46);
-    animation: frame-orbit-spin 18s linear infinite;
-    mask: radial-gradient(farthest-side, transparent calc(100% - 9px), #000 calc(100% - 8px));
-    -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 9px), #000 calc(100% - 8px));
-    filter: drop-shadow(0 0 8px rgba(249, 115, 22, 0.35));
-}
-
-.avatar-frame--titan::after {
-    content: "";
-    position: absolute;
-    inset: 8px;
-    border-radius: 50%;
-    border: 2px solid rgba(251, 191, 36, 0.5);
-    box-shadow:
-        0 0 16px rgba(249, 115, 22, 0.45),
-        inset 0 0 12px rgba(234, 88, 12, 0.25);
-    animation: frame-titan-forge 1.8s ease-in-out infinite;
-}
-
-/* L70 max — Mythic: regal metallic gear crown (not smooth rainbow neon) */
-.avatar-frame--mythic::before {
-    content: "";
-    position: absolute;
-    inset: -6px;
-    border-radius: 50%;
-    background: repeating-conic-gradient(from 0deg,
-            #fff8e7 0deg 4deg,
-            #c9a227 4deg 8deg,
-            #1a1510 8deg 14deg,
-            #f5e6c8 14deg 18deg,
-            #5c4a1a 18deg 22deg,
-            #2a2214 22deg 28deg,
-            #e8d4a8 28deg 32deg,
-            #1c1408 32deg 40deg);
-    animation: frame-mythic-gear 26s linear infinite;
-    filter: drop-shadow(0 0 16px rgba(255, 215, 140, 0.55));
-    mask: radial-gradient(farthest-side, transparent calc(100% - 12px), #000 calc(100% - 10px));
-    -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 12px), #000 calc(100% - 10px));
-}
-
-.avatar-frame--mythic::after {
-    content: "";
-    position: absolute;
-    inset: 5px;
-    border-radius: 50%;
-    background: radial-gradient(circle at 50% 38%, rgba(255, 252, 240, 0.28) 0%, transparent 52%);
-    border: 2px solid rgba(255, 236, 192, 0.6);
-    box-shadow:
-        0 0 24px rgba(255, 223, 150, 0.55),
-        inset 0 0 20px rgba(90, 70, 30, 0.4);
-    animation: frame-mythic-corona 3.6s ease-in-out infinite;
+.avatar-visual {
+    width: fit-content;
+    max-width: 100%;
+    margin-inline: auto;
 }
 
 .avatar-frame-row {
@@ -606,162 +394,6 @@ body.profile-page::-webkit-scrollbar-corner,
     letter-spacing: 0.02em;
 }
 
-@keyframes frame-orbit-spin {
-    to {
-        transform: rotate(360deg);
-    }
-}
-
-@keyframes frame-starter-breathe {
-
-    0%,
-    100% {
-        opacity: 0.55;
-        border-color: rgba(255, 255, 255, 0.07);
-        box-shadow:
-            inset 0 0 12px rgba(0, 0, 0, 0.35),
-            0 0 6px rgba(125, 143, 245, 0.08);
-    }
-
-    50% {
-        opacity: 1;
-        border-color: rgba(210, 225, 255, 0.28);
-        box-shadow:
-            inset 0 0 10px rgba(0, 0, 0, 0.28),
-            0 0 16px rgba(125, 143, 245, 0.32);
-    }
-}
-
-@keyframes frame-pixel-twinkle {
-
-    0%,
-    49% {
-        opacity: 0.88;
-        filter: brightness(1);
-    }
-
-    50%,
-    100% {
-        opacity: 1;
-        filter: brightness(1.25);
-    }
-}
-
-@keyframes frame-neon-inner-pulse {
-
-    0%,
-    100% {
-        opacity: 0.75;
-        box-shadow: 0 0 14px rgba(125, 143, 245, 0.28);
-    }
-
-    50% {
-        opacity: 1;
-        box-shadow: 0 0 26px rgba(0, 245, 255, 0.45);
-    }
-}
-
-@keyframes frame-void-pulse {
-
-    0%,
-    100% {
-        opacity: 0.75;
-        transform: scale(1);
-    }
-
-    50% {
-        opacity: 1;
-        transform: scale(1.03);
-    }
-}
-
-@keyframes frame-titan-forge {
-
-    0%,
-    100% {
-        opacity: 0.82;
-        filter: brightness(1);
-        box-shadow:
-            0 0 12px rgba(249, 115, 22, 0.35),
-            inset 0 0 10px rgba(234, 88, 12, 0.2);
-    }
-
-    50% {
-        opacity: 1;
-        filter: brightness(1.2);
-        box-shadow:
-            0 0 26px rgba(251, 191, 36, 0.65),
-            inset 0 0 14px rgba(234, 88, 12, 0.35);
-    }
-}
-
-@keyframes frame-mythic-gear {
-    to {
-        transform: rotate(360deg);
-    }
-}
-
-@keyframes frame-mythic-corona {
-
-    0%,
-    100% {
-        transform: scale(1);
-        opacity: 0.88;
-        filter: brightness(1);
-    }
-
-    50% {
-        transform: scale(1.045);
-        opacity: 1;
-        filter: brightness(1.18);
-    }
-}
-
-@keyframes frame-glitch-nudge {
-
-    0%,
-    90%,
-    100% {
-        transform: translate(0, 0);
-        opacity: 1;
-    }
-
-    92% {
-        transform: translate(-2px, 1px);
-        opacity: 0.92;
-    }
-
-    94% {
-        transform: translate(2px, -1px);
-        opacity: 0.88;
-    }
-
-    96% {
-        transform: translate(-1px, -1px);
-        opacity: 1;
-    }
-}
-
-@media (prefers-reduced-motion: reduce) {
-
-    .avatar-frame--starter::before,
-    .avatar-frame--pixel::before,
-    .avatar-frame--pixel::after,
-    .avatar-frame--neon::before,
-    .avatar-frame--neon::after,
-    .avatar-frame--boss::before,
-    .avatar-frame--boss::after,
-    .avatar-frame--cyber::before,
-    .avatar-frame--cyber::after,
-    .avatar-frame--void::before,
-    .avatar-frame--void::after,
-    .avatar-frame--titan::before,
-    .avatar-frame--titan::after,
-    .avatar-frame--mythic::before,
-    .avatar-frame--mythic::after {
-        animation: none;
-    }
-}
 
 .avatar-hint {
     margin: 0;
@@ -872,6 +504,11 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     align-items: center;
     gap: 0.85rem;
     padding: 0.88rem 0.95rem;
+}
+
+a.stats-item {
+    text-decoration: none;
+    color: inherit;
 }
 
 .stats-clickable {
@@ -1095,16 +732,21 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     border: none;
     border-radius: 10px;
     padding: 0.8rem 1rem;
-    background: #8b2323;
-    color: #fff;
+    background: linear-gradient(180deg, #bc8bf0 0%, var(--profile-accent) 100%);
+    color: #0b0d12;
     font-size: 0.95rem;
     font-weight: 700;
     cursor: pointer;
-    transition: background 0.15s ease;
+    transition: filter 0.15s ease, transform 0.12s ease;
 }
 
 .primary-action:hover {
-    background: #a32d2d;
+    filter: brightness(1.08);
+}
+
+.primary-action:focus-visible {
+    outline: 2px solid var(--profile-accent-soft);
+    outline-offset: 2px;
 }
 
 .danger-zone {
@@ -1317,4 +959,40 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     .modal-card {
         padding: 0.9rem;
     }
+}
+
+/* Shared navbar notifications modal (same markup as Home / Groups) */
+.text-muted-3 {
+    color: rgba(255, 255, 255, 0.3) !important;
+}
+
+.text-white-50 {
+    color: rgba(255, 255, 255, 0.55) !important;
+}
+
+.forgeon-modal {
+    background: #1a1919;
+    border: 1px solid rgba(229, 229, 229, 0.35);
+    border-radius: 12px;
+    overflow: hidden;
+    color: #ffffff;
+}
+
+.forgeon-card {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+}
+
+.tv-notif-dot {
+    width: 38px;
+    height: 38px;
+    border-radius: 12px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.8);
+    flex: 0 0 auto;
 }

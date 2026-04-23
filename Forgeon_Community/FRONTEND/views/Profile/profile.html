@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-bs-theme="dark">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -11,9 +11,92 @@
       rel="stylesheet"
     />
     <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/686/686589.png" />
-    <link rel="stylesheet" href="./styles/profile.css" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+    <link rel="stylesheet" href="../../assets/styles/avatar-frames.css" />
+    <link rel="stylesheet" href="../../assets/styles/header.css" />
+    <link rel="stylesheet" href="../../assets/styles/profile.css" />
   </head>
   <body class="profile-page">
+    <header class="forgeon-navbar">
+      <nav class="navbar navbar-expand-lg py-3">
+        <div class="container-fluid px-4">
+          <a class="navbar-brand d-flex align-items-center gap-3" href="../Home/homepage.html" title="Home">
+            <span class="forgeon-brand-badge d-inline-flex align-items-center justify-content-center">
+              <img src="https://cdn-icons-png.flaticon.com/512/686/686589.png" alt="logo" class="logo-img" />
+            </span>
+            <span class="d-flex flex-column lh-sm">
+              <span class="fw-medium">Forgeon</span>
+              <small class="text-muted-2">Gaming Community</small>
+            </span>
+          </a>
+
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#forgeonNav"
+            aria-controls="forgeonNav"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+
+          <div class="collapse navbar-collapse" id="forgeonNav">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0 gap-lg-3">
+              <li class="nav-item">
+                <a class="nav-link text-muted-2" href="../Home/homepage.html">Forums</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link text-muted-2" href="../Groups/user_groups.html">Groups</a>
+              </li>
+            </ul>
+
+            <div class="d-flex align-items-center gap-2">
+              <a class="btn btn-link text-muted-2 px-2" href="../Groups/search.html" aria-label="Search">
+                <i class="bi bi-search fs-5"></i>
+              </a>
+              <button
+                class="btn btn-link text-muted-2 px-2"
+                type="button"
+                aria-label="Notifications"
+                data-bs-toggle="modal"
+                data-bs-target="#notificationsModal"
+              >
+                <i class="bi bi-bell fs-5"></i>
+              </button>
+              <a class="btn btn-link text-muted-2 px-2" href="../Groups/friend_requests.html" aria-label="Friend Requests">
+                <i class="bi bi-people fs-5"></i>
+              </a>
+              <a class="btn btn-link text-muted-2 px-2 nav-logout-btn" href="../Login_Register/login.html" aria-label="Log out" title="Log out">
+                <i class="bi bi-box-arrow-right fs-5"></i>
+              </a>
+              <a
+                class="btn btn-link text-muted-2 px-2 d-inline-flex align-items-center justify-content-center nav-profile-avatar"
+                href="./profile.html"
+                aria-label="Profile"
+                aria-current="page"
+              >
+                <img
+                  class="nav-profile-img"
+                  src="https://i.pinimg.com/736x/b1/21/18/b1211897266308c27112a58eacad7482.jpg"
+                  alt=""
+                  width="36"
+                  height="36"
+                />
+              </a>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
     <main class="profile-wrapper">
       <header class="profile-header">
         <h1>My Profile</h1>
@@ -22,21 +105,40 @@
 
       <section class="profile-card">
         <div class="avatar-zone" id="avatarZone" data-user-level="25">
-          <div class="user-level-badge" id="userLevelBadge" aria-label="User level 70">Lvl 70</div>
-          <div
-            class="avatar-shell"
-            id="avatarShell"
-            data-frame-tier="0"
-            title="Profile frames unlock every 10 levels up to Mythic Legend at level 70."
-          >
-            <div class="avatar-frame" id="avatarFrame" aria-hidden="true"></div>
-            <button type="button" class="avatar-btn" id="avatarButton" aria-label="Change profile picture">
-              <img
-                id="avatarPreview"
-                src="https://i.pinimg.com/736x/b1/21/18/b1211897266308c27112a58eacad7482.jpg"
-                alt="Profile picture"
-              />
-            </button>
+          <div class="user-level-badge" id="userLevelBadge" aria-label="User level 25">Lvl 25</div>
+          <div class="avatar-zone__top-row">
+            <div class="avatar-zone__avatar-col">
+              <div class="avatar-visual">
+                <div
+                  class="avatar-shell"
+                  id="avatarShell"
+                  data-forgeon-avatar
+                  data-user-level="25"
+                  data-forgeon-use-stored-frame="true"
+                  data-frame-tier="0"
+                  title="Profile frames unlock every 10 levels up to Mythic Legend at level 70."
+                >
+                  <div class="avatar-frame" id="avatarFrame" aria-hidden="true"></div>
+                  <button type="button" class="avatar-btn" id="avatarButton" aria-label="Change profile picture">
+                    <img
+                      id="avatarPreview"
+                      src="https://i.pinimg.com/736x/b1/21/18/b1211897266308c27112a58eacad7482.jpg"
+                      alt="Profile picture"
+                    />
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="avatar-zone__header-actions">
+              <a
+                class="profile-manage-groups-btn"
+                href="../Groups/group_management.html"
+                aria-label="Open group management"
+                title="Manage your groups"
+              >
+                Manage groups
+              </a>
+            </div>
           </div>
           <div class="avatar-frame-row">
             <p class="avatar-frame-name" id="avatarFrameName" aria-live="polite"></p>
@@ -75,13 +177,13 @@
               <p class="stat-value">142</p>
             </div>
           </article>
-          <article class="stats-item stats-clickable" id="groupsCard" tabindex="0" role="button" aria-label="View joined groups">
+          <a class="stats-item stats-clickable" id="groupsCard" href="../Groups/user_groups.html" aria-label="View My Groups">
             <div class="stat-icon">👥</div>
             <div>
               <p class="stat-label">Groups</p>
-              <p class="stat-value">8</p>
+              <p class="stat-value" id="groupsStatValue">6</p>
             </div>
-          </article>
+          </a>
         </div>
 
         <div class="badge-header-row">
@@ -247,16 +349,16 @@
       <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="deleteModalTitle">
         <h3 id="deleteModalTitle">Confirm account deletion</h3>
         <p>
-          This action cannot be undone. To continue, type the message:
-          <span class="required-message" id="requiredDeleteMessage">DELETE MY ACCOUNT</span>
+          This action cannot be undone. Type your username exactly as shown on your profile
+          (<span class="required-message" id="deleteConfirmUsernameHint">Miku39</span>).
         </p>
-        <label for="deleteConfirmInput">Verification message</label>
+        <label for="deleteConfirmInput">Your username</label>
         <input
           class="text-input"
           id="deleteConfirmInput"
           type="text"
-          placeholder="Type the exact message"
-          autocomplete="off"
+          placeholder="Enter your username"
+          autocomplete="username"
         />
         <p class="modal-feedback" id="deleteModalFeedback"></p>
         <div class="modal-actions">
@@ -272,8 +374,8 @@
       <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="deletedModalTitle">
         <h3 id="deletedModalTitle">Account deleted (Interface Demo)</h3>
         <p>
-          The verification message matched correctly. In the final backend integration, this step will trigger the
-          permanent account deletion.
+          The username matched correctly. In the final backend integration, this step will trigger the permanent
+          account deletion.
         </p>
         <div class="modal-actions">
           <button type="button" class="modal-btn modal-btn-primary" id="closeDeletedModalButton">Close</button>
@@ -332,28 +434,65 @@
       </div>
     </div>
 
-    <div class="modal-backdrop is-hidden" id="groupsModalBackdrop" aria-hidden="true">
-      <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="groupsModalTitle">
-        <h3 id="groupsModalTitle">Groups joined</h3>
-        <p>These are the groups where you are currently active:</p>
-        <ul class="all-badges-list">
-          <li>🎮 RPG Guild</li>
-          <li>🕹️ Retro Arcade Club</li>
-          <li>⚔️ Boss Raid Hunters</li>
-          <li>🚗 Racing Legends Hub</li>
-          <li>👾 Indie Pixel Squad</li>
-          <li>🔫 FPS Tactics Room</li>
-          <li>🧩 Puzzle Masters Arena</li>
-          <li>🌌 Open World Explorers</li>
-        </ul>
-        <div class="modal-actions">
-          <button type="button" class="modal-btn modal-btn-primary" id="closeGroupsModalButton">Close</button>
+    <div class="modal fade" id="notificationsModal" tabindex="-1" aria-labelledby="notificationsModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content forgeon-modal">
+          <div class="modal-body p-4">
+            <div class="d-flex align-items-start justify-content-between gap-3 mb-3">
+              <div>
+                <h2 class="h5 mb-1" id="notificationsModalLabel">Notifications</h2>
+                <div class="text-muted-2 small">Your latest activity</div>
+              </div>
+              <button type="button" class="btn btn-link text-muted-2 p-0" data-bs-dismiss="modal" aria-label="Close">
+                <i class="bi bi-x-lg"></i>
+              </button>
+            </div>
+
+            <div class="forgeon-card p-3">
+              <div class="d-flex gap-3">
+                <div class="tv-notif-dot" aria-hidden="true">
+                  <i class="bi bi-bell"></i>
+                </div>
+                <div class="flex-grow-1">
+                  <div class="fw-medium">Placeholder notification</div>
+                  <div class="text-muted-2 small">
+                    Someone replied to your thread <span class="text-white-50">“Switch limits”</span>.
+                  </div>
+                  <div class="text-muted-3 small mt-2">Just now</div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
 
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+      crossorigin="anonymous"
+    ></script>
+    <script src="../../assets/scripts/my-groups-sync.js"></script>
+    <script src="../../assets/scripts/avatar-frames.js"></script>
     <script>
       (function () {
+        var groupsStatValue = document.getElementById("groupsStatValue");
+        var groupsCard = document.getElementById("groupsCard");
+        function syncGroupsStatFromStorage() {
+          var MG = window.ForgeonMyGroups;
+          if (!groupsStatValue || !MG) return;
+          var n = MG.getCount(6);
+          groupsStatValue.textContent = String(n);
+          if (groupsCard) {
+            groupsCard.setAttribute(
+              "aria-label",
+              "View My Groups (" + n + (n === 1 ? " group)" : " groups)")
+            );
+          }
+        }
+        syncGroupsStatFromStorage();
+        window.addEventListener("pageshow", syncGroupsStatFromStorage);
+
         var avatarButton = document.getElementById("avatarButton");
         var avatarInput = document.getElementById("avatarInput");
         var avatarPreview = document.getElementById("avatarPreview");
@@ -365,7 +504,8 @@
         var cancelDeleteButton = document.getElementById("cancelDeleteButton");
         var confirmDeleteButton = document.getElementById("confirmDeleteButton");
         var closeDeletedModalButton = document.getElementById("closeDeletedModalButton");
-        var requiredDeleteMessage = "DELETE MY ACCOUNT";
+        var usernameField = document.getElementById("username");
+        var deleteConfirmUsernameHint = document.getElementById("deleteConfirmUsernameHint");
         var allBadgesButton = document.getElementById("allBadgesButton");
         var allBadgesModalBackdrop = document.getElementById("allBadgesModalBackdrop");
         var closeAllBadgesModalButton = document.getElementById("closeAllBadgesModalButton");
@@ -380,9 +520,6 @@
         var badgeList = document.querySelector(".badge-list");
         var badgeFilterSelect = document.getElementById("badgeFilterSelect");
         var toggleMoreBadgesButton = document.getElementById("toggleMoreBadgesButton");
-        var groupsCard = document.getElementById("groupsCard");
-        var groupsModalBackdrop = document.getElementById("groupsModalBackdrop");
-        var closeGroupsModalButton = document.getElementById("closeGroupsModalButton");
         var avatarZone = document.getElementById("avatarZone");
         var avatarShell = document.getElementById("avatarShell");
         var avatarFrame = document.getElementById("avatarFrame");
@@ -392,65 +529,7 @@
         var framePickerModalBackdrop = document.getElementById("framePickerModalBackdrop");
         var framePickerGrid = document.getElementById("framePickerGrid");
         var closeFramePickerButton = document.getElementById("closeFramePickerButton");
-        var FRAME_STORAGE_KEY = "forgeon_avatar_frame_key";
-
-        var FRAME_TIERS = [
-          { tier: 0, minLevel: 0, key: "starter", name: "Rookie ring", shellTitle: "Default frame. Reach level 10 for your first unlock." },
-          { tier: 1, minLevel: 10, key: "pixel", name: "8-Bit Spawn", shellTitle: "Unlocked at level 10 — retro pixel hero frame." },
-          { tier: 2, minLevel: 20, key: "neon", name: "Neon Drift", shellTitle: "Unlocked at level 20 — smooth neon arcade ring." },
-          { tier: 3, minLevel: 30, key: "boss", name: "Boss Slayer", shellTitle: "Unlocked at level 30 — raid boss gold & crimson crest." },
-          { tier: 4, minLevel: 40, key: "cyber", name: "Cyber Raid", shellTitle: "Unlocked at level 40 — glitch-tech HUD frame." },
-          { tier: 5, minLevel: 50, key: "void", name: "Void Veil", shellTitle: "Unlocked at level 50 — void energy and violet rift ring." },
-          { tier: 6, minLevel: 60, key: "titan", name: "Titan Forge", shellTitle: "Unlocked at level 60 — molten steel and forge ember ring." },
-          {
-            tier: 7,
-            minLevel: 70,
-            key: "mythic",
-            name: "Mythic Legend",
-            shellTitle: "Unlocked at level 70 — regal gold gear crown (max tier).",
-          },
-        ];
-
-        function getFrameTierForLevel(level) {
-          var best = FRAME_TIERS[0];
-          for (var i = 0; i < FRAME_TIERS.length; i++) {
-            if (level >= FRAME_TIERS[i].minLevel) best = FRAME_TIERS[i];
-          }
-          return best;
-        }
-
-        function getFrameByKey(key) {
-          for (var i = 0; i < FRAME_TIERS.length; i++) {
-            if (FRAME_TIERS[i].key === key) return FRAME_TIERS[i];
-          }
-          return null;
-        }
-
-        function readStoredFrameKey() {
-          try {
-            return localStorage.getItem(FRAME_STORAGE_KEY);
-          } catch (err) {
-            return null;
-          }
-        }
-
-        function writeStoredFrameKey(key) {
-          try {
-            if (key) localStorage.setItem(FRAME_STORAGE_KEY, key);
-            else localStorage.removeItem(FRAME_STORAGE_KEY);
-          } catch (err) {}
-        }
-
-        function getResolvedEquippedFrame(level) {
-          var stored = readStoredFrameKey();
-          if (!stored) return getFrameTierForLevel(level);
-          var picked = getFrameByKey(stored);
-          if (!picked || level < picked.minLevel) {
-            writeStoredFrameKey(null);
-            return getFrameTierForLevel(level);
-          }
-          return picked;
-        }
+        var FF = window.ForgeonAvatarFrames;
 
         function getProfileLevel() {
           var raw = avatarZone && avatarZone.getAttribute("data-user-level");
@@ -461,17 +540,14 @@
 
         function syncProfileLevelUI() {
           var level = getProfileLevel();
-          var info = getResolvedEquippedFrame(level);
+          var info = FF.getResolvedEquippedFrame(level);
           if (userLevelBadge) {
             userLevelBadge.textContent = "Lvl " + level;
             userLevelBadge.setAttribute("aria-label", "User level " + level);
           }
           if (avatarShell) {
-            avatarShell.setAttribute("data-frame-tier", String(info.tier));
-            avatarShell.setAttribute("title", info.shellTitle);
-          }
-          if (avatarFrame) {
-            avatarFrame.className = "avatar-frame avatar-frame--" + info.key;
+            avatarShell.setAttribute("data-user-level", String(level));
+            FF.applyShell(avatarShell);
           }
           if (avatarFrameName) {
             avatarFrameName.textContent = "Equipped: " + info.name;
@@ -481,10 +557,10 @@
         function buildFramePickerGrid() {
           if (!framePickerGrid) return;
           var level = getProfileLevel();
-          var equipped = getResolvedEquippedFrame(level).key;
+          var equipped = FF.getResolvedEquippedFrame(level).key;
           framePickerGrid.innerHTML = "";
 
-          FRAME_TIERS.forEach(function (f) {
+          FF.FRAME_TIERS.forEach(function (f) {
             var unlocked = level >= f.minLevel;
             var card = document.createElement("button");
             card.type = "button";
@@ -544,7 +620,7 @@
 
             if (unlocked) {
               card.addEventListener("click", function () {
-                writeStoredFrameKey(f.key);
+                FF.writeStoredFrameKey(f.key);
                 syncProfileLevelUI();
                 closeModal(framePickerModalBackdrop);
               });
@@ -578,6 +654,8 @@
           deleteConfirmInput.value = "";
           deleteModalFeedback.textContent = "";
           deleteModalFeedback.classList.remove("is-error");
+          var expected = usernameField ? usernameField.value.trim() : "";
+          if (deleteConfirmUsernameHint) deleteConfirmUsernameHint.textContent = expected || "—";
           openModal(deleteModalBackdrop);
           deleteConfirmInput.focus();
         });
@@ -587,9 +665,15 @@
         });
 
         confirmDeleteButton.addEventListener("click", function () {
-          var typedMessage = deleteConfirmInput.value.trim();
-          if (typedMessage !== requiredDeleteMessage) {
-            deleteModalFeedback.textContent = "The message does not match. Please type it exactly.";
+          var typed = deleteConfirmInput.value.trim();
+          var expected = usernameField ? usernameField.value.trim() : "";
+          if (!expected) {
+            deleteModalFeedback.textContent = "No username is set on this profile.";
+            deleteModalFeedback.classList.add("is-error");
+            return;
+          }
+          if (typed !== expected) {
+            deleteModalFeedback.textContent = "That does not match your username. Try again.";
             deleteModalFeedback.classList.add("is-error");
             return;
           }
@@ -690,25 +774,6 @@
           updateMoreBadgesButton();
         });
 
-        groupsCard.addEventListener("click", function () {
-          openModal(groupsModalBackdrop);
-        });
-
-        groupsCard.addEventListener("keydown", function (event) {
-          if (event.key === "Enter" || event.key === " ") {
-            event.preventDefault();
-            openModal(groupsModalBackdrop);
-          }
-        });
-
-        closeGroupsModalButton.addEventListener("click", function () {
-          closeModal(groupsModalBackdrop);
-        });
-
-        groupsModalBackdrop.addEventListener("click", function (event) {
-          if (event.target === groupsModalBackdrop) closeModal(groupsModalBackdrop);
-        });
-
         if (openFramePickerButton) {
           openFramePickerButton.addEventListener("click", function () {
             buildFramePickerGrid();
@@ -733,5 +798,6 @@
         syncProfileLevelUI();
       })();
     </script>
+    <script src="../../assets/scripts/nav-logout.js"></script>
   </body>
 </html>

@@ -395,6 +395,13 @@ a.gc-btn[aria-disabled="true"] {
   gap: 8px;
 }
 
+.dg-card-actions a.dg-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
 .dg-btn {
   height: 32px;
   padding: 0 12px;
@@ -418,6 +425,11 @@ a.gc-btn[aria-disabled="true"] {
 
 a.dg-btn {
   text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  line-height: 1;
 }
 
 .dg-btn--search-page {
@@ -738,7 +750,7 @@ body.dg-page--detail {
 
 .gd-thread {
   display: grid;
-  grid-template-columns: 48px 1fr;
+  grid-template-columns: minmax(0, 68px) 1fr;
   gap: 16px;
   padding: 24px;
   align-items: start;
@@ -918,8 +930,12 @@ body.dg-page--detail {
   width: 72px;
   height: 72px;
   border-radius: 50%;
-  padding: 3px;
-  background: linear-gradient(135deg, rgba(240, 177, 0, 0.7), rgba(42, 191, 232, 0.7));
+  padding: 0;
+  background: transparent;
+}
+
+.gd-profile-card .avatar-shell {
+  flex-shrink: 0;
 }
 
 .gd-profile-card__avatar {
@@ -1167,6 +1183,23 @@ body.dg-page--friend-requests .dg-main {
 .fr-request__avatar--placeholder {
   background: var(--dg-border);
   border-color: var(--dg-border-muted);
+}
+
+.fr-request .avatar-shell .fr-request__avatar {
+  padding: 0;
+  border: 0;
+  box-sizing: border-box;
+}
+
+.fr-request .avatar-shell > .fr-request__avatar--placeholder {
+  position: relative;
+  z-index: 2;
+  width: var(--avatar-inner);
+  height: var(--avatar-inner);
+  border-radius: 50%;
+  box-sizing: border-box;
+  flex-shrink: 0;
+  border: 2px solid rgba(255, 255, 255, 0.12);
 }
 
 .fr-request__body {
@@ -2531,6 +2564,12 @@ body.dg-page--group-invitations .dg-main.gi-main {
   display: block;
 }
 
+.gi-item .avatar-shell .gi-avatar {
+  padding: 0;
+  border: 0;
+  box-sizing: border-box;
+}
+
 .gi-user {
   flex: 1;
   min-width: 160px;
@@ -3041,6 +3080,13 @@ body.dg-page--user-groups .dg-members {
 .ug-btn {
   min-width: 64px;
   height: 36px;
+}
+
+a.ug-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
 }
 
 .ug-btn--leave {
