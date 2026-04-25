@@ -35,13 +35,8 @@ const threadSchema = new mongoose.Schema(
       default: null,
       index: true,
     },
-    tags: { type: [String], default: [] },
-    isPinned: { type: Boolean, default: false },
-    isHot: { type: Boolean, default: false },
-    isNews: { type: Boolean, default: false },
     likesCount: { type: Number, min: 0, default: 0 },
     commentsCount: { type: Number, min: 0, default: 0 },
-    viewsCount: { type: Number, min: 0, default: 0 },
     lastActivityBy: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",

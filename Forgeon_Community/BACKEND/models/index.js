@@ -3,6 +3,7 @@ module.exports = {
   Threads: require("./Threads"),
   Comments: require("./Comments"),
   Groups: require("./Groups"),
+  Category: require("./Category"),
   Friends: require("./Friends"),
   friends_invitation: require("./friends_invitation"),
   groups_invitation: require("./groups_invitation"),

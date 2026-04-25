@@ -10,14 +10,7 @@ const groupSchema = new mongoose.Schema(
       maxlength: 120,
       index: true,
     },
-    slug: {
-      type: String,
-      required: true,
-      trim: true,
-      lowercase: true,
-      unique: true,
-      index: true,
-    },
+  
     description: {
       type: String,
       required: true,
@@ -25,10 +18,10 @@ const groupSchema = new mongoose.Schema(
       maxlength: 3000,
     },
     category: {
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Category",
       required: true,
-      trim: true,
-      enum: ["technology", "business", "gaming", "health", "other"],
+      index: true,
     },
     coverImageUrl: { type: String, trim: true, default: "" },
     iconImageUrl: { type: String, trim: true, default: "" },

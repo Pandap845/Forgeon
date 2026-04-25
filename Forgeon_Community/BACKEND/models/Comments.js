@@ -14,12 +14,6 @@ const commentSchema = new mongoose.Schema(
       required: true,
       index: true,
     },
-    parentComment: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Comments",
-      default: null,
-      index: true,
-    },
     content: {
       type: String,
       required: true,
@@ -27,7 +21,6 @@ const commentSchema = new mongoose.Schema(
       maxlength: 5000,
     },
     likesCount: { type: Number, min: 0, default: 0 },
-    isEdited: { type: Boolean, default: false },
     isDeleted: { type: Boolean, default: false },
   },
   { timestamps: true }

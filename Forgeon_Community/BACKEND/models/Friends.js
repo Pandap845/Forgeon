@@ -24,20 +24,10 @@ const friendsSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+
+//Validations
 friendsSchema.index({ userA: 1, userB: 1 }, { unique: true });
 
-friendsSchema.pre("validate", function normalizeUsers(next) {
-  if (!this.userA || !this.userB) return next();
-  if (this.userA.toString() === this.userB.toString()) {
-    return next(new Error("A user cannot be friends with themselves."));
-  }
 
-  if (this.userA.toString() > this.userB.toString()) {
-    const temp = this.userA;
-    this.userA = this.userB;
-    this.userB = temp;
-  }
-  return next();
-});
-
+//export
 module.exports = mongoose.model("Friends", friendsSchema);
