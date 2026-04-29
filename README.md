@@ -14,10 +14,11 @@ A web-based forum application built using Vanilla JavaScript, HTML, and CSS.
 3. Create a `.env` file inside `Forgeon_Community/BACKEND` and add your environment values:
    ```env
    MONGO_URI=your_mongodb_connection_string
+   JWT_SECRET=your_jwt_secret
    
    ```
-   - `MONGO_URI` is required by the backend.
-  .
+   - `MONGO_URI` and `JWT_SECRET` are required by the backend.
+   .
 1. Start the backend server:
    ```bash
    node server.js

@@ -94,33 +94,7 @@
         </main>
     </div>
 
-    <script>
-        document.getElementById("registerForm").addEventListener("submit", function (e) {
-            e.preventDefault();
-            var err = document.getElementById("authError");
-            var p1 = document.getElementById("password").value;
-            var p2 = document.getElementById("confirmPassword").value;
-            var terms = document.getElementById("terms");
-            var form = e.target;
-            if (!form.checkValidity()) {
-                err.textContent = "Please fill in all fields and accept the terms.";
-                err.classList.add("is-visible");
-                return;
-            }
-            if (!terms.checked) {
-                err.textContent = "You must agree to the Terms of Service and Privacy Policy.";
-                err.classList.add("is-visible");
-                return;
-            }
-            if (p1 !== p2) {
-                err.textContent = "Passwords do not match.";
-                err.classList.add("is-visible");
-                return;
-            }
-            err.classList.remove("is-visible");
-            window.location.href = "../Home/homepage.html";
-        });
-    </script>
+    <script src="../../controllers/auth_controller.js"></script>
 </body>
 
 </html>
