@@ -2,6 +2,7 @@ const express = require('express');
 const {
   createUser,
   loginUser,
+  logoutUser,
   getUsers,
   getUserById,
   updateUser,
@@ -12,10 +13,13 @@ const { authenticateToken } = require('../middleware/auth');
 const router = express.Router();
 
 router.post('/login', loginUser);
+router.post('/logout', logoutUser);
 router.post('/', createUser);
-router.get('/', authenticateToken, getUsers);
-router.get('/:id', authenticateToken, getUserById);
-router.patch('/:id', authenticateToken, updateUser);
-router.delete('/:id', authenticateToken, deleteUser);
+router.use(authenticateToken);
+
+router.get('/', getUsers);
+router.get('/:id', getUserById);
+router.patch('/:id', updateUser);
+router.delete('/:id', deleteUser);
 
 module.exports = router;

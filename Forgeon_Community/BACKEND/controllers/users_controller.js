@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 const { User } = require('../models');
 
 const SALT_ROUNDS = 10;
+const AUTH_COOKIE_NAME = 'forgeon_auth_token';
 
 function toPublicUser(userDoc) {
   return {
@@ -36,6 +37,17 @@ function createToken(userDoc) {
     secret,
     { expiresIn: '1d' }
   );
+}
+
+function setAuthCookie(res, token) {
+  const secure = process.env.NODE_ENV === 'production';
+  res.cookie(AUTH_COOKIE_NAME, token, {
+    httpOnly: true,
+    sameSite: 'lax',
+    secure,
+    path: '/',
+    maxAge: 24 * 60 * 60 * 1000,
+  });
 }
 
 async function createUser(req, res) {
@@ -73,6 +85,7 @@ async function createUser(req, res) {
     });
 
     const token = createToken(user);
+    setAuthCookie(res, token);
     return res.status(201).json({
       message: 'User created successfully.',
       token,
@@ -106,6 +119,7 @@ async function loginUser(req, res) {
     }
 
     const token = createToken(user);
+    setAuthCookie(res, token);
     return res.status(200).json({
       message: 'Login successful.',
       token,
@@ -114,6 +128,17 @@ async function loginUser(req, res) {
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
+}
+
+function logoutUser(_req, res) {
+  const secure = process.env.NODE_ENV === 'production';
+  res.clearCookie(AUTH_COOKIE_NAME, {
+    httpOnly: true,
+    sameSite: 'lax',
+    secure,
+    path: '/',
+  });
+  return res.status(200).json({ message: 'Logout successful.' });
 }
 
 async function getUsers(req, res) {
@@ -212,6 +237,7 @@ async function deleteUser(req, res) {
 module.exports = {
   createUser,
   loginUser,
+  logoutUser,
   getUsers,
   getUserById,
   updateUser,

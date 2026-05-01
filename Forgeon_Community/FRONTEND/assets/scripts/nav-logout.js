@@ -7,7 +7,12 @@
     var btn = document.getElementById("logoutConfirmButton");
     if (!btn) return;
     confirmWired = true;
-    btn.addEventListener("click", function () {
+    btn.addEventListener("click", async function () {
+      try {
+        await fetch("/api/users/logout", { method: "POST" });
+      } catch (_error) {}
+      localStorage.removeItem("forgeonAuthToken");
+      localStorage.removeItem("forgeonCurrentUser");
       if (pendingHref) window.location.href = pendingHref;
     });
   }

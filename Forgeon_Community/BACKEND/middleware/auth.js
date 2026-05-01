@@ -1,10 +1,18 @@
 
 
 const jwt = require('jsonwebtoken');
+const AUTH_COOKIE_NAME = 'forgeon_auth_token';
 
 function authenticateToken(req, res, next) {
   const authHeader = req.headers.authorization;
-  const token = authHeader && authHeader.startsWith('Bearer ') ? authHeader.slice(7) : null;
+  const bearerToken = authHeader && authHeader.startsWith('Bearer ') ? authHeader.slice(7) : null;
+  const cookieHeader = req.get('cookie') || '';
+  const cookieToken = cookieHeader
+    .split(';')
+    .map((part) => part.trim())
+    .find((part) => part.startsWith(`${AUTH_COOKIE_NAME}=`));
+  const tokenFromCookie = cookieToken ? decodeURIComponent(cookieToken.slice(AUTH_COOKIE_NAME.length + 1)) : null;
+  const token = bearerToken || tokenFromCookie;
 
   if (!token) {
     return res.status(401).json({ message: 'Missing authentication token.' });
