@@ -1,52 +1,94 @@
 (function () {
   var tabIncoming = document.getElementById("tab-incoming");
   var tabSent = document.getElementById("tab-sent");
+  var tabFriends = document.getElementById("tab-friends");
   var panelIncoming = document.getElementById("panel-incoming");
   var panelSent = document.getElementById("panel-sent");
+  var panelFriends = document.getElementById("panel-friends");
   var incomingListElement = document.getElementById("frIncomingList");
   var sentListElement = document.getElementById("frSentList");
+  var friendsListElement = document.getElementById("frFriendsList");
   var incomingTabCountElement = document.getElementById("frIncomingTabCount");
   var sentTabCountElement = document.getElementById("frSentTabCount");
+  var friendsTabCountElement = document.getElementById("frFriendsTabCount");
   var incomingSummaryCountElement = document.getElementById("frIncomingSummaryCount");
   var sentSummaryCountElement = document.getElementById("frSentSummaryCount");
   var invitationsController = window.ForgeonFriendsInvitationsController;
+  var friendsController = window.ForgeonFriendsController;
+  var currentUserId = "";
 
   if (
     !tabIncoming ||
     !tabSent ||
+    !tabFriends ||
     !panelIncoming ||
     !panelSent ||
+    !panelFriends ||
     !incomingListElement ||
     !sentListElement ||
+    !friendsListElement ||
     !incomingTabCountElement ||
     !sentTabCountElement ||
+    !friendsTabCountElement ||
     !incomingSummaryCountElement ||
     !sentSummaryCountElement ||
-    !invitationsController
+    !invitationsController ||
+    !friendsController
   ) {
     return;
   }
 
+  try {
+    var rawCurrentUser = localStorage.getItem("forgeonCurrentUser");
+    if (rawCurrentUser) {
+      var parsedCurrentUser = JSON.parse(rawCurrentUser);
+      currentUserId = String(parsedCurrentUser && (parsedCurrentUser.id || parsedCurrentUser._id) ? (parsedCurrentUser.id || parsedCurrentUser._id) : "");
+    }
+  } catch (_error) {}
+
   function showIncoming() {
     tabIncoming.classList.add("fr-tab--active");
     tabSent.classList.remove("fr-tab--active");
+    tabFriends.classList.remove("fr-tab--active");
     tabIncoming.setAttribute("aria-selected", "true");
     tabSent.setAttribute("aria-selected", "false");
+    tabFriends.setAttribute("aria-selected", "false");
     panelIncoming.classList.remove("fr-panel--hidden");
     panelIncoming.hidden = false;
     panelSent.classList.add("fr-panel--hidden");
     panelSent.hidden = true;
+    panelFriends.classList.add("fr-panel--hidden");
+    panelFriends.hidden = true;
   }
 
   function showSent() {
     tabSent.classList.add("fr-tab--active");
     tabIncoming.classList.remove("fr-tab--active");
+    tabFriends.classList.remove("fr-tab--active");
     tabSent.setAttribute("aria-selected", "true");
     tabIncoming.setAttribute("aria-selected", "false");
+    tabFriends.setAttribute("aria-selected", "false");
     panelSent.classList.remove("fr-panel--hidden");
     panelSent.hidden = false;
     panelIncoming.classList.add("fr-panel--hidden");
     panelIncoming.hidden = true;
+    panelFriends.classList.add("fr-panel--hidden");
+    panelFriends.hidden = true;
+  }
+
+  function showFriends() {
+    tabFriends.classList.add("fr-tab--active");
+    tabIncoming.classList.remove("fr-tab--active");
+    tabSent.classList.remove("fr-tab--active");
+    tabFriends.setAttribute("aria-selected", "true");
+    tabIncoming.setAttribute("aria-selected", "false");
+    tabSent.setAttribute("aria-selected", "false");
+    panelFriends.classList.remove("fr-panel--hidden");
+    panelFriends.hidden = false;
+    panelIncoming.classList.add("fr-panel--hidden");
+    panelIncoming.hidden = true;
+    panelSent.classList.add("fr-panel--hidden");
+    panelSent.hidden = true;
   }
 
   function getName(user) {
@@ -160,6 +202,48 @@
     sentSummaryCountElement.textContent = String(sentCount);
   }
 
+  function renderFriends(friendsItems) {
+    if (!friendsItems.length) {
+      friendsListElement.innerHTML =
+        '<li><article class="fr-request dg-surface-card"><div class="fr-request__body"><div class="fr-request__top"><span class="fr-request__name">No friends yet.</span></div></div></article></li>';
+      return;
+    }
+
+    friendsListElement.innerHTML = friendsItems
+      .map(function (friendship) {
+        var userA = friendship && friendship.userA ? friendship.userA : {};
+        var userB = friendship && friendship.userB ? friendship.userB : {};
+
+        var resolvedFriend = userA;
+        if (currentUserId) {
+          var userAId = userA && (userA._id || userA.id) ? String(userA._id || userA.id) : "";
+          var userBId = userB && (userB._id || userB.id) ? String(userB._id || userB.id) : "";
+          if (userAId === currentUserId) resolvedFriend = userB;
+          else if (userBId === currentUserId) resolvedFriend = userA;
+        }
+
+        var friendName = escapeHtml(getName(resolvedFriend));
+        var connectedAt = formatRelativeTime(friendship && (friendship.connectedAt || friendship.createdAt));
+        return (
+          '<li><article class="fr-request fr-request--sent dg-surface-card">' +
+          '<div class="avatar-shell avatar-shell--fr avatar-shell--border flex-shrink-0" data-forgeon-avatar data-user-level="1">' +
+          '<div class="avatar-frame" aria-hidden="true"></div>' +
+          '<div class="fr-request__avatar fr-request__avatar--placeholder" aria-hidden="true"></div>' +
+          "</div>" +
+          '<div class="fr-request__body">' +
+          '<div class="fr-request__top"><span class="fr-request__name">' +
+          friendName +
+          "</span></div>" +
+          '<div class="fr-request__meta"><span class="fr-meta fr-meta--solo">Friends since ' +
+          escapeHtml(connectedAt) +
+          "</span></div>" +
+          "</div>" +
+          "</article></li>"
+        );
+      })
+      .join("");
+  }
+
   function renderLists(incomingItems, sentItems) {
     if (incomingItems.length === 0) {
       incomingListElement.innerHTML =
@@ -182,22 +266,29 @@
 
   async function loadInvitations() {
     try {
-      var [incomingRaw, sentRaw] = await Promise.all([
+      var [incomingRaw, sentRaw, friendsRaw] = await Promise.all([
         invitationsController.list("received"),
         invitationsController.list("sent"),
+        friendsController.list(),
       ]);
 
       var incomingItems = pendingOnly(incomingRaw);
       var sentItems = pendingOnly(sentRaw);
+      var friendsItems = Array.isArray(friendsRaw) ? friendsRaw : [];
 
       setCounts(incomingItems.length, sentItems.length);
+      friendsTabCountElement.textContent = String(friendsItems.length);
       renderLists(incomingItems, sentItems);
+      renderFriends(friendsItems);
     } catch (error) {
       incomingListElement.innerHTML =
         '<li><article class="fr-request dg-surface-card"><div class="fr-request__body"><div class="fr-request__top"><span class="fr-request__name">Could not load incoming requests.</span></div></div></article></li>';
       sentListElement.innerHTML =
         '<li><article class="fr-request fr-request--sent dg-surface-card"><div class="fr-request__body"><div class="fr-request__top"><span class="fr-request__name">Could not load sent requests.</span></div></div></article></li>';
+      friendsListElement.innerHTML =
+        '<li><article class="fr-request fr-request--sent dg-surface-card"><div class="fr-request__body"><div class="fr-request__top"><span class="fr-request__name">Could not load friends.</span></div></div></article></li>';
       setCounts(0, 0);
+      friendsTabCountElement.textContent = "0";
     }
   }
 
@@ -231,6 +322,7 @@
 
   tabIncoming.addEventListener("click", showIncoming);
   tabSent.addEventListener("click", showSent);
+  tabFriends.addEventListener("click", showFriends);
   incomingListElement.addEventListener("click", handleListAction);
   sentListElement.addEventListener("click", handleListAction);
 

@@ -103,7 +103,7 @@ async function getGroupMemberships(req, res) {
     const memberships = await GroupMemberships.find(query)
       .sort({ createdAt: -1 })
       .populate('group', 'name isArchived isDeleted')
-      .populate('user', 'username email avatarUrl')
+      .populate('user', 'username email avatarUrl level')
       .populate('invitedBy', 'username email');
 
     return res.status(200).json(memberships);
@@ -122,7 +122,7 @@ async function getGroupMembershipById(req, res) {
 
     const membership = await GroupMemberships.findById(id)
       .populate('group', 'name isArchived isDeleted')
-      .populate('user', 'username email avatarUrl')
+      .populate('user', 'username email avatarUrl level')
       .populate('invitedBy', 'username email');
     if (!membership) {
       return res.status(404).json({ message: 'Membership not found.' });

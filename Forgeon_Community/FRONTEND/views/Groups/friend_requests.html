@@ -132,6 +132,20 @@
               <span id="frSentTabCount" class="fr-tab-badge fr-tab-badge--muted">0</span>
             </span>
           </button>
+        <button
+          type="button"
+          id="tab-friends"
+          class="fr-tab"
+          role="tab"
+          aria-selected="false"
+          aria-controls="panel-friends"
+        >
+            <span class="fr-tab__inner">
+              <i class="bi bi-people" aria-hidden="true"></i>
+              <span class="fr-tab__label">Friends</span>
+              <span id="frFriendsTabCount" class="fr-tab-badge fr-tab-badge--muted">0</span>
+            </span>
+          </button>
         </div>
 
       <div id="panel-incoming" class="fr-panel" role="tabpanel" aria-labelledby="tab-incoming">
@@ -140,6 +154,9 @@
 
       <div id="panel-sent" class="fr-panel fr-panel--hidden" role="tabpanel" aria-labelledby="tab-sent" hidden>
         <ul id="frSentList" class="fr-list"></ul>
+      </div>
+      <div id="panel-friends" class="fr-panel fr-panel--hidden" role="tabpanel" aria-labelledby="tab-friends" hidden>
+        <ul id="frFriendsList" class="fr-list"></ul>
       </div>
 
       <section class="fr-summary" aria-label="Request counts">
@@ -204,8 +221,11 @@
     ></script>
     <script src="../../controllers/friends_invitations_controller.js"></script>
     <script src="../../controllers/friends_controller.js"></script>
+    <script src="../../controllers/groups_invitations_controller.js"></script>
     <script src="../../assets/scripts/avatar-frames.js"></script>
     <script src="../../assets/scripts/friend_requests.js"></script>
+    <script src="../../controllers/notification.controller.js"></script>
+    <script src="../../assets/scripts/notifications.js"></script>
     <script src="../../assets/scripts/nav-logout.js"></script>
   </body>
 </html>

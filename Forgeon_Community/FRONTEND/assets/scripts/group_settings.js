@@ -14,6 +14,7 @@
   var metaInfo = document.getElementById("gsMetaInfo");
   var charCount = document.getElementById("charCount");
   var formMessage = document.getElementById("gsFormMessage");
+  var inviteLink = document.getElementById("gsInviteLink");
 
   if (!form || !nameInput || !descInput || !categorySelect || !coverImage || !iconImage) return;
 
@@ -115,6 +116,13 @@
       var createdAt = formatDate(group.createdAt);
       metaInfo.textContent =
         "Created: " + createdAt + " | Creator: " + creatorName + " | Category: " + categoryName + " | Members: " + members;
+    }
+
+    if (inviteLink && groupId) {
+      inviteLink.setAttribute(
+        "href",
+        "./group_invitations.html?groupId=" + encodeURIComponent(groupId)
+      );
     }
 
     updateCount();

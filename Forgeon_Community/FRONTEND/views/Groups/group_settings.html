@@ -188,6 +188,20 @@
         </section>
         <p id="gsFormMessage" class="gs-hint mt-3"></p>
 
+        <section class="gc-card dg-surface-card" aria-labelledby="gsInviteHeading">
+          <h2 id="gsInviteHeading" class="gc-section-title">Invite Members</h2>
+          <p class="gc-invite-lead">Open invitations for this group.</p>
+          <a id="gsInviteLink" href="#" class="gc-invite-btn">
+            <span class="gc-invite-btn__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <circle cx="10" cy="8" r="3"></circle>
+                <path d="M4.5 17a5.5 5.5 0 0 1 11 0M18 8v4M16 10h4"></path>
+              </svg>
+            </span>
+            Search and Invite Users
+          </a>
+        </section>
+
         <section class="gs-card gs-card--danger dg-surface-card" aria-labelledby="danger-heading">
           <div class="gs-danger-head">
             <img src="https://www.figma.com/api/mcp/asset/3a9c0b0a-d423-415a-a3e8-1c9cce2293b6" alt="" width="20" height="20" />
@@ -270,6 +284,10 @@
     <script src="../../controllers/categories_controller.js"></script>
     <script src="../../controllers/groups_controller.js"></script>
     <script src="../../assets/scripts/group_settings.js"></script>
+    <script src="../../controllers/friends_invitations_controller.js"></script>
+    <script src="../../controllers/groups_invitations_controller.js"></script>
+    <script src="../../controllers/notification.controller.js"></script>
+    <script src="../../assets/scripts/notifications.js"></script>
     <script src="../../assets/scripts/nav-logout.js"></script>
   </body>
 </html>

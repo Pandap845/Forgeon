@@ -16,10 +16,13 @@
   var newCategoryDescriptionInput = document.getElementById("gcNewCategoryDescription");
   var categoryFormMsg = document.getElementById("gcCategoryFormMsg");
   var createCategoryBtn = document.getElementById("gcCreateCategoryBtn");
+  var inviteSection = document.getElementById("gcInviteSection");
+  var inviteLink = document.getElementById("gcInviteLink");
 
   if (!form || !nameInput || !descInput || !categorySelect || !coverInput || !iconInput) return;
 
   var categoriesCache = [];
+  var createdGroupId = "";
 
   function setMessage(el, message, isError) {
     if (!el) return;
@@ -164,8 +167,20 @@
       createBtn.disabled = true;
       createBtn.textContent = "Creating...";
       var group = await window.ForgeonGroupsController.create(formData);
-      setMessage(formMsg, "Group created successfully.");
-      window.location.href = "./group_detail.html?groupId=" + encodeURIComponent(group._id || group.id);
+      createdGroupId = String((group && (group._id || group.id)) || "");
+      setMessage(formMsg, "Group created successfully. You can now invite members.");
+
+      if (inviteSection && createdGroupId) {
+        inviteSection.hidden = false;
+      }
+      if (inviteLink && createdGroupId) {
+        inviteLink.setAttribute(
+          "href",
+          "./group_invitations.html?groupId=" + encodeURIComponent(createdGroupId)
+        );
+      }
+
+      createBtn.textContent = "Group Created";
     } catch (error) {
       setMessage(formMsg, error.message || "Could not create group.", true);
       updateSubmitState();

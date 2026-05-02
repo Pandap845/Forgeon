@@ -483,100 +483,7 @@
         </div>
 
         <div id="panel-members" class="gd-tab-panel gd-tab-panel--hidden" role="tabpanel" aria-labelledby="tab-members" hidden>
-          <ul class="gd-member-list">
-            <li>
-              <article class="profile-card gd-profile-card">
-                <div class="gd-profile-card__avatar-zone">
-                  <span class="gd-profile-card__level">Lvl 42</span>
-                  <div class="avatar-shell avatar-shell--gd-profile avatar-shell--border" data-forgeon-avatar data-user-level="42">
-                    <div class="avatar-frame" aria-hidden="true"></div>
-                    <img
-                      class="gd-profile-card__avatar"
-                      src="https://www.figma.com/api/mcp/asset/4f20a796-a989-446c-9fb0-5dd0fda4d1c7"
-                      alt="Sarah Chen avatar"
-                      width="72"
-                      height="72"
-                    />
-                  </div>
-                </div>
-                <div class="gd-profile-card__body">
-                  <h3 class="gd-profile-card__name">Sarah Chen</h3>
-                  <p class="gd-profile-card__handle">@sarahchen</p>
-                  <p class="gd-profile-card__meta">Group Owner • 12.8k followers</p>
-                </div>
-                <a class="gd-profile-card__link" href="../Profile/profile.html">View profile</a>
-              </article>
-            </li>
-            <li>
-              <article class="profile-card gd-profile-card">
-                <div class="gd-profile-card__avatar-zone">
-                  <span class="gd-profile-card__level">Lvl 35</span>
-                  <div class="avatar-shell avatar-shell--gd-profile avatar-shell--border" data-forgeon-avatar data-user-level="35">
-                    <div class="avatar-frame" aria-hidden="true"></div>
-                    <img
-                      class="gd-profile-card__avatar"
-                      src="https://www.figma.com/api/mcp/asset/8ca8c085-6cbf-4bf8-b53b-fd694c442811"
-                      alt="Mike Johnson avatar"
-                      width="72"
-                      height="72"
-                    />
-                  </div>
-                </div>
-                <div class="gd-profile-card__body">
-                  <h3 class="gd-profile-card__name">Mike Johnson</h3>
-                  <p class="gd-profile-card__handle">@mikejohnson</p>
-                  <p class="gd-profile-card__meta">Moderator • Frontend mentor</p>
-                </div>
-                <a class="gd-profile-card__link" href="../Profile/profile.html">View profile</a>
-              </article>
-            </li>
-            <li>
-              <article class="profile-card gd-profile-card">
-                <div class="gd-profile-card__avatar-zone">
-                  <span class="gd-profile-card__level">Lvl 51</span>
-                  <div class="avatar-shell avatar-shell--gd-profile avatar-shell--border" data-forgeon-avatar data-user-level="51">
-                    <div class="avatar-frame" aria-hidden="true"></div>
-                    <img
-                      class="gd-profile-card__avatar"
-                      src="https://www.figma.com/api/mcp/asset/c14a7631-f7de-456f-9add-de58d175cb1b"
-                      alt="Emily Rodriguez avatar"
-                      width="72"
-                      height="72"
-                    />
-                  </div>
-                </div>
-                <div class="gd-profile-card__body">
-                  <h3 class="gd-profile-card__name">Emily Rodriguez</h3>
-                  <p class="gd-profile-card__handle">@emilyrod</p>
-                  <p class="gd-profile-card__meta">Top contributor • 41 threads</p>
-                </div>
-                <a class="gd-profile-card__link" href="../Profile/profile.html">View profile</a>
-              </article>
-            </li>
-            <li>
-              <article class="profile-card gd-profile-card">
-                <div class="gd-profile-card__avatar-zone">
-                  <span class="gd-profile-card__level">Lvl 63</span>
-                  <div class="avatar-shell avatar-shell--gd-profile avatar-shell--border" data-forgeon-avatar data-user-level="63">
-                    <div class="avatar-frame" aria-hidden="true"></div>
-                    <img
-                      class="gd-profile-card__avatar"
-                      src="https://www.figma.com/api/mcp/asset/0ae29f26-3022-4038-b2c3-13f9321067d8"
-                      alt="Lisa Anderson avatar"
-                      width="72"
-                      height="72"
-                    />
-                  </div>
-                </div>
-                <div class="gd-profile-card__body">
-                  <h3 class="gd-profile-card__name">Lisa Anderson</h3>
-                  <p class="gd-profile-card__handle">@lisaanderson</p>
-                  <p class="gd-profile-card__meta">Build tooling expert • Vite fan</p>
-                </div>
-                <a class="gd-profile-card__link" href="../Profile/profile.html">View profile</a>
-              </article>
-            </li>
-          </ul>
+          <ul id="groupMembersList" class="gd-member-list"></ul>
         </div>
       </div>
     </main>
@@ -620,8 +527,13 @@
       crossorigin="anonymous"
     ></script>
     <script src="../../controllers/groups_controller.js"></script>
+    <script src="../../controllers/group_memberships_controller.js"></script>
     <script src="../../assets/scripts/avatar-frames.js"></script>
     <script src="../../assets/scripts/group_detail.js"></script>
+    <script src="../../controllers/friends_invitations_controller.js"></script>
+    <script src="../../controllers/groups_invitations_controller.js"></script>
+    <script src="../../controllers/notification.controller.js"></script>
+    <script src="../../assets/scripts/notifications.js"></script>
     <script src="../../assets/scripts/nav-logout.js"></script>
   </body>
 </html>
