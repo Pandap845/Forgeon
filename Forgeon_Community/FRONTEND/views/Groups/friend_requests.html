@@ -112,12 +112,12 @@
           aria-selected="true"
           aria-controls="panel-incoming"
         >
-          <span class="fr-tab__inner">
-            <img src="https://www.figma.com/api/mcp/asset/149f6942-2e46-4d21-add4-19f9b0a60aea" alt="" width="16" height="16" />
-            <span class="fr-tab__label">Incoming</span>
-            <span class="fr-tab-badge fr-tab-badge--alert">5</span>
-          </span>
-        </button>
+            <span class="fr-tab__inner">
+              <img src="https://www.figma.com/api/mcp/asset/149f6942-2e46-4d21-add4-19f9b0a60aea" alt="" width="16" height="16" />
+              <span class="fr-tab__label">Incoming</span>
+              <span id="frIncomingTabCount" class="fr-tab-badge fr-tab-badge--alert">0</span>
+            </span>
+          </button>
         <button
           type="button"
           id="tab-sent"
@@ -126,296 +126,20 @@
           aria-selected="false"
           aria-controls="panel-sent"
         >
-          <span class="fr-tab__inner">
-            <img src="https://www.figma.com/api/mcp/asset/67d57eba-df94-49f6-83c5-cc45573343c2" alt="" width="16" height="16" />
-            <span class="fr-tab__label">Sent</span>
-            <span class="fr-tab-badge fr-tab-badge--muted">3</span>
-          </span>
-        </button>
-      </div>
+            <span class="fr-tab__inner">
+              <img src="https://www.figma.com/api/mcp/asset/67d57eba-df94-49f6-83c5-cc45573343c2" alt="" width="16" height="16" />
+              <span class="fr-tab__label">Sent</span>
+              <span id="frSentTabCount" class="fr-tab-badge fr-tab-badge--muted">0</span>
+            </span>
+          </button>
+        </div>
 
       <div id="panel-incoming" class="fr-panel" role="tabpanel" aria-labelledby="tab-incoming">
-        <ul class="fr-list">
-          <li>
-            <article class="fr-request dg-surface-card">
-              <div class="avatar-shell avatar-shell--fr avatar-shell--border flex-shrink-0" data-forgeon-avatar data-user-level="35">
-                <div class="avatar-frame" aria-hidden="true"></div>
-                <img
-                class="fr-request__avatar"
-                src="https://www.figma.com/api/mcp/asset/3639504b-33ae-4bbd-a1da-fb1dd947bbc0"
-                alt=""
-                width="61"
-                height="61"
-              />
-              </div>
-              <div class="fr-request__body">
-                <div class="fr-request__top">
-                  <span class="fr-request__name">alice_wonder</span>
-                  <span class="gd-level">Lvl 35</span>
-                </div>
-                <div class="fr-request__meta">
-                  <span class="fr-meta">
-                    <img src="https://www.figma.com/api/mcp/asset/5bd50c0e-2a06-4d32-b3b4-aa2d4173d977" alt="" width="12" height="12" />
-                    12 mutual friends
-                  </span>
-                  <span class="gd-meta-sep" aria-hidden="true">•</span>
-                  <span class="fr-meta">
-                    <img src="https://www.figma.com/api/mcp/asset/6a44e268-b7c6-42a2-82db-d22bfeec6905" alt="" width="12" height="12" />
-                    2d ago
-                  </span>
-                </div>
-              </div>
-              <div class="fr-request__actions">
-                <button type="button" class="fr-btn fr-btn--accept">
-                  <img src="https://www.figma.com/api/mcp/asset/cadf72d3-90a5-4d2a-8d31-984c2aa15e6c" alt="" width="16" height="16" />
-                  Accept
-                </button>
-                <button type="button" class="fr-btn fr-btn--reject">
-                  <img src="https://www.figma.com/api/mcp/asset/309e0221-f7bd-41ac-bde9-aeecaa4876ab" alt="" width="16" height="16" />
-                  Reject
-                </button>
-              </div>
-            </article>
-          </li>
-          <li>
-            <article class="fr-request dg-surface-card">
-              <div class="avatar-shell avatar-shell--fr avatar-shell--border flex-shrink-0" data-forgeon-avatar data-user-level="28">
-                <div class="avatar-frame" aria-hidden="true"></div>
-                <img
-                class="fr-request__avatar"
-                src="https://www.figma.com/api/mcp/asset/4a4c9dfa-a5b4-4882-8d90-95290e629c5b"
-                alt=""
-                width="61"
-                height="61"
-              />
-              </div>
-              <div class="fr-request__body">
-                <div class="fr-request__top">
-                  <span class="fr-request__name">bob_builder</span>
-                  <span class="gd-level">Lvl 28</span>
-                </div>
-                <div class="fr-request__meta">
-                  <span class="fr-meta">
-                    <img src="https://www.figma.com/api/mcp/asset/5bd50c0e-2a06-4d32-b3b4-aa2d4173d977" alt="" width="12" height="12" />
-                    5 mutual friends
-                  </span>
-                  <span class="gd-meta-sep" aria-hidden="true">•</span>
-                  <span class="fr-meta">
-                    <img src="https://www.figma.com/api/mcp/asset/6a44e268-b7c6-42a2-82db-d22bfeec6905" alt="" width="12" height="12" />
-                    1d ago
-                  </span>
-                </div>
-              </div>
-              <div class="fr-request__actions">
-                <button type="button" class="fr-btn fr-btn--accept">
-                  <img src="https://www.figma.com/api/mcp/asset/cadf72d3-90a5-4d2a-8d31-984c2aa15e6c" alt="" width="16" height="16" />
-                  Accept
-                </button>
-                <button type="button" class="fr-btn fr-btn--reject">
-                  <img src="https://www.figma.com/api/mcp/asset/309e0221-f7bd-41ac-bde9-aeecaa4876ab" alt="" width="16" height="16" />
-                  Reject
-                </button>
-              </div>
-            </article>
-          </li>
-          <li>
-            <article class="fr-request dg-surface-card">
-              <div class="avatar-shell avatar-shell--fr avatar-shell--border flex-shrink-0" data-forgeon-avatar data-user-level="42">
-                <div class="avatar-frame" aria-hidden="true"></div>
-                <img
-                class="fr-request__avatar"
-                src="https://www.figma.com/api/mcp/asset/45d5606d-d3a5-40ea-97c1-8d8210aa4b45"
-                alt=""
-                width="61"
-                height="61"
-              />
-              </div>
-              <div class="fr-request__body">
-                <div class="fr-request__top">
-                  <span class="fr-request__name">charlie_dev</span>
-                  <span class="gd-level">Lvl 42</span>
-                </div>
-                <div class="fr-request__meta">
-                  <span class="fr-meta">
-                    <img src="https://www.figma.com/api/mcp/asset/5bd50c0e-2a06-4d32-b3b4-aa2d4173d977" alt="" width="12" height="12" />
-                    8 mutual friends
-                  </span>
-                  <span class="gd-meta-sep" aria-hidden="true">•</span>
-                  <span class="fr-meta">
-                    <img src="https://www.figma.com/api/mcp/asset/6a44e268-b7c6-42a2-82db-d22bfeec6905" alt="" width="12" height="12" />
-                    22h ago
-                  </span>
-                </div>
-              </div>
-              <div class="fr-request__actions">
-                <button type="button" class="fr-btn fr-btn--accept">
-                  <img src="https://www.figma.com/api/mcp/asset/cadf72d3-90a5-4d2a-8d31-984c2aa15e6c" alt="" width="16" height="16" />
-                  Accept
-                </button>
-                <button type="button" class="fr-btn fr-btn--reject">
-                  <img src="https://www.figma.com/api/mcp/asset/309e0221-f7bd-41ac-bde9-aeecaa4876ab" alt="" width="16" height="16" />
-                  Reject
-                </button>
-              </div>
-            </article>
-          </li>
-          <li>
-            <article class="fr-request dg-surface-card">
-              <div class="avatar-shell avatar-shell--fr avatar-shell--border flex-shrink-0" data-forgeon-avatar data-user-level="51">
-                <div class="avatar-frame" aria-hidden="true"></div>
-                <img
-                class="fr-request__avatar"
-                src="https://www.figma.com/api/mcp/asset/ad1e3ae1-94e1-492c-a59c-e6b5bc7df056"
-                alt=""
-                width="61"
-                height="61"
-              />
-              </div>
-              <div class="fr-request__body">
-                <div class="fr-request__top">
-                  <span class="fr-request__name">diana_designer</span>
-                  <span class="gd-level">Lvl 51</span>
-                </div>
-                <div class="fr-request__meta">
-                  <span class="fr-meta">
-                    <img src="https://www.figma.com/api/mcp/asset/5bd50c0e-2a06-4d32-b3b4-aa2d4173d977" alt="" width="12" height="12" />
-                    15 mutual friends
-                  </span>
-                  <span class="gd-meta-sep" aria-hidden="true">•</span>
-                  <span class="fr-meta">
-                    <img src="https://www.figma.com/api/mcp/asset/6a44e268-b7c6-42a2-82db-d22bfeec6905" alt="" width="12" height="12" />
-                    6h ago
-                  </span>
-                </div>
-              </div>
-              <div class="fr-request__actions">
-                <button type="button" class="fr-btn fr-btn--accept">
-                  <img src="https://www.figma.com/api/mcp/asset/cadf72d3-90a5-4d2a-8d31-984c2aa15e6c" alt="" width="16" height="16" />
-                  Accept
-                </button>
-                <button type="button" class="fr-btn fr-btn--reject">
-                  <img src="https://www.figma.com/api/mcp/asset/309e0221-f7bd-41ac-bde9-aeecaa4876ab" alt="" width="16" height="16" />
-                  Reject
-                </button>
-              </div>
-            </article>
-          </li>
-          <li>
-            <article class="fr-request dg-surface-card">
-              <div class="avatar-shell avatar-shell--fr avatar-shell--border flex-shrink-0" data-forgeon-avatar data-user-level="19">
-                <div class="avatar-frame" aria-hidden="true"></div>
-                <img
-                class="fr-request__avatar"
-                src="https://www.figma.com/api/mcp/asset/07b5c86d-b7d4-45c2-95b1-715eb65dbad5"
-                alt=""
-                width="61"
-                height="61"
-              />
-              </div>
-              <div class="fr-request__body">
-                <div class="fr-request__top">
-                  <span class="fr-request__name">edward_engineer</span>
-                  <span class="gd-level">Lvl 19</span>
-                </div>
-                <div class="fr-request__meta">
-                  <span class="fr-meta">
-                    <img src="https://www.figma.com/api/mcp/asset/5bd50c0e-2a06-4d32-b3b4-aa2d4173d977" alt="" width="12" height="12" />
-                    3 mutual friends
-                  </span>
-                  <span class="gd-meta-sep" aria-hidden="true">•</span>
-                  <span class="fr-meta">
-                    <img src="https://www.figma.com/api/mcp/asset/6a44e268-b7c6-42a2-82db-d22bfeec6905" alt="" width="12" height="12" />
-                    4h ago
-                  </span>
-                </div>
-              </div>
-              <div class="fr-request__actions">
-                <button type="button" class="fr-btn fr-btn--accept">
-                  <img src="https://www.figma.com/api/mcp/asset/cadf72d3-90a5-4d2a-8d31-984c2aa15e6c" alt="" width="16" height="16" />
-                  Accept
-                </button>
-                <button type="button" class="fr-btn fr-btn--reject">
-                  <img src="https://www.figma.com/api/mcp/asset/309e0221-f7bd-41ac-bde9-aeecaa4876ab" alt="" width="16" height="16" />
-                  Reject
-                </button>
-              </div>
-            </article>
-          </li>
-        </ul>
+        <ul id="frIncomingList" class="fr-list"></ul>
       </div>
 
       <div id="panel-sent" class="fr-panel fr-panel--hidden" role="tabpanel" aria-labelledby="tab-sent" hidden>
-        <ul class="fr-list">
-          <li>
-            <article class="fr-request fr-request--sent dg-surface-card">
-              <div class="avatar-shell avatar-shell--fr avatar-shell--border flex-shrink-0" data-forgeon-avatar data-user-level="31">
-                <div class="avatar-frame" aria-hidden="true"></div>
-                <div class="fr-request__avatar fr-request__avatar--placeholder" aria-hidden="true"></div>
-              </div>
-              <div class="fr-request__body">
-                <div class="fr-request__top">
-                  <span class="fr-request__name">morgan_frontend</span>
-                  <span class="gd-level">Lvl 31</span>
-                </div>
-                <div class="fr-request__meta">
-                  <span class="fr-meta fr-meta--solo">
-                    <img src="https://www.figma.com/api/mcp/asset/6a44e268-b7c6-42a2-82db-d22bfeec6905" alt="" width="12" height="12" />
-                    Sent 5d ago
-                  </span>
-                </div>
-              </div>
-              <div class="fr-request__actions">
-                <button type="button" class="fr-btn fr-btn--reject fr-btn--cancel">Cancel request</button>
-              </div>
-            </article>
-          </li>
-          <li>
-            <article class="fr-request fr-request--sent dg-surface-card">
-              <div class="avatar-shell avatar-shell--fr avatar-shell--border flex-shrink-0" data-forgeon-avatar data-user-level="47">
-                <div class="avatar-frame" aria-hidden="true"></div>
-                <div class="fr-request__avatar fr-request__avatar--placeholder" aria-hidden="true"></div>
-              </div>
-              <div class="fr-request__body">
-                <div class="fr-request__top">
-                  <span class="fr-request__name">sam_backend</span>
-                  <span class="gd-level">Lvl 47</span>
-                </div>
-                <div class="fr-request__meta">
-                  <span class="fr-meta fr-meta--solo">
-                    <img src="https://www.figma.com/api/mcp/asset/6a44e268-b7c6-42a2-82db-d22bfeec6905" alt="" width="12" height="12" />
-                    Sent 1w ago
-                  </span>
-                </div>
-              </div>
-              <div class="fr-request__actions">
-                <button type="button" class="fr-btn fr-btn--reject fr-btn--cancel">Cancel request</button>
-              </div>
-            </article>
-          </li>
-          <li>
-            <article class="fr-request fr-request--sent dg-surface-card">
-              <div class="avatar-shell avatar-shell--fr avatar-shell--border flex-shrink-0" data-forgeon-avatar data-user-level="22">
-                <div class="avatar-frame" aria-hidden="true"></div>
-                <div class="fr-request__avatar fr-request__avatar--placeholder" aria-hidden="true"></div>
-              </div>
-              <div class="fr-request__body">
-                <div class="fr-request__top">
-                  <span class="fr-request__name">taylor_ux</span>
-                  <span class="gd-level">Lvl 22</span>
-                </div>
-                <div class="fr-request__meta">
-                  <span class="fr-meta fr-meta--solo">
-                    <img src="https://www.figma.com/api/mcp/asset/6a44e268-b7c6-42a2-82db-d22bfeec6905" alt="" width="12" height="12" />
-                    Sent 2w ago
-                  </span>
-                </div>
-              </div>
-              <div class="fr-request__actions">
-                <button type="button" class="fr-btn fr-btn--reject fr-btn--cancel">Cancel request</button>
-              </div>
-            </article>
-          </li>
-        </ul>
+        <ul id="frSentList" class="fr-list"></ul>
       </div>
 
       <section class="fr-summary" aria-label="Request counts">
@@ -425,7 +149,7 @@
           </div>
           <div class="fr-stat__text">
             <p class="fr-stat__label">Incoming Requests</p>
-            <p class="fr-stat__value">5</p>
+            <p id="frIncomingSummaryCount" class="fr-stat__value">0</p>
           </div>
         </article>
         <article class="fr-stat dg-surface-card">
@@ -434,7 +158,7 @@
           </div>
           <div class="fr-stat__text">
             <p class="fr-stat__label">Sent Requests</p>
-            <p class="fr-stat__value">3</p>
+            <p id="frSentSummaryCount" class="fr-stat__value">0</p>
           </div>
         </article>
       </section>
@@ -478,6 +202,8 @@
       integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
       crossorigin="anonymous"
     ></script>
+    <script src="../../controllers/friends_invitations_controller.js"></script>
+    <script src="../../controllers/friends_controller.js"></script>
     <script src="../../assets/scripts/avatar-frames.js"></script>
     <script src="../../assets/scripts/friend_requests.js"></script>
     <script src="../../assets/scripts/nav-logout.js"></script>

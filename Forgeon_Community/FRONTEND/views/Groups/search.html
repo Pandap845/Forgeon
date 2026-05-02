@@ -117,29 +117,19 @@
 
       <div class="sr-filters">
         <div class="sr-tabs" role="tablist" aria-label="Search scope">
-          <button
-            type="button"
-            id="sr-tab-all"
-            class="sr-tab sr-tab--active"
-            role="tab"
-            aria-selected="true"
-            aria-controls="sr-panel-all"
-          >
-            All Results
-          </button>
-          <button type="button" id="sr-tab-groups" class="sr-tab" role="tab" aria-selected="false" aria-controls="sr-panel-all">
+          <button type="button" id="sr-tab-groups" class="sr-tab sr-tab--active" role="tab" aria-selected="true" aria-controls="sr-panel-results">
             <span class="sr-tab__content">
               <img src="https://www.figma.com/api/mcp/asset/6c3bbb66-c10f-4da9-b461-2b0aa8135b87" alt="" width="16" height="16" />
               Groups
             </span>
           </button>
-          <button type="button" id="sr-tab-threads" class="sr-tab" role="tab" aria-selected="false" aria-controls="sr-panel-all">
+          <button type="button" id="sr-tab-threads" class="sr-tab" role="tab" aria-selected="false" aria-controls="sr-panel-results">
             <span class="sr-tab__content">
               <img src="https://www.figma.com/api/mcp/asset/08040916-332e-423b-83b8-379e4788e09c" alt="" width="16" height="16" />
               Threads
             </span>
           </button>
-          <button type="button" id="sr-tab-users" class="sr-tab" role="tab" aria-selected="false" aria-controls="sr-panel-all">
+          <button type="button" id="sr-tab-users" class="sr-tab" role="tab" aria-selected="false" aria-controls="sr-panel-results">
             <span class="sr-tab__content">
               <img src="https://www.figma.com/api/mcp/asset/00ccb94b-aa42-4c53-90bb-a1e2934d62b6" alt="" width="16" height="16" />
               Users
@@ -147,7 +137,7 @@
           </button>
         </div>
 
-        <section id="sr-panel-all" class="sr-empty dg-surface-card" role="tabpanel" aria-labelledby="sr-tab-all">
+        <section id="sr-panel-results" class="sr-empty dg-surface-card" role="tabpanel" aria-labelledby="sr-tab-groups">
           <img
             class="sr-empty__icon"
             src="https://www.figma.com/api/mcp/asset/2ec120f2-a579-4b81-b357-5c1b37701b3b"
@@ -201,6 +191,8 @@
       integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
       crossorigin="anonymous"
     ></script>
+    <script src="../../controllers/friends_controller.js"></script>
+    <script src="../../controllers/friends_invitations_controller.js"></script>
     <script src="../../assets/scripts/search_page.js"></script>
     <script src="../../assets/scripts/nav-logout.js"></script>
   </body>
