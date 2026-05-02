@@ -5,6 +5,10 @@ function isObjectId(value) {
   return mongoose.isValidObjectId(value);
 }
 
+function escapeRegex(value) {
+  return String(value).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
 // Creates a new category or restores a soft-deleted category with the same name.
 async function createCategory(req, res) {
   try {
@@ -19,7 +23,9 @@ async function createCategory(req, res) {
       return res.status(400).json({ message: 'name cannot be empty.' });
     }
 
-    const existing = await Category.findOne({ name: normalizedName });
+    const existing = await Category.findOne({
+      name: { $regex: `^${escapeRegex(normalizedName)}$`, $options: 'i' },
+    });
     if (existing && !existing.isDeleted) {
       return res.status(409).json({ message: 'Category name already exists.' });
     }
@@ -91,9 +97,9 @@ async function updateCategory(req, res) {
         return res.status(400).json({ message: 'name cannot be empty.' });
       }
 
-      if (normalizedName !== category.name) {
+      if (normalizedName.toLowerCase() !== String(category.name || '').toLowerCase()) {
         const nameTaken = await Category.exists({
-          name: normalizedName,
+          name: { $regex: `^${escapeRegex(normalizedName)}$`, $options: 'i' },
           isDeleted: false,
           _id: { $ne: id },
         });

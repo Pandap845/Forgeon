@@ -97,10 +97,11 @@
     <main class="dg-main gs-main">
       <header class="gs-header">
         <div class="gs-header__row">
-          <h1 class="gs-title">Group Settings</h1>
+          <h1 id="gsPageTitle" class="gs-title">Group Settings</h1>
           <span class="gs-badge-owner">Owner</span>
         </div>
         <p class="gs-subtitle">Manage your group configuration and settings</p>
+        <p id="gsMetaInfo" class="gs-hint"></p>
       </header>
 
       <form id="groupSettingsForm" action="#" method="post" novalidate>
@@ -111,6 +112,7 @@
             <label class="gs-label" for="coverInput">Cover Image</label>
             <div class="gs-cover">
               <img
+                id="gsCoverImage"
                 class="gs-cover__img"
                 src="https://www.figma.com/api/mcp/asset/91985f62-8b0c-4635-b2b5-f7506e04f1af"
                 alt=""
@@ -127,6 +129,7 @@
             <div class="gs-icon-row">
               <div class="gs-icon-preview">
                 <img
+                  id="gsIconImage"
                   src="https://www.figma.com/api/mcp/asset/c966ed5c-7865-4850-bf65-8fcf694fcacd"
                   alt=""
                   width="94"
@@ -183,6 +186,7 @@
           </div>
 
         </section>
+        <p id="gsFormMessage" class="gs-hint mt-3"></p>
 
         <section class="gs-card gs-card--danger dg-surface-card" aria-labelledby="danger-heading">
           <div class="gs-danger-head">
@@ -263,6 +267,8 @@
       integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
       crossorigin="anonymous"
     ></script>
+    <script src="../../controllers/categories_controller.js"></script>
+    <script src="../../controllers/groups_controller.js"></script>
     <script src="../../assets/scripts/group_settings.js"></script>
     <script src="../../assets/scripts/nav-logout.js"></script>
   </body>

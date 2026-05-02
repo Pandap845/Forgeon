@@ -1701,6 +1701,10 @@ body.dg-page--group-mgmt .gm-main {
   color: var(--gm-eligible);
 }
 
+.gm-status-warn {
+  color: #f0c36b;
+}
+
 .gm-group-list {
   list-style: none;
   margin: 0;

@@ -114,12 +114,12 @@
         <div class="gm-well">
           <p class="gm-account-line">
             <span class="gm-muted-label">Current Account:</span>
-            <strong class="gm-account-name">veteran_user</strong>
+            <strong id="gmAccountName" class="gm-account-name">Loading...</strong>
           </p>
-          <p class="gm-meta-line">Created: 31/12/2025</p>
-          <p class="gm-meta-line gm-meta-line--status">
+          <p id="gmCreatedLine" class="gm-meta-line">Created: --</p>
+          <p id="gmStatusLine" class="gm-meta-line gm-meta-line--status">
             <span>Status:</span>
-            <span class="gm-status-ok">✓ Eligible to create groups</span>
+            <span id="gmStatusValue" class="gm-status-ok">Checking...</span>
           </p>
         </div>
       </article>
@@ -129,18 +129,11 @@
           <img src="https://www.figma.com/api/mcp/asset/dd084f96-0900-4835-8faa-92ff94af3c0f" alt="" width="20" height="20" />
           <h2 class="gm-card__title">My Groups</h2>
         </div>
-        <ul class="gm-group-list">
+        <ul id="gmGroupList" class="gm-group-list">
           <li>
-            <a href="./group_settings.html" class="gm-group-pill">
-              <span class="gm-group-pill__name">Dorx: is the new MrBeast?</span>
-              <span class="gm-group-pill__meta">23 members</span>
-            </a>
-          </li>
-          <li>
-            <a href="./group_settings.html" class="gm-group-pill">
-              <span class="gm-group-pill__name">Tech Innovators</span>
-              <span class="gm-group-pill__meta">47 members</span>
-            </a>
+            <span class="gm-group-pill">
+              <span class="gm-group-pill__name">Loading groups...</span>
+            </span>
           </li>
         </ul>
       </article>
@@ -150,7 +143,7 @@
         <p class="gm-lead">
           Ready to start your own community? Create a new group and invite members to join.
         </p>
-        <a class="gm-btn-create" href="./group_Creation.html">
+        <a id="gmCreateGroupBtn" class="gm-btn-create" href="./group_Creation.html">
           <img src="https://www.figma.com/api/mcp/asset/80464f30-b2d0-4ea8-a9bd-f5b949abdaca" alt="" width="16" height="16" />
           Create Group
         </a>
@@ -222,6 +215,9 @@
       integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
       crossorigin="anonymous"
     ></script>
+    <script src="../../controllers/users_api_controller.js"></script>
+    <script src="../../controllers/groups_controller.js"></script>
+    <script src="../../assets/scripts/group_management.js"></script>
     <script src="../../assets/scripts/nav-logout.js"></script>
   </body>
 </html>

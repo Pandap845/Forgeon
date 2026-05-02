@@ -1,43 +1,75 @@
 (function () {
-  var DATA = window.ForgeonGroupDetailData;
-  if (DATA) {
+  function resolveAssetUrl(url) {
+    var value = String(url || "").trim();
+    if (!value) return "";
+    if (/^https?:\/\//i.test(value)) return value;
+    if (value.startsWith("/")) return value;
+    return "/" + value;
+  }
+
+  function formatDate(value) {
+    var d = new Date(value);
+    if (Number.isNaN(d.getTime())) return "--";
+    var day = String(d.getDate()).padStart(2, "0");
+    var month = String(d.getMonth() + 1).padStart(2, "0");
+    var year = d.getFullYear();
+    return day + "/" + month + "/" + year;
+  }
+
+  async function loadGroup() {
+    if (!window.ForgeonGroupsController) return;
+
     var params = new URLSearchParams(window.location.search);
-    var slug = params.get("g") || "react-developers";
-    var group = DATA[slug];
-    if (!group) {
-      slug = "react-developers";
-      group = DATA[slug];
-    }
-    if (group) {
+    var groupId = params.get("groupId");
+    if (!groupId) return;
+
+    try {
+      var group = await window.ForgeonGroupsController.getById(groupId);
       var titleEl = document.getElementById("groupTitle");
-      if (titleEl) titleEl.textContent = group.title;
-      document.title = "Forgeon — " + group.title;
-
       var badge = document.getElementById("groupCategoryBadge");
-      if (badge) badge.textContent = group.category;
-
       var hero = document.getElementById("groupHeroImg");
-      if (hero) hero.src = group.hero;
+      var avatar = document.getElementById("groupAvatarImg");
+      var membersCount = document.getElementById("groupMembersCount");
+      var creatorLine = document.getElementById("groupCreatorLine");
+      var about = document.getElementById("groupAboutText");
+      var join = document.getElementById("groupJoinLink");
 
-      var av = document.getElementById("groupAvatarImg");
-      if (av) {
-        av.src = group.avatar;
-        av.alt = group.title + " avatar";
+      var groupName = group && group.name ? group.name : "Group";
+      if (titleEl) titleEl.textContent = groupName;
+      document.title = "Forgeon - " + groupName;
+
+      if (badge) badge.textContent = group && group.category && group.category.name ? group.category.name : "Uncategorized";
+
+      if (hero) {
+        var heroUrl = resolveAssetUrl(group && group.coverImageUrl);
+        if (heroUrl) hero.src = heroUrl;
       }
 
-      var membersCount = document.getElementById("groupMembersCount");
-      if (membersCount) membersCount.textContent = group.members;
+      if (avatar) {
+        var iconUrl = resolveAssetUrl(group && group.iconImageUrl);
+        if (iconUrl) avatar.src = iconUrl;
+        avatar.alt = groupName + " avatar";
+      }
 
-      var creatorLine = document.getElementById("groupCreatorLine");
-      if (creatorLine) creatorLine.textContent = group.creator;
+      if (membersCount) {
+        var count = typeof group.memberCount === "number" ? group.memberCount : 0;
+        membersCount.textContent = count + " members";
+      }
 
-      var about = document.getElementById("groupAboutText");
-      if (about) about.textContent = group.about;
+      if (creatorLine) {
+        var creatorName = group && group.creator && group.creator.username ? group.creator.username : "Unknown";
+        creatorLine.textContent = "Created by " + creatorName + " on " + formatDate(group && group.createdAt);
+      }
 
-      var join = document.getElementById("groupJoinLink");
-      if (join) join.setAttribute("href", "./group_management.html?g=" + encodeURIComponent(slug));
-    }
+      if (about) about.textContent = group && group.description ? group.description : "";
+
+      if (join) {
+        join.setAttribute("href", "./group_settings.html?groupId=" + encodeURIComponent(groupId));
+      }
+    } catch (_error) {}
   }
+
+  loadGroup();
 
   var tabThreads = document.getElementById("tab-threads");
   var tabMembers = document.getElementById("tab-members");
