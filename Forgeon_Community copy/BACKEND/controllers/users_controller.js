@@ -36,6 +36,8 @@ function toPublicUser(userDoc) {
     xpIntoCurrentLevel: prog.xpIntoCurrentLevel,
     xpToNextLevel: prog.xpToNextLevel,
     percentToNextLevel: prog.percentToNextLevel,
+    isMaxLevel: prog.isMaxLevel,
+    maxLevel: prog.maxLevel,
     badgesEarned: prog.badgesEarned,
     badgeCatalogTotal: prog.badgeCatalogTotal,
   };

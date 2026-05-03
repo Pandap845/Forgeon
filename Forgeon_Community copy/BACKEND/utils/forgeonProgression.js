@@ -151,6 +151,12 @@ const BADGE_CATALOG = [
 
 const BADGE_IDS = new Set(BADGE_CATALOG.map((b) => b.id));
 
+/** Level shown in UI, frames, and badges never exceeds this; XP can still grow beyond. */
+const MAX_LEVEL = 70;
+
+/** Minimum level required to create a group (enforced in groups_controller). */
+const MIN_LEVEL_CREATE_GROUP = 10;
+
 const FRAME_BADGE_THRESHOLDS = BADGE_CATALOG.filter((b) => b.category === 'frame').map((b) => ({
   id: b.id,
   minLevel: b.minLevel,
@@ -171,7 +177,7 @@ function xpStepForLevel(level) {
   return 100 * Math.max(1, level);
 }
 
-function getLevelFromXp(totalXp) {
+function getUncappedLevelFromXp(totalXp) {
   const xp = Math.max(0, Number(totalXp) || 0);
   let level = 1;
   while (xpTotalForLevel(level + 1) <= xp) {
@@ -181,9 +187,25 @@ function getLevelFromXp(totalXp) {
   return level;
 }
 
+function getLevelFromXp(totalXp) {
+  return Math.min(MAX_LEVEL, getUncappedLevelFromXp(totalXp));
+}
+
 function getXpProgress(totalXp) {
   const xp = Math.max(0, Number(totalXp) || 0);
   const level = getLevelFromXp(xp);
+  if (level >= MAX_LEVEL) {
+    const atMax = xpTotalForLevel(MAX_LEVEL);
+    const surplus = Math.max(0, xp - atMax);
+    return {
+      level: MAX_LEVEL,
+      experiencePoints: xp,
+      xpIntoCurrentLevel: surplus,
+      xpToNextLevel: 0,
+      percentToNextLevel: 100,
+      isMaxLevel: true,
+    };
+  }
   const atLevelStart = xpTotalForLevel(level);
   const into = xp - atLevelStart;
   const need = xpStepForLevel(level);
@@ -194,6 +216,7 @@ function getXpProgress(totalXp) {
     xpIntoCurrentLevel: into,
     xpToNextLevel: need,
     percentToNextLevel: pct,
+    isMaxLevel: false,
   };
 }
 
@@ -262,25 +285,30 @@ function progressionPayload(userDoc) {
     xpIntoCurrentLevel: prog.xpIntoCurrentLevel,
     xpToNextLevel: prog.xpToNextLevel,
     percentToNextLevel: prog.percentToNextLevel,
+    isMaxLevel: Boolean(prog.isMaxLevel),
+    maxLevel: MAX_LEVEL,
     badgesEarned: earned,
     badgeCatalogTotal: BADGE_CATALOG.length,
   };
 }
 
+/** XP rewards per action — tune here only (used by userProgressionService). */
 const XP = {
-  THREAD: 45,
-  THREAD_IMAGE_BONUS: 20,
-  COMMENT: 12,
-  FORUM_CREATED: 120,
-  GROUP_CREATED: 100,
-  GROUP_JOIN: 35,
-  FRIEND_ADDED: 40,
-  REGISTER: 30,
+  THREAD: 120,
+  THREAD_IMAGE_BONUS: 55,
+  COMMENT: 35,
+  FORUM_CREATED: 320,
+  GROUP_CREATED: 260,
+  GROUP_JOIN: 95,
+  FRIEND_ADDED: 110,
+  REGISTER: 80,
 };
 
 module.exports = {
   BADGE_CATALOG,
   BADGE_IDS,
+  MAX_LEVEL,
+  MIN_LEVEL_CREATE_GROUP,
   xpTotalForLevel,
   getLevelFromXp,
   getXpProgress,

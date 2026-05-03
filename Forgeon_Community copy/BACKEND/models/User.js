@@ -29,7 +29,7 @@ const userSchema = new mongoose.Schema(
 
     birthday: { type: Date },
     avatarUrl: { type: String, trim: true, default: "" },
-    level: { type: Number, min: 1, default: 1 },
+    level: { type: Number, min: 1, max: 70, default: 1 },
     experiencePoints: { type: Number, min: 0, default: 0 },
     badges: {
       type: [

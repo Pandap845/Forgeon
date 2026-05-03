@@ -173,22 +173,44 @@
     var hint = document.getElementById("forgeonXpHint");
     var pct = Math.max(0, Math.min(100, Number(user.percentToNextLevel) || 0));
     var into = Math.max(0, Number(user.xpIntoCurrentLevel) || 0);
-    var need = Math.max(1, Number(user.xpToNextLevel) || 1);
+    var need = Math.max(0, Number(user.xpToNextLevel) || 0);
     var lvl = Math.max(1, parseInt(user.level, 10) || 1);
+    var cap = parseInt(user.maxLevel, 10) || 70;
+    var atMax = user.isMaxLevel === true || (lvl >= cap && need === 0);
+
     if (meta) {
-      meta.textContent =
-        formatXp(user.experiencePoints || 0) + " XP · " + into + " / " + need + " to Lvl " + (lvl + 1);
+      if (atMax) {
+        meta.textContent =
+          formatXp(user.experiencePoints || 0) + " XP · Max level " + cap + (into > 0 ? " (+" + formatXp(into) + " past cap)" : "");
+      } else {
+        var needSafe = need > 0 ? need : 1;
+        meta.textContent =
+          formatXp(user.experiencePoints || 0) + " XP · " + into + " / " + needSafe + " to Lvl " + (lvl + 1);
+      }
     }
     if (fill) fill.style.width = pct + "%";
     if (bar) {
       bar.setAttribute("aria-valuenow", String(Math.round(pct)));
-      bar.setAttribute("aria-valuetext", pct + "% toward level " + (lvl + 1));
+      bar.setAttribute(
+        "aria-valuetext",
+        atMax ? "Maximum level " + cap + " reached" : pct + "% toward level " + (lvl + 1)
+      );
     }
     if (hint) {
-      hint.textContent =
-        "Next level at " +
-        formatXp((user.experiencePoints || 0) + (need - into)) +
-        " total XP. Keep posting, commenting, building forums and groups, and connecting with friends.";
+      if (atMax) {
+        hint.textContent =
+          "Level is capped at " +
+          cap +
+          ". You still earn XP; " +
+          (into > 0 ? formatXp(into) + " XP is stored beyond the cap. " : "") +
+          "Extra XP no longer increases your level.";
+      } else {
+        var needForHint = need > 0 ? need : 1;
+        hint.textContent =
+          "Next level at " +
+          formatXp((user.experiencePoints || 0) + (needForHint - into)) +
+          " total XP. Keep posting, commenting, building forums and groups, and connecting with friends.";
+      }
     }
   }
 

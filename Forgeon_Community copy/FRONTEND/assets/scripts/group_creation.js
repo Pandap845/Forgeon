@@ -21,8 +21,10 @@
 
   if (!form || !nameInput || !descInput || !categorySelect || !coverInput || !iconInput) return;
 
+  var MIN_LEVEL_CREATE_GROUP = 10;
   var categoriesCache = [];
   var createdGroupId = "";
+  var creationBlockedByLevel = false;
 
   function setMessage(el, message, isError) {
     if (!el) return;
@@ -56,7 +58,7 @@
       coverInput.files.length > 0 &&
       iconInput.files &&
       iconInput.files.length > 0;
-    createBtn.disabled = !canSubmit;
+    createBtn.disabled = !canSubmit || creationBlockedByLevel;
   }
 
   function syncFormState() {
@@ -99,6 +101,37 @@
 
     setMessage(categoryMsg, "");
     updateSubmitState();
+  }
+
+  async function loadCreationLevelGate() {
+    if (!window.ForgeonUsersController || !window.ForgeonUsersController.getById) return;
+    var raw = localStorage.getItem("forgeonCurrentUser");
+    if (!raw) return;
+    var current;
+    try {
+      current = JSON.parse(raw);
+    } catch (_e) {
+      return;
+    }
+    if (!current || !current.id) return;
+    try {
+      var user = await window.ForgeonUsersController.getById(current.id);
+      var lvl = parseInt(user.level, 10);
+      if (Number.isNaN(lvl) || lvl < 1) lvl = 1;
+      if (lvl < MIN_LEVEL_CREATE_GROUP) {
+        creationBlockedByLevel = true;
+        setMessage(
+          formMsg,
+          "You must be at least level " +
+            MIN_LEVEL_CREATE_GROUP +
+            " to create a group. Your level is " +
+            lvl +
+            ".",
+          true
+        );
+        updateSubmitState();
+      }
+    } catch (_e) {}
   }
 
   async function loadCategories(selectedId) {
@@ -154,6 +187,14 @@
     event.preventDefault();
     setMessage(formMsg, "");
     syncFormState();
+    if (creationBlockedByLevel) {
+      setMessage(
+        formMsg,
+        "You must be at least level " + MIN_LEVEL_CREATE_GROUP + " to create a group.",
+        true
+      );
+      return;
+    }
     if (createBtn.disabled) return;
 
     var formData = new FormData();
@@ -198,4 +239,5 @@
 
   syncFormState();
   loadCategories();
+  loadCreationLevelGate();
 })();

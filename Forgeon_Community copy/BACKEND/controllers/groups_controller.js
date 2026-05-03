@@ -1,6 +1,11 @@
 const mongoose = require('mongoose');
 const { Groups, Category, User, GroupMemberships } = require('../models');
 const userProgressionService = require('../services/userProgressionService');
+const {
+  ensureProgressionFields,
+  getLevelFromXp,
+  MIN_LEVEL_CREATE_GROUP,
+} = require('../utils/forgeonProgression');
 
 function isObjectId(value) {
   return mongoose.isValidObjectId(value);
@@ -37,6 +42,15 @@ async function createGroup(req, res) {
     if (!creator) {
       return res.status(404).json({ message: 'Creator user not found.' });
     }
+
+    ensureProgressionFields(creator);
+    const creatorLevel = getLevelFromXp(creator.experiencePoints);
+    if (creatorLevel < MIN_LEVEL_CREATE_GROUP) {
+      return res.status(403).json({
+        message: `You must be at least level ${MIN_LEVEL_CREATE_GROUP} to create groups. Your level is ${creatorLevel}.`,
+      });
+    }
+
     if (!isEligibleToCreateGroups(creator)) {
       return res.status(403).json({ message: 'Account must be at least 1 week old to create groups.' });
     }
