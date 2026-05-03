@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const { Threads, Forum, Groups, GroupMemberships } = require('../models');
+const userProgressionService = require('../services/userProgressionService');
 
 function isObjectId(value) {
   return mongoose.isValidObjectId(value);
@@ -36,6 +37,10 @@ async function createThread(req, res) {
       lastActivityBy: req.user.userId,
       lastActivityAt: new Date(),
     });
+
+    userProgressionService
+      .afterThreadCreated(req.user.userId, { imageUrl })
+      .catch((err) => console.warn('progression afterThreadCreated', err));
 
     return res.status(201).json(thread);
   } catch (error) {

@@ -85,7 +85,7 @@
               >
                 <img
                   class="nav-profile-img"
-                  src="https://i.pinimg.com/736x/b1/21/18/b1211897266308c27112a58eacad7482.jpg"
+                  src="/assets/images/default-avatar.svg"
                   alt=""
                   width="36"
                   height="36"
@@ -104,8 +104,8 @@
       </header>
 
       <section class="profile-card">
-        <div class="avatar-zone" id="avatarZone" data-user-level="25">
-          <div class="user-level-badge" id="userLevelBadge" aria-label="User level 25">Lvl 25</div>
+        <div class="avatar-zone" id="avatarZone" data-user-level="1">
+          <div class="user-level-badge" id="userLevelBadge" aria-label="User level">Lvl 1</div>
           <div class="avatar-zone__top-row">
             <div class="avatar-zone__avatar-col">
               <div class="avatar-visual">
@@ -113,7 +113,7 @@
                   class="avatar-shell"
                   id="avatarShell"
                   data-forgeon-avatar
-                  data-user-level="25"
+                  data-user-level="1"
                   data-forgeon-use-stored-frame="true"
                   data-frame-tier="0"
                   title="Profile frames unlock every 10 levels up to Mythic Legend at level 70."
@@ -122,7 +122,7 @@
                   <button type="button" class="avatar-btn" id="avatarButton" aria-label="Change profile picture">
                     <img
                       id="avatarPreview"
-                      src="https://i.pinimg.com/736x/b1/21/18/b1211897266308c27112a58eacad7482.jpg"
+                      src="/assets/images/default-avatar.svg"
                       alt="Profile picture"
                     />
                   </button>
@@ -148,6 +148,19 @@
           </div>
           <p class="avatar-hint">Click to change profile picture</p>
           <input id="avatarInput" type="file" accept="image/*" hidden />
+
+          <div class="forgeon-xp-panel" id="forgeonXpPanel" aria-label="Level progress">
+            <div class="forgeon-xp-panel__head">
+              <span class="forgeon-xp-panel__title">Level progress</span>
+              <span class="forgeon-xp-panel__meta" id="forgeonXpMeta"></span>
+            </div>
+            <div class="forgeon-xp-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="forgeonXpBar" aria-labelledby="forgeonXpMeta">
+              <div class="forgeon-xp-bar__fill" id="forgeonXpBarFill" style="width: 0%"></div>
+            </div>
+            <p class="forgeon-xp-hint" id="forgeonXpHint">
+              XP increases when you post threads, comment, create forums or groups, join squads, and add friends.
+            </p>
+          </div>
         </div>
 
         <div class="field-block">
@@ -174,14 +187,14 @@
             <div class="stat-icon">📝</div>
             <div>
               <p class="stat-label">Posts Published</p>
-              <p class="stat-value">142</p>
+              <p class="stat-value" id="postsStatValue">0</p>
             </div>
           </article>
           <a class="stats-item stats-clickable" id="groupsCard" href="../Groups/user_groups.html" aria-label="View My Groups">
             <div class="stat-icon">👥</div>
             <div>
               <p class="stat-label">Groups</p>
-              <p class="stat-value" id="groupsStatValue">6</p>
+              <p class="stat-value" id="groupsStatValue">0</p>
             </div>
           </a>
         </div>
@@ -189,7 +202,7 @@
         <div class="badge-header-row">
           <h2 class="badge-header">
             <span>My Badges</span>
-            <span class="badge-count">(3 of 60)</span>
+            <span class="badge-count" id="badgeCountLabel">(0 of 15)</span>
           </h2>
           <div class="badge-actions-inline">
             <div class="badge-controls">
@@ -202,92 +215,7 @@
             <button type="button" class="all-badges-btn" id="allBadgesButton">All my badges</button>
           </div>
         </div>
-        <div class="badge-list">
-          <article
-            class="badge-item badge-clickable"
-            data-badge-name="First Review Drop"
-            data-badge-description="Awarded for publishing your first videogame review post."
-            data-badge-method="Posted your first complete game review in the community feed."
-            data-badge-date="2025-02-12"
-            data-badge-rarity="rare"
-            tabindex="0"
-            role="button"
-            aria-label="View details for First Review Drop badge"
-          >
-            <div class="emoji">🚀</div>
-            <p>First Review Drop</p>
-          </article>
-          <article
-            class="badge-item badge-clickable"
-            data-badge-name="Lore Master"
-            data-badge-description="Recognizes top-quality posts explaining game lore and storylines."
-            data-badge-method="Published 15 lore posts with strong engagement from readers."
-            data-badge-date="2025-08-19"
-            data-badge-rarity="epic"
-            tabindex="0"
-            role="button"
-            aria-label="View details for Lore Master badge"
-          >
-            <div class="emoji">⭐</div>
-            <p>Lore Master</p>
-          </article>
-          <article
-            class="badge-item badge-item--highlight badge-clickable"
-            data-badge-name="Legend Hunter"
-            data-badge-description="Special badge for high-impact posts about legendary game moments."
-            data-badge-method="Created viral posts around major boss fights and hidden endings."
-            data-badge-date="2026-01-07"
-            data-badge-rarity="legendary"
-            tabindex="0"
-            role="button"
-            aria-label="View details for Legend Hunter badge"
-          >
-            <div class="emoji">🏆</div>
-            <p>Legend Hunter</p>
-          </article>
-          <article
-            class="badge-item badge-clickable"
-            data-badge-name="Patch Notes Pro"
-            data-badge-description="Given to users who publish clear and useful game update summaries."
-            data-badge-method="Published weekly patch notes breakdowns for 2 months."
-            data-badge-date="2026-02-15"
-            data-badge-rarity="epic"
-            tabindex="0"
-            role="button"
-            aria-label="View details for Patch Notes Pro badge"
-          >
-            <div class="emoji">🧠</div>
-            <p>Patch Notes Pro</p>
-          </article>
-          <article
-            class="badge-item badge-clickable"
-            data-badge-name="Speedrun Reporter"
-            data-badge-description="Awarded for posts covering speedrun records and route strategies."
-            data-badge-method="Published 10 speedrun highlight posts with top reactions."
-            data-badge-date="2025-11-03"
-            data-badge-rarity="rare"
-            tabindex="0"
-            role="button"
-            aria-label="View details for Speedrun Reporter badge"
-          >
-            <div class="emoji">⚡</div>
-            <p>Speedrun Reporter</p>
-          </article>
-          <article
-            class="badge-item badge-clickable"
-            data-badge-name="Indie Spotlight"
-            data-badge-description="Starter badge for publishing your first indie game recommendation."
-            data-badge-method="Posted a featured indie game thread with screenshots and opinions."
-            data-badge-date="2025-01-10"
-            data-badge-rarity="common"
-            tabindex="0"
-            role="button"
-            aria-label="View details for Indie Spotlight badge"
-          >
-            <div class="emoji">✨</div>
-            <p>Indie Spotlight</p>
-          </article>
-        </div>
+        <div class="badge-list" id="profileBadgeList"></div>
         <button type="button" class="more-badges-toggle" id="toggleMoreBadgesButton">Show more badges ▾</button>
       </section>
 
@@ -381,11 +309,8 @@
 
     <div class="modal-backdrop is-hidden" id="deletedModalBackdrop" aria-hidden="true">
       <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="deletedModalTitle">
-        <h3 id="deletedModalTitle">Account deleted (Interface Demo)</h3>
-        <p>
-          The username matched correctly. In the final backend integration, this step will trigger the permanent
-          account deletion.
-        </p>
+        <h3 id="deletedModalTitle">Account deleted</h3>
+        <p>Your account has been removed. You will be signed out.</p>
         <div class="modal-actions">
           <button type="button" class="modal-btn modal-btn-primary" id="closeDeletedModalButton">Close</button>
         </div>
@@ -395,15 +320,8 @@
     <div class="modal-backdrop is-hidden" id="allBadgesModalBackdrop" aria-hidden="true">
       <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="allBadgesModalTitle">
         <h3 id="allBadgesModalTitle">All my badges</h3>
-        <p>You currently have 6 unlocked badges out of 60 total badges.</p>
-        <ul class="all-badges-list">
-          <li>🚀 First Review Drop</li>
-          <li>⭐ Lore Master</li>
-          <li>🏆 Legend Hunter</li>
-          <li>🧠 Patch Notes Pro</li>
-          <li>⚡ Speedrun Reporter</li>
-          <li>✨ Indie Spotlight</li>
-        </ul>
+        <p id="allBadgesModalIntro">Loading badges…</p>
+        <ul class="all-badges-list" id="allBadgesModalList"></ul>
         <div class="modal-actions">
           <button type="button" class="modal-btn modal-btn-primary" id="closeAllBadgesModalButton">Close</button>
         </div>
@@ -483,26 +401,10 @@
     ></script>
     <script src="../../assets/scripts/my-groups-sync.js"></script>
     <script src="../../assets/scripts/avatar-frames.js"></script>
+    <script src="../../assets/scripts/forgeon-avatar-url.js"></script>
     <script src="../../assets/scripts/profile_username.js"></script>
     <script>
       (function () {
-        var groupsStatValue = document.getElementById("groupsStatValue");
-        var groupsCard = document.getElementById("groupsCard");
-        function syncGroupsStatFromStorage() {
-          var MG = window.ForgeonMyGroups;
-          if (!groupsStatValue || !MG) return;
-          var n = MG.getCount(6);
-          groupsStatValue.textContent = String(n);
-          if (groupsCard) {
-            groupsCard.setAttribute(
-              "aria-label",
-              "View My Groups (" + n + (n === 1 ? " group)" : " groups)")
-            );
-          }
-        }
-        syncGroupsStatFromStorage();
-        window.addEventListener("pageshow", syncGroupsStatFromStorage);
-
         var avatarButton = document.getElementById("avatarButton");
         var avatarInput = document.getElementById("avatarInput");
         var avatarPreview = document.getElementById("avatarPreview");
@@ -521,15 +423,6 @@
         var closeAllBadgesModalButton = document.getElementById("closeAllBadgesModalButton");
         var badgeDetailsModalBackdrop = document.getElementById("badgeDetailsModalBackdrop");
         var closeBadgeDetailsModalButton = document.getElementById("closeBadgeDetailsModalButton");
-        var badgeDetailName = document.getElementById("badgeDetailName");
-        var badgeDetailDescription = document.getElementById("badgeDetailDescription");
-        var badgeDetailRarity = document.getElementById("badgeDetailRarity");
-        var badgeDetailMethod = document.getElementById("badgeDetailMethod");
-        var badgeDetailDate = document.getElementById("badgeDetailDate");
-        var clickableBadges = Array.from(document.querySelectorAll(".badge-clickable"));
-        var badgeList = document.querySelector(".badge-list");
-        var badgeFilterSelect = document.getElementById("badgeFilterSelect");
-        var toggleMoreBadgesButton = document.getElementById("toggleMoreBadgesButton");
         var avatarZone = document.getElementById("avatarZone");
         var avatarShell = document.getElementById("avatarShell");
         var avatarFrame = document.getElementById("avatarFrame");
@@ -563,6 +456,8 @@
             avatarFrameName.textContent = "Equipped: " + info.name;
           }
         }
+
+        window.ForgeonProfileSyncLevelUi = syncProfileLevelUI;
 
         function buildFramePickerGrid() {
           if (!framePickerGrid) return;
@@ -657,7 +552,35 @@
         avatarInput.addEventListener("change", function (event) {
           var file = event.target.files && event.target.files[0];
           if (!file) return;
-          avatarPreview.src = URL.createObjectURL(file);
+          if (!window.ForgeonUsersController || typeof window.ForgeonUsersController.uploadAvatar !== "function") {
+            if (avatarPreview) avatarPreview.src = URL.createObjectURL(file);
+            event.target.value = "";
+            return;
+          }
+          (async function () {
+            try {
+              var data = await window.ForgeonUsersController.uploadAvatar(file);
+              var url = data && data.avatarUrl ? data.avatarUrl : "";
+              if (url) {
+                if (typeof window.resolveForgeonAvatarUrl === "function") {
+                  url = window.resolveForgeonAvatarUrl(url);
+                }
+                if (avatarPreview) avatarPreview.src = url;
+                document.querySelectorAll(".nav-profile-img").forEach(function (img) {
+                  img.src = url;
+                });
+              }
+              if (data && data.user) {
+                try {
+                  localStorage.setItem("forgeonCurrentUser", JSON.stringify(data.user));
+                } catch (_e) {}
+              }
+            } catch (err) {
+              window.alert(err && err.message ? err.message : "Could not upload profile picture.");
+            } finally {
+              event.target.value = "";
+            }
+          })();
         });
 
         deleteAccountButton.addEventListener("click", function () {
@@ -688,12 +611,58 @@
             return;
           }
 
-          closeModal(deleteModalBackdrop);
-          openModal(deletedModalBackdrop);
+          if (!window.ForgeonUsersController || typeof window.ForgeonUsersController.remove !== "function") {
+            deleteModalFeedback.textContent = "Could not reach the account service. Refresh the page and try again.";
+            deleteModalFeedback.classList.add("is-error");
+            return;
+          }
+
+          var rawUser;
+          try {
+            rawUser = localStorage.getItem("forgeonCurrentUser");
+          } catch (_e) {
+            rawUser = null;
+          }
+          var current = null;
+          try {
+            current = rawUser ? JSON.parse(rawUser) : null;
+          } catch (_e) {
+            current = null;
+          }
+          var userId = current && (current.id || current._id);
+          if (!userId) {
+            deleteModalFeedback.textContent = "You are not signed in. Reload or log in again.";
+            deleteModalFeedback.classList.add("is-error");
+            return;
+          }
+
+          var prevLabel = confirmDeleteButton.textContent;
+          confirmDeleteButton.disabled = true;
+          confirmDeleteButton.textContent = "Deleting…";
+
+          (async function () {
+            try {
+              await window.ForgeonUsersController.remove(String(userId));
+              try {
+                localStorage.removeItem("forgeonAuthToken");
+                localStorage.removeItem("forgeonCurrentUser");
+              } catch (_e) {}
+              closeModal(deleteModalBackdrop);
+              openModal(deletedModalBackdrop);
+            } catch (err) {
+              deleteModalFeedback.textContent =
+                err && err.message ? err.message : "Could not delete the account. Try again.";
+              deleteModalFeedback.classList.add("is-error");
+            } finally {
+              confirmDeleteButton.disabled = false;
+              confirmDeleteButton.textContent = prevLabel;
+            }
+          })();
         });
 
         closeDeletedModalButton.addEventListener("click", function () {
           closeModal(deletedModalBackdrop);
+          window.location.href = "../Login_Register/login.html";
         });
 
         deleteModalBackdrop.addEventListener("click", function (event) {
@@ -701,11 +670,10 @@
         });
 
         deletedModalBackdrop.addEventListener("click", function (event) {
-          if (event.target === deletedModalBackdrop) closeModal(deletedModalBackdrop);
-        });
-
-        allBadgesButton.addEventListener("click", function () {
-          openModal(allBadgesModalBackdrop);
+          if (event.target === deletedModalBackdrop) {
+            closeModal(deletedModalBackdrop);
+            window.location.href = "../Login_Register/login.html";
+          }
         });
 
         closeAllBadgesModalButton.addEventListener("click", function () {
@@ -716,72 +684,12 @@
           if (event.target === allBadgesModalBackdrop) closeModal(allBadgesModalBackdrop);
         });
 
-        function openBadgeDetailsModal(badge) {
-          badgeDetailName.textContent = badge.getAttribute("data-badge-name") || "Unknown badge";
-          badgeDetailDescription.textContent = badge.getAttribute("data-badge-description") || "No description.";
-          badgeDetailRarity.textContent = badge.getAttribute("data-badge-rarity") || "Unknown rarity";
-          badgeDetailMethod.textContent = badge.getAttribute("data-badge-method") || "No method provided.";
-          badgeDetailDate.textContent = badge.getAttribute("data-badge-date") || "Unknown date";
-          openModal(badgeDetailsModalBackdrop);
-        }
-
-        clickableBadges.forEach(function (badge) {
-          badge.addEventListener("click", function () {
-            openBadgeDetailsModal(badge);
-          });
-
-          badge.addEventListener("keydown", function (event) {
-            if (event.key === "Enter" || event.key === " ") {
-              event.preventDefault();
-              openBadgeDetailsModal(badge);
-            }
-          });
-        });
-
         closeBadgeDetailsModalButton.addEventListener("click", function () {
           closeModal(badgeDetailsModalBackdrop);
         });
 
         badgeDetailsModalBackdrop.addEventListener("click", function (event) {
           if (event.target === badgeDetailsModalBackdrop) closeModal(badgeDetailsModalBackdrop);
-        });
-
-        function parseDate(dateString) {
-          return new Date(dateString + "T00:00:00").getTime();
-        }
-
-        function sortBadges(criteria) {
-          var rarityOrder = { legendary: 4, epic: 3, rare: 2, common: 1 };
-          clickableBadges.sort(function (badgeA, badgeB) {
-            var dateA = parseDate(badgeA.getAttribute("data-badge-date") || "1970-01-01");
-            var dateB = parseDate(badgeB.getAttribute("data-badge-date") || "1970-01-01");
-
-            if (criteria === "rarity") {
-              var rarityA = rarityOrder[badgeA.getAttribute("data-badge-rarity")] || 0;
-              var rarityB = rarityOrder[badgeB.getAttribute("data-badge-rarity")] || 0;
-              if (rarityB !== rarityA) return rarityB - rarityA;
-            }
-
-            return dateB - dateA;
-          });
-
-          clickableBadges.forEach(function (badge) {
-            badgeList.appendChild(badge);
-          });
-        }
-
-        function updateMoreBadgesButton() {
-          var expanded = badgeList.classList.contains("show-all");
-          toggleMoreBadgesButton.textContent = expanded ? "Show fewer badges ▴" : "Show more badges ▾";
-        }
-
-        badgeFilterSelect.addEventListener("change", function () {
-          sortBadges(badgeFilterSelect.value);
-        });
-
-        toggleMoreBadgesButton.addEventListener("click", function () {
-          badgeList.classList.toggle("show-all");
-          updateMoreBadgesButton();
         });
 
         if (openFramePickerButton) {
@@ -803,11 +711,12 @@
           });
         }
 
-        sortBadges("recent");
-        updateMoreBadgesButton();
         syncProfileLevelUI();
       })();
     </script>
+    <script src="../../controllers/users_api_controller.js"></script>
+    <script src="../../controllers/group_memberships_controller.js"></script>
+    <script src="../../assets/scripts/profile_progression.js"></script>
     <script src="../../controllers/friends_invitations_controller.js"></script>
     <script src="../../controllers/groups_invitations_controller.js"></script>
     <script src="../../controllers/notification.controller.js"></script>

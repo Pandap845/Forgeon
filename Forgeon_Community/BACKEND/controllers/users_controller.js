@@ -1,24 +1,64 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const { User } = require('../models');
+const { User, Threads, GroupMemberships } = require('../models');
+const { progressionPayload, ensureProgressionFields, syncFrameBadgesForLevel, getLevelFromXp } = require('../utils/forgeonProgression');
+const userProgressionService = require('../services/userProgressionService');
+
+async function syncPostsPublishedFromThreads(userDoc) {
+  const n = await Threads.countDocuments({ author: userDoc._id, isDeleted: false });
+  if ((userDoc.postsPublished || 0) !== n) {
+    userDoc.postsPublished = n;
+  }
+}
+
+async function countActiveGroupMemberships(userId) {
+  const memberships = await GroupMemberships.find({ user: userId }).populate('group', 'isDeleted').lean();
+  return memberships.filter((m) => m.group && m.group.isDeleted !== true).length;
+}
+
+async function persistProgressionIfNeeded(userDoc) {
+  await syncPostsPublishedFromThreads(userDoc);
+  ensureProgressionFields(userDoc);
+  userDoc.level = getLevelFromXp(userDoc.experiencePoints);
+  syncFrameBadgesForLevel(userDoc);
+  if (userDoc.isModified && userDoc.isModified()) {
+    await userDoc.save();
+  }
+}
+
+async function userPayloadWithStats(userDoc) {
+  const base = toPublicUser(userDoc);
+  base.groupsJoinedCount = await countActiveGroupMemberships(userDoc._id);
+  return base;
+}
 
 const SALT_ROUNDS = 10;
 const AUTH_COOKIE_NAME = 'forgeon_auth_token';
 
 function toPublicUser(userDoc) {
+  ensureProgressionFields(userDoc);
+  const prog = progressionPayload(userDoc);
   return {
     id: userDoc._id,
     username: userDoc.username,
     email: userDoc.email,
     birthday: userDoc.birthday,
     avatarUrl: userDoc.avatarUrl,
-    level: userDoc.level,
     bio: userDoc.bio,
     postsPublished: userDoc.postsPublished,
     groupsCount: userDoc.groupsCount,
     isDeleted: userDoc.isDeleted,
     createdAt: userDoc.createdAt,
     updatedAt: userDoc.updatedAt,
+    level: prog.level,
+    experiencePoints: prog.experiencePoints,
+    xpIntoCurrentLevel: prog.xpIntoCurrentLevel,
+    xpToNextLevel: prog.xpToNextLevel,
+    percentToNextLevel: prog.percentToNextLevel,
+    isMaxLevel: prog.isMaxLevel,
+    maxLevel: prog.maxLevel,
+    badgesEarned: prog.badgesEarned,
+    badgeCatalogTotal: prog.badgeCatalogTotal,
   };
 }
 
@@ -50,9 +90,19 @@ function setAuthCookie(res, token) {
   });
 }
 
+function clearAuthCookie(res) {
+  const secure = process.env.NODE_ENV === 'production';
+  res.clearCookie(AUTH_COOKIE_NAME, {
+    httpOnly: true,
+    sameSite: 'lax',
+    secure,
+    path: '/',
+  });
+}
+
 async function createUser(req, res) {
   try {
-    const { username, email, password, birthday, avatarUrl, bio } = req.body;
+    const { username, email, password } = req.body;
 
     if (!username || !email || !password) {
       return res.status(400).json({ message: 'username, email, and password are required.' });
@@ -79,17 +129,20 @@ async function createUser(req, res) {
       username: normalizedUsername,
       email: normalizedEmail,
       passwordHash,
-      birthday,
-      avatarUrl,
-      bio,
+      avatarUrl: '',
     });
 
-    const token = createToken(user);
+    await userProgressionService.afterUserRegistered(user._id).catch(() => {});
+
+    const savedUser = await User.findById(user._id);
+    const token = createToken(savedUser || user);
     setAuthCookie(res, token);
+    const saved = savedUser || user;
+    await persistProgressionIfNeeded(saved);
     return res.status(201).json({
       message: 'User created successfully.',
       token,
-      user: toPublicUser(user),
+      user: await userPayloadWithStats(saved),
     });
   } catch (error) {
     return res.status(500).json({ message: error.message });
@@ -118,12 +171,14 @@ async function loginUser(req, res) {
       return res.status(401).json({ message: 'Invalid credentials.' });
     }
 
+    await persistProgressionIfNeeded(user);
+
     const token = createToken(user);
     setAuthCookie(res, token);
     return res.status(200).json({
       message: 'Login successful.',
       token,
-      user: toPublicUser(user),
+      user: await userPayloadWithStats(user),
     });
   } catch (error) {
     return res.status(500).json({ message: error.message });
@@ -131,14 +186,13 @@ async function loginUser(req, res) {
 }
 
 function logoutUser(_req, res) {
-  const secure = process.env.NODE_ENV === 'production';
-  res.clearCookie(AUTH_COOKIE_NAME, {
-    httpOnly: true,
-    sameSite: 'lax',
-    secure,
-    path: '/',
-  });
+  clearAuthCookie(res);
   return res.status(200).json({ message: 'Logout successful.' });
+}
+
+function getBadgeCatalog(_req, res) {
+  const { BADGE_CATALOG } = require('../utils/forgeonProgression');
+  return res.status(200).json(BADGE_CATALOG);
 }
 
 async function getUsers(req, res) {
@@ -157,7 +211,9 @@ async function getUserById(req, res) {
       return res.status(404).json({ message: 'User not found.' });
     }
 
-    return res.status(200).json(toPublicUser(user));
+    await persistProgressionIfNeeded(user);
+
+    return res.status(200).json(await userPayloadWithStats(user));
   } catch (error) {
     return res.status(400).json({ message: 'Invalid user id.' });
   }
@@ -199,17 +255,51 @@ async function updateUser(req, res) {
     }
 
     if (birthday !== undefined) currentUser.birthday = birthday;
-    if (avatarUrl !== undefined) currentUser.avatarUrl = avatarUrl;
+    if (avatarUrl !== undefined) {
+      const trimmed = String(avatarUrl).trim();
+      if (trimmed && !trimmed.startsWith('/uploads/profile-pictures/')) {
+        return res.status(400).json({ message: 'Avatar can only be set to uploaded profile images.' });
+      }
+      currentUser.avatarUrl = trimmed;
+    }
     if (bio !== undefined) currentUser.bio = bio;
 
     await currentUser.save();
 
+    await persistProgressionIfNeeded(currentUser);
+
     return res.status(200).json({
       message: 'User updated successfully.',
-      user: toPublicUser(currentUser),
+      user: await userPayloadWithStats(currentUser),
     });
   } catch (error) {
     return res.status(400).json({ message: 'Invalid user update request.' });
+  }
+}
+
+async function uploadUserAvatar(req, res) {
+  try {
+    const userId = req.user.userId;
+    if (!req.file) {
+      return res.status(400).json({ message: 'Image file is required (form field name: avatar).' });
+    }
+
+    const publicPath = `/uploads/profile-pictures/${req.file.filename}`;
+    const user = await User.findOne({ _id: userId, isDeleted: false });
+    if (!user) {
+      return res.status(404).json({ message: 'User not found.' });
+    }
+
+    user.avatarUrl = publicPath;
+    await user.save();
+
+    return res.status(200).json({
+      message: 'Avatar updated.',
+      avatarUrl: publicPath,
+      user: await userPayloadWithStats(user),
+    });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
   }
 }
 
@@ -228,6 +318,8 @@ async function deleteUser(req, res) {
     user.isDeleted = true;
     await user.save();
 
+    clearAuthCookie(res);
+
     return res.status(200).json({ message: 'User deleted successfully.' });
   } catch (error) {
     return res.status(400).json({ message: 'Invalid user id.' });
@@ -238,8 +330,10 @@ module.exports = {
   createUser,
   loginUser,
   logoutUser,
+  getBadgeCatalog,
   getUsers,
   getUserById,
   updateUser,
+  uploadUserAvatar,
   deleteUser,
 };

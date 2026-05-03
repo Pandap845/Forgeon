@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const { GroupMemberships, Groups, User } = require('../models');
+const userProgressionService = require('../services/userProgressionService');
 
 function isObjectId(value) {
   return mongoose.isValidObjectId(value);
@@ -62,6 +63,11 @@ async function createGroupMembership(req, res) {
     });
 
     await Groups.updateOne({ _id: group }, { $inc: { memberCount: 1 } });
+
+    userProgressionService
+      .afterGroupMembershipCreated(targetUserId, normalizedRole)
+      .catch((err) => console.warn('progression afterGroupMembershipCreated', err));
+
     return res.status(201).json(membership);
   } catch (error) {
     return res.status(400).json({ message: error.message });

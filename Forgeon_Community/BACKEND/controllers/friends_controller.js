@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const { Friends, User } = require('../models');
+const userProgressionService = require('../services/userProgressionService');
 
 function isObjectId(value) {
   return mongoose.isValidObjectId(value);
@@ -48,6 +49,8 @@ async function createFriend(req, res) {
       connectedBy: actorId,
       connectedAt: new Date(),
     });
+
+    userProgressionService.afterFriendCreated(actorId).catch((err) => console.warn('progression afterFriendCreated', err));
 
     return res.status(201).json(friendship);
   } catch (error) {

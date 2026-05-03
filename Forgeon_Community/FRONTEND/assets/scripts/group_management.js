@@ -2,6 +2,7 @@
   var USER_KEY = "forgeonCurrentUser";
   var TOKEN_KEY = "forgeonAuthToken";
   var ONE_WEEK_MS = 7 * 24 * 60 * 60 * 1000;
+  var MIN_LEVEL_CREATE_GROUP = 10;
 
   var accountNameEl = document.getElementById("gmAccountName");
   var createdLineEl = document.getElementById("gmCreatedLine");
@@ -39,9 +40,13 @@
       .replace(/'/g, "&#039;");
   }
 
-  function setEligibility(createdAt) {
+  function setEligibility(createdAt, userLevel) {
     var created = new Date(createdAt);
-    var eligible = !Number.isNaN(created.getTime()) && Date.now() - created.getTime() >= ONE_WEEK_MS;
+    var weekOk = !Number.isNaN(created.getTime()) && Date.now() - created.getTime() >= ONE_WEEK_MS;
+    var levelNum = parseInt(userLevel, 10);
+    if (Number.isNaN(levelNum) || levelNum < 1) levelNum = 1;
+    var levelOk = levelNum >= MIN_LEVEL_CREATE_GROUP;
+    var eligible = weekOk && levelOk;
 
     if (eligible) {
       statusValueEl.className = "gm-status-ok";
@@ -53,7 +58,10 @@
     }
 
     statusValueEl.className = "gm-status-warn";
-    statusValueEl.textContent = "Not eligible yet (account must be 1 week old)";
+    var parts = [];
+    if (!weekOk) parts.push("account must be 1 week old");
+    if (!levelOk) parts.push("reach level " + MIN_LEVEL_CREATE_GROUP + " (you are level " + levelNum + ")");
+    statusValueEl.textContent = "Not eligible yet (" + parts.join("; ") + ")";
     createBtn.style.pointerEvents = "none";
     createBtn.style.opacity = "0.5";
     createBtn.setAttribute("aria-disabled", "true");
@@ -102,7 +110,7 @@
 
       accountNameEl.textContent = user.username || "Unknown user";
       createdLineEl.textContent = "Created: " + formatDate(user.createdAt);
-      setEligibility(user.createdAt);
+      setEligibility(user.createdAt, user.level);
       renderGroups(groups);
     } catch (error) {
       statusValueEl.className = "gm-status-warn";

@@ -131,6 +131,61 @@ body.profile-page::-webkit-scrollbar-corner,
     box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
 }
 
+.forgeon-xp-panel {
+    width: min(420px, 100%);
+    margin-top: 0.35rem;
+    padding: 0.75rem 0.9rem 0.65rem;
+    border-radius: 14px;
+    background: rgba(0, 0, 0, 0.28);
+    border: 1px solid var(--profile-border);
+}
+
+.forgeon-xp-panel__head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin-bottom: 0.45rem;
+}
+
+.forgeon-xp-panel__title {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--profile-muted);
+}
+
+.forgeon-xp-panel__meta {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--profile-text);
+    white-space: nowrap;
+}
+
+.forgeon-xp-bar {
+    height: 10px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.06);
+    overflow: hidden;
+    outline: none;
+}
+
+.forgeon-xp-bar__fill {
+    height: 100%;
+    border-radius: inherit;
+    background: linear-gradient(90deg, #5a6ff0, #2abfe8, var(--profile-gold));
+    box-shadow: 0 0 12px rgba(90, 111, 240, 0.45);
+    transition: width 0.35s ease;
+}
+
+.forgeon-xp-hint {
+    margin: 0.55rem 0 0;
+    font-size: 0.78rem;
+    line-height: 1.45;
+    color: var(--profile-muted);
+}
+
 .avatar-zone__top-row {
     align-self: stretch;
     width: 100%;

@@ -1,4 +1,5 @@
 const Forum = require('../models/Forum');
+const userProgressionService = require('../services/userProgressionService');
 
 function slugify(name) {
   return name.toString().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
@@ -13,6 +14,9 @@ exports.createForum = async (req, res) => {
     const createdBy = (req.user && (req.user.userId || req.user.id || req.user._id)) || null;
     const forum = new Forum({ name, slug, description, imageUrl, createdBy });
     await forum.save();
+    if (createdBy) {
+      userProgressionService.afterForumCreated(createdBy).catch((err) => console.warn('progression afterForumCreated', err));
+    }
     return res.status(201).json(forum);
   } catch (err) {
     if (err.code === 11000) return res.status(409).json({ error: 'Forum with that name already exists' });

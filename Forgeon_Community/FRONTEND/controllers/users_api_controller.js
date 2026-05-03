@@ -74,6 +74,34 @@
     return request("/" + encodeURIComponent(id), { method: "DELETE" });
   }
 
+  // Upload profile picture; saves copy under BACKEND/uploads/profile-pictures.
+  async function uploadAvatar(file) {
+    var token = getToken();
+    var formData = new FormData();
+    formData.append("avatar", file);
+    var headers = {};
+    if (token) headers.Authorization = "Bearer " + token;
+
+    var response = await fetch(API_BASE + "/avatar", {
+      method: "POST",
+      headers: headers,
+      body: formData,
+    });
+
+    var data;
+    try {
+      data = await response.json();
+    } catch (_error) {
+      data = {};
+    }
+
+    if (!response.ok) {
+      throw new Error(data.message || "Upload failed.");
+    }
+
+    return data;
+  }
+
   window.ForgeonUsersController = {
     create: create,
     login: login,
@@ -82,5 +110,6 @@
     getById: getById,
     update: update,
     remove: remove,
+    uploadAvatar: uploadAvatar,
   };
 })();

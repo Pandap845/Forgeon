@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 const Models = require('../models');
+const userProgressionService = require('../services/userProgressionService');
 
 const AUTH_COOKIE_NAME = 'forgeon_auth_token';
 
@@ -69,6 +70,8 @@ async function createComment(req, res) {
     await Models.Threads.updateOne({ _id: threadDoc._id }, { $inc: { commentsCount: 1 } });
 
     await comment.populate('author', 'username avatarUrl');
+
+    userProgressionService.afterCommentCreated(userId).catch((err) => console.warn('progression afterCommentCreated', err));
 
     return res.status(201).json({
       _id: comment._id,
