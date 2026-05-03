@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+    <title>Forgeon — Group Management</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../../assets/styles/groups.css" />
+    <link rel="stylesheet" href="../../assets/styles/avatar-frames.css" />
+    <link rel="stylesheet" href="../../assets/styles/header.css" />
+  </head>
+  <body class="dg-page dg-page--group-mgmt">
+    <header class="forgeon-navbar">
+      <nav class="navbar navbar-expand-lg py-3">
+        <div class="container-fluid px-4">
+          <a class="navbar-brand d-flex align-items-center gap-3" href="../Home/homepage.html" title="Home">
+            <span class="forgeon-brand-badge d-inline-flex align-items-center justify-content-center">
+              <img src="https://cdn-icons-png.flaticon.com/512/686/686589.png" alt="logo" class="logo-img" />
+            </span>
+            <span class="d-flex flex-column lh-sm">
+              <span class="fw-medium">Forgeon</span>
+              <small class="text-muted-2">Gaming Community</small>
+            </span>
+          </a>
+
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#forgeonNav"
+            aria-controls="forgeonNav"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+
+          <div class="collapse navbar-collapse" id="forgeonNav">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0 gap-lg-3">
+                <li class="nav-item">
+                <a class="nav-link text-muted-2" href="../Home/forums.html">Forums</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link text-muted-2" href="./user_groups.html">Groups</a>
+              </li>
+            </ul>
+
+            <div class="d-flex align-items-center gap-2">
+              <a class="btn btn-link text-muted-2 px-2" href="./search.html" aria-label="Search">
+                <i class="bi bi-search fs-5"></i>
+              </a>
+              <button
+                class="btn btn-link text-muted-2 px-2"
+                type="button"
+                aria-label="Notifications"
+                data-bs-toggle="modal"
+                data-bs-target="#notificationsModal"
+              >
+                <i class="bi bi-bell fs-5"></i>
+              </button>
+              <a class="btn btn-link text-muted-2 px-2" href="../Groups/friend_requests.html" aria-label="Friend Requests">
+                <i class="bi bi-people fs-5"></i>
+              </a>
+              <a class="btn btn-link text-muted-2 px-2 nav-logout-btn" href="../Login_Register/login.html" aria-label="Log out" title="Log out">
+                <i class="bi bi-box-arrow-right fs-5"></i>
+              </a>
+              <a
+                class="btn btn-link text-muted-2 px-2 d-inline-flex align-items-center justify-content-center nav-profile-avatar"
+                href="../Profile/profile.html"
+                aria-label="Profile"
+              >
+                <img
+                  class="nav-profile-img"
+                  src="https://i.pinimg.com/736x/b1/21/18/b1211897266308c27112a58eacad7482.jpg"
+                  alt=""
+                  width="36"
+                  height="36"
+                />
+              </a>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+    <main class="dg-main gm-main">
+      <header class="gm-header">
+        <h1 class="gm-title">Group Management</h1>
+        <p class="gm-subtitle">Create and manage your community groups</p>
+      </header>
+
+      <article class="gm-card dg-surface-card">
+        <div class="gm-card__head gm-card__head--inline">
+          <h2 class="gm-card__title gm-card__title--plain">Validate account</h2>
+          <img
+            class="gm-title-accent"
+            src="https://www.figma.com/api/mcp/asset/a4d7f8b2-16cb-483f-8f44-002a8cda4d50"
+            alt=""
+            width="17"
+            height="8"
+          />
+        </div>
+        <div class="gm-well">
+          <p class="gm-account-line">
+            <span class="gm-muted-label">Current Account:</span>
+            <strong id="gmAccountName" class="gm-account-name">Loading...</strong>
+          </p>
+          <p id="gmCreatedLine" class="gm-meta-line">Created: --</p>
+          <p id="gmStatusLine" class="gm-meta-line gm-meta-line--status">
+            <span>Status:</span>
+            <span id="gmStatusValue" class="gm-status-ok">Checking...</span>
+          </p>
+        </div>
+      </article>
+
+      <article class="gm-card dg-surface-card">
+        <div class="gm-card__head gm-card__head--icon">
+          <img src="https://www.figma.com/api/mcp/asset/dd084f96-0900-4835-8faa-92ff94af3c0f" alt="" width="20" height="20" />
+          <h2 class="gm-card__title">My Groups</h2>
+        </div>
+        <ul id="gmGroupList" class="gm-group-list">
+          <li>
+            <span class="gm-group-pill">
+              <span class="gm-group-pill__name">Loading groups...</span>
+            </span>
+          </li>
+        </ul>
+      </article>
+
+      <article class="gm-card dg-surface-card">
+        <h2 class="gm-card__title gm-card__title--block">Create New Group</h2>
+        <p class="gm-lead">
+          Ready to start your own community? Create a new group and invite members to join.
+        </p>
+        <a id="gmCreateGroupBtn" class="gm-btn-create" href="./group_Creation.html">
+          <img src="https://www.figma.com/api/mcp/asset/80464f30-b2d0-4ea8-a9bd-f5b949abdaca" alt="" width="16" height="16" />
+          Create Group
+        </a>
+      </article>
+
+      <article class="gm-card dg-surface-card gm-card--steps">
+        <h2 class="gm-card__title gm-card__title--block">How Group Creation Works</h2>
+        <ol class="gm-steps">
+          <li class="gm-step">
+            <div class="gm-step__num" aria-hidden="true">1</div>
+            <p class="gm-step__title"><a class="gm-step__link" href="./discover_groups.html">Check Eligibility</a></p>
+            <p class="gm-step__hint">Account must be 1+ week old</p>
+          </li>
+          <li class="gm-step">
+            <div class="gm-step__num" aria-hidden="true">2</div>
+            <p class="gm-step__title"><a class="gm-step__link" href="./group_Creation.html">Fill Details</a></p>
+            <p class="gm-step__hint">Name, description &amp; image</p>
+          </li>
+          <li class="gm-step">
+            <div class="gm-step__num" aria-hidden="true">3</div>
+            <p class="gm-step__title"><a class="gm-step__link" href="./group_invitations.html">Invite Users</a></p>
+            <p class="gm-step__hint">Add members to your group</p>
+          </li>
+          <li class="gm-step">
+            <div class="gm-step__num" aria-hidden="true">4</div>
+            <p class="gm-step__title"><a class="gm-step__link" href="./group_detail.html">Create &amp; Launch</a></p>
+            <p class="gm-step__hint">Your group goes live!</p>
+          </li>
+        </ol>
+      </article>
+    </main>
+
+    <div class="modal fade" id="notificationsModal" tabindex="-1" aria-labelledby="notificationsModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content forgeon-modal">
+          <div class="modal-body p-4">
+            <div class="d-flex align-items-start justify-content-between gap-3 mb-3">
+              <div>
+                <h2 class="h5 mb-1" id="notificationsModalLabel">Notifications</h2>
+                <div class="text-muted-2 small">Your latest activity</div>
+              </div>
+              <button type="button" class="btn btn-link text-muted-2 p-0" data-bs-dismiss="modal" aria-label="Close">
+                <i class="bi bi-x-lg"></i>
+              </button>
+            </div>
+
+            <div class="forgeon-card p-3">
+              <div class="d-flex gap-3">
+                <div class="tv-notif-dot" aria-hidden="true">
+                  <i class="bi bi-bell"></i>
+                </div>
+                <div class="flex-grow-1">
+                  <div class="fw-medium">Placeholder notification</div>
+                  <div class="text-muted-2 small">
+                    Someone replied to your thread <span class="text-white-50">“Switch limits”</span>.
+                  </div>
+                  <div class="text-muted-3 small mt-2">Just now</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="../../assets/scripts/avatar-frames.js"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+      crossorigin="anonymous"
+    ></script>
+    <script src="../../controllers/users_api_controller.js"></script>
+    <script src="../../controllers/groups_controller.js"></script>
+    <script src="../../assets/scripts/group_management.js"></script>
+    <script src="../../controllers/friends_invitations_controller.js"></script>
+    <script src="../../controllers/groups_invitations_controller.js"></script>
+    <script src="../../controllers/notification.controller.js"></script>
+    <script src="../../assets/scripts/loading-overlay.js"></script>
+    <script src="../../assets/scripts/notifications.js"></script>
+    <script src="../../assets/scripts/nav-logout.js"></script>
+  </body>
+</html>

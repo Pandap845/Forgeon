@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="en" data-bs-theme="dark">
+
+<head>
+    <title>Forgeon - Forum Page</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+    <link rel="stylesheet" href="../../assets/styles/header.css" />
+    <link rel="stylesheet" href="../../assets/styles/avatar-frames.css" />
+    <link rel="stylesheet" href="../../assets/styles/homepage.css" />
+    <link rel="stylesheet" href="../../assets/styles/forumpage.css" />
+</head>
+
+<body>
+    <header class="forgeon-navbar">
+        <nav class="navbar navbar-expand-lg py-3">
+            <div class="container-fluid px-4">
+                <a class="navbar-brand d-flex align-items-center gap-3" href="./homepage.html" title="Home">
+                    <span class="forgeon-brand-badge d-inline-flex align-items-center justify-content-center">
+                        <img src="https://cdn-icons-png.flaticon.com/512/686/686589.png" alt="logo" class="logo-img" />
+                    </span>
+                    <span class="d-flex flex-column lh-sm">
+                        <span class="fw-medium">Forgeon</span>
+                        <small class="text-muted-2">Gaming Community</small>
+                    </span>
+                </a>
+
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#forgeonNav"
+                    aria-controls="forgeonNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="forgeonNav">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0 gap-lg-3">
+                        <li class="nav-item">
+                            <a class="nav-link text-muted-2" href="./forums.html">Forums</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-muted-2" href="../Groups/user_groups.html">Groups</a>
+                        </li>
+                    </ul>
+
+                    <div class="d-flex align-items-center gap-2">
+                        <a class="btn btn-link text-muted-2 px-2" href="../Groups/search.html" aria-label="Search">
+                            <i class="bi bi-search fs-5"></i>
+                        </a>
+                        <button class="btn btn-link text-muted-2 px-2" type="button" aria-label="Notifications" data-bs-toggle="modal"
+                            data-bs-target="#notificationsModal">
+                            <i class="bi bi-bell fs-5"></i>
+                        </button>
+                        <a class="btn btn-link text-muted-2 px-2" href="../Groups/friend_requests.html"
+                            aria-label="Friend Requests">
+                            <i class="bi bi-people fs-5"></i>
+                        </a>
+                        <a class="btn btn-link text-muted-2 px-2 nav-logout-btn" href="../Login_Register/login.html"
+                            aria-label="Log out" title="Log out">
+                            <i class="bi bi-box-arrow-right fs-5"></i>
+                        </a>
+                        <a class="btn btn-link text-muted-2 px-2 d-inline-flex align-items-center justify-content-center nav-profile-avatar"
+                            href="../Profile/profile.html" aria-label="Profile">
+                            <img class="nav-profile-img"
+                                src="https://i.pinimg.com/736x/b1/21/18/b1211897266308c27112a58eacad7482.jpg" alt=""
+                                width="36" height="36" />
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="forum-layout py-4 py-lg-5">
+        <div class="container-fluid px-4 forum-shell">
+            <div class="row g-3 g-xl-4">
+                <section class="col-12 col-xl-8">
+                    <div id="threadFeed" class="d-flex flex-column gap-2 forum-feed">
+                        <!-- Threads will be loaded here dynamically -->
+                    </div>
+                </section>
+
+                <aside class="col-12 col-xl-4">
+                    <div class="forum-sidebar d-flex flex-column gap-3">
+                        <section class="side-card p-3 p-md-4">
+                            <h2 class="side-title h4 mb-3">Create thread</h2>
+                            <button type="button" class="btn create-post-btn w-100" data-bs-toggle="modal"
+                                data-bs-target="#createThreadModal">New thread</button>
+                        </section>
+
+                        <section class="side-card p-3 p-md-4">
+                            <h2 class="side-title h4 mb-3">Popular Forums</h2>
+                            <ul id="popularForumsList" class="popular-list list-unstyled d-flex flex-column gap-2 mb-0">
+                                <!-- Populated dynamically from /api/forums (max 5) -->
+                            </ul>
+                        </section>
+                    </div>
+                </aside>
+            </div>
+        </div>
+    </main>
+
+    <div class="modal fade" id="createThreadModal" tabindex="-1" aria-labelledby="createThreadModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content forgeon-modal">
+                <div class="modal-body p-4 p-md-5">
+                    <div class="d-flex align-items-start justify-content-between gap-3 mb-4">
+                        <h2 class="h4 mb-0" id="createThreadModalLabel">Create Thread</h2>
+                        <button type="button" class="btn btn-link text-muted-2 p-0" data-bs-dismiss="modal"
+                            aria-label="Close">
+                            <i class="bi bi-x-lg"></i>
+                        </button>
+                    </div>
+
+                    <form id="createThreadForm">
+                        <div class="mb-4">
+                            <label for="threadImage" class="form-label fw-medium mb-2">Thread image</label>
+                            <div class="forgeon-upload">
+                                <div class="d-flex align-items-center justify-content-between gap-3">
+                                    <div class="d-flex align-items-center gap-3">
+                                        <div class="forgeon-upload-icon">
+                                            <i class="bi bi-image"></i>
+                                        </div>
+                                        <div class="d-flex flex-column">
+                                            <div class="fw-medium">Upload an image</div>
+                                            <small class="text-muted-2">PNG, JPG up to 5MB (placeholder)</small>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex align-items-center gap-2">
+                                        <input id="threadImage" class="form-control form-control-sm forgeon-file"
+                                            type="file" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="threadTitle" class="form-label fw-medium mb-2">Title</label>
+                            <input id="threadTitle" class="form-control forgeon-input" type="text"
+                                placeholder="Enter thread title" />
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="threadDescription" class="form-label fw-medium mb-2">Description</label>
+                            <textarea id="threadDescription" class="form-control forgeon-input" rows="5"
+                                placeholder="Describe your thread"></textarea>
+                        </div>
+
+                        <div class="mb-4">
+                            <div class="form-label fw-medium mb-2">Publish to</div>
+                            <div id="publishTargets" class="d-flex flex-column gap-3">
+                                <!-- Populated by controllers/threads_controller.js: General, groups and forums -->
+                            </div>
+                        </div>
+
+                        <button id="publishThreadBtn" type="button" class="btn w-100 forgeon-publish-btn" disabled>
+                            Publish Thread
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="notificationsModal" tabindex="-1" aria-labelledby="notificationsModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content forgeon-modal">
+                <div class="modal-body p-4">
+                    <div class="d-flex align-items-start justify-content-between gap-3 mb-3">
+                        <div>
+                            <h2 class="h5 mb-1" id="notificationsModalLabel">Notifications</h2>
+                            <div class="text-muted-2 small">Your latest activity</div>
+                        </div>
+                        <button type="button" class="btn btn-link text-muted-2 p-0" data-bs-dismiss="modal"
+                            aria-label="Close">
+                            <i class="bi bi-x-lg"></i>
+                        </button>
+                    </div>
+    
+                    <div class="forgeon-card p-3">
+                        <div class="d-flex gap-3">
+                            <div class="tv-notif-dot" aria-hidden="true">
+                                <i class="bi bi-bell"></i>
+                            </div>
+                            <div class="flex-grow-1">
+                                <div class="fw-medium">Placeholder notification</div>
+                                <div class="text-muted-2 small">
+                                    Someone replied to your thread <span class="text-white-50">“Switch limits”</span>.
+                                </div>
+                                <div class="text-muted-3 small mt-2">Just now</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+        crossorigin="anonymous"></script>
+    <script src="../../controllers/friends_invitations_controller.js"></script>
+    <script src="../../controllers/groups_invitations_controller.js"></script>
+    <script src="../../controllers/notification.controller.js"></script>
+    <script src="../../assets/scripts/loading-overlay.js"></script>
+    <script src="../../assets/scripts/notifications.js"></script>
+    <script src="../../assets/scripts/nav-logout.js"></script>
+    <script src="../../controllers/threads_controller.js"></script>
+</body>
+
+</html>

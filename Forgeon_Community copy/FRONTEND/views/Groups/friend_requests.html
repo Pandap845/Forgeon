@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+    <title>Forgeon — Friend Requests</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../../assets/styles/groups.css" />
+    <link rel="stylesheet" href="../../assets/styles/avatar-frames.css" />
+    <link rel="stylesheet" href="../../assets/styles/header.css" />
+  </head>
+  <body class="dg-page dg-page--friend-requests">
+    <header class="forgeon-navbar">
+      <nav class="navbar navbar-expand-lg py-3">
+        <div class="container-fluid px-4">
+          <a class="navbar-brand d-flex align-items-center gap-3" href="../Home/homepage.html" title="Home">
+            <span class="forgeon-brand-badge d-inline-flex align-items-center justify-content-center">
+              <img src="https://cdn-icons-png.flaticon.com/512/686/686589.png" alt="logo" class="logo-img" />
+            </span>
+            <span class="d-flex flex-column lh-sm">
+              <span class="fw-medium">Forgeon</span>
+              <small class="text-muted-2">Gaming Community</small>
+            </span>
+          </a>
+
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#forgeonNav"
+            aria-controls="forgeonNav"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+
+          <div class="collapse navbar-collapse" id="forgeonNav">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0 gap-lg-3">
+                <li class="nav-item">
+                <a class="nav-link text-muted-2" href="../Home/forums.html">Forums</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link text-muted-2" href="./user_groups.html">Groups</a>
+              </li>
+            </ul>
+
+            <div class="d-flex align-items-center gap-2">
+              <a class="btn btn-link text-muted-2 px-2" href="./search.html" aria-label="Search">
+                <i class="bi bi-search fs-5"></i>
+              </a>
+              <button
+                class="btn btn-link text-muted-2 px-2"
+                type="button"
+                aria-label="Notifications"
+                data-bs-toggle="modal"
+                data-bs-target="#notificationsModal"
+              >
+                <i class="bi bi-bell fs-5"></i>
+              </button>
+              <a class="btn btn-link text-muted-2 px-2" href="../Groups/friend_requests.html" aria-label="Friend Requests">
+                <i class="bi bi-people fs-5"></i>
+              </a>
+              <a class="btn btn-link text-muted-2 px-2 nav-logout-btn" href="../Login_Register/login.html" aria-label="Log out" title="Log out">
+                <i class="bi bi-box-arrow-right fs-5"></i>
+              </a>
+              <a
+                class="btn btn-link text-muted-2 px-2 d-inline-flex align-items-center justify-content-center nav-profile-avatar"
+                href="../Profile/profile.html"
+                aria-label="Profile"
+              >
+                <img
+                  class="nav-profile-img"
+                  src="https://i.pinimg.com/736x/b1/21/18/b1211897266308c27112a58eacad7482.jpg"
+                  alt=""
+                  width="36"
+                  height="36"
+                />
+              </a>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+    <main class="dg-main">
+      <header class="fr-header">
+        <h1 class="fr-title">Friend Requests</h1>
+        <p class="fr-subtitle">
+          Manage your incoming and outgoing friend requests.
+          <a class="fr-inline-link" href="./discover_groups.html">Discover groups</a>
+        </p>
+      </header>
+
+      <div class="fr-tabs-wrap" role="tablist" aria-label="Friend request direction">
+        <button
+          type="button"
+          id="tab-incoming"
+          class="fr-tab fr-tab--active"
+          role="tab"
+          aria-selected="true"
+          aria-controls="panel-incoming"
+        >
+            <span class="fr-tab__inner">
+              <img src="https://www.figma.com/api/mcp/asset/149f6942-2e46-4d21-add4-19f9b0a60aea" alt="" width="16" height="16" />
+              <span class="fr-tab__label">Incoming</span>
+              <span id="frIncomingTabCount" class="fr-tab-badge fr-tab-badge--alert">0</span>
+            </span>
+          </button>
+        <button
+          type="button"
+          id="tab-sent"
+          class="fr-tab"
+          role="tab"
+          aria-selected="false"
+          aria-controls="panel-sent"
+        >
+            <span class="fr-tab__inner">
+              <img src="https://www.figma.com/api/mcp/asset/67d57eba-df94-49f6-83c5-cc45573343c2" alt="" width="16" height="16" />
+              <span class="fr-tab__label">Sent</span>
+              <span id="frSentTabCount" class="fr-tab-badge fr-tab-badge--muted">0</span>
+            </span>
+          </button>
+        <button
+          type="button"
+          id="tab-friends"
+          class="fr-tab"
+          role="tab"
+          aria-selected="false"
+          aria-controls="panel-friends"
+        >
+            <span class="fr-tab__inner">
+              <i class="bi bi-people" aria-hidden="true"></i>
+              <span class="fr-tab__label">Friends</span>
+              <span id="frFriendsTabCount" class="fr-tab-badge fr-tab-badge--muted">0</span>
+            </span>
+          </button>
+        </div>
+
+      <div id="panel-incoming" class="fr-panel" role="tabpanel" aria-labelledby="tab-incoming">
+        <ul id="frIncomingList" class="fr-list"></ul>
+      </div>
+
+      <div id="panel-sent" class="fr-panel fr-panel--hidden" role="tabpanel" aria-labelledby="tab-sent" hidden>
+        <ul id="frSentList" class="fr-list"></ul>
+      </div>
+      <div id="panel-friends" class="fr-panel fr-panel--hidden" role="tabpanel" aria-labelledby="tab-friends" hidden>
+        <ul id="frFriendsList" class="fr-list"></ul>
+      </div>
+
+      <section class="fr-summary" aria-label="Request counts">
+        <article class="fr-stat dg-surface-card">
+          <div class="fr-stat__icon fr-stat__icon--incoming">
+            <img src="https://www.figma.com/api/mcp/asset/eaac9621-6ddc-42de-a063-d3ea83c27b7e" alt="" width="24" height="24" />
+          </div>
+          <div class="fr-stat__text">
+            <p class="fr-stat__label">Incoming Requests</p>
+            <p id="frIncomingSummaryCount" class="fr-stat__value">0</p>
+          </div>
+        </article>
+        <article class="fr-stat dg-surface-card">
+          <div class="fr-stat__icon fr-stat__icon--sent">
+            <img src="https://www.figma.com/api/mcp/asset/32216015-a1f4-4c5b-a0d6-fec3eec9b74a" alt="" width="24" height="24" />
+          </div>
+          <div class="fr-stat__text">
+            <p class="fr-stat__label">Sent Requests</p>
+            <p id="frSentSummaryCount" class="fr-stat__value">0</p>
+          </div>
+        </article>
+      </section>
+    </main>
+
+    <div class="modal fade" id="notificationsModal" tabindex="-1" aria-labelledby="notificationsModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content forgeon-modal">
+          <div class="modal-body p-4">
+            <div class="d-flex align-items-start justify-content-between gap-3 mb-3">
+              <div>
+                <h2 class="h5 mb-1" id="notificationsModalLabel">Notifications</h2>
+                <div class="text-muted-2 small">Your latest activity</div>
+              </div>
+              <button type="button" class="btn btn-link text-muted-2 p-0" data-bs-dismiss="modal" aria-label="Close">
+                <i class="bi bi-x-lg"></i>
+              </button>
+            </div>
+
+            <div class="forgeon-card p-3">
+              <div class="d-flex gap-3">
+                <div class="tv-notif-dot" aria-hidden="true">
+                  <i class="bi bi-bell"></i>
+                </div>
+                <div class="flex-grow-1">
+                  <div class="fw-medium">Placeholder notification</div>
+                  <div class="text-muted-2 small">
+                    Someone replied to your thread <span class="text-white-50">“Switch limits”</span>.
+                  </div>
+                  <div class="text-muted-3 small mt-2">Just now</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+      crossorigin="anonymous"
+    ></script>
+    <script src="../../controllers/friends_invitations_controller.js"></script>
+    <script src="../../controllers/friends_controller.js"></script>
+    <script src="../../controllers/groups_invitations_controller.js"></script>
+    <script src="../../assets/scripts/avatar-frames.js"></script>
+    <script src="../../assets/scripts/friend_requests.js"></script>
+    <script src="../../controllers/notification.controller.js"></script>
+    <script src="../../assets/scripts/loading-overlay.js"></script>
+    <script src="../../assets/scripts/notifications.js"></script>
+    <script src="../../assets/scripts/nav-logout.js"></script>
+  </body>
+</html>
