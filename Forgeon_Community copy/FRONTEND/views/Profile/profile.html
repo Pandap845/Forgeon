@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Forgeon - My Profile</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/686/686589.png" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+    <link rel="stylesheet" href="../../assets/styles/avatar-frames.css" />
+    <link rel="stylesheet" href="../../assets/styles/header.css" />
+    <link rel="stylesheet" href="../../assets/styles/profile.css" />
+  </head>
+  <body class="profile-page">
+    <script>
+      (function () {
+        try {
+          var q = new URLSearchParams(window.location.search);
+          var vid = (q.get("id") || "").trim();
+          var me = null;
+          try {
+            me = JSON.parse(localStorage.getItem("forgeonCurrentUser") || "null");
+          } catch (_e) {}
+          var myId = me && (me.id || me._id) ? String(me.id || me._id) : "";
+          window.ForgeonProfileViewUserId = null;
+          if (vid && (!myId || vid !== myId)) {
+            window.ForgeonProfileViewUserId = vid;
+            document.body.classList.add("profile-page--view-only");
+          }
+        } catch (_e) {
+          window.ForgeonProfileViewUserId = null;
+        }
+      })();
+    </script>
+    <header class="forgeon-navbar">
+      <nav class="navbar navbar-expand-lg py-3">
+        <div class="container-fluid px-4">
+          <a class="navbar-brand d-flex align-items-center gap-3" href="../Home/homepage.html" title="Home">
+            <span class="forgeon-brand-badge d-inline-flex align-items-center justify-content-center">
+              <img src="https://cdn-icons-png.flaticon.com/512/686/686589.png" alt="logo" class="logo-img" />
+            </span>
+            <span class="d-flex flex-column lh-sm">
+              <span class="fw-medium">Forgeon</span>
+              <small class="text-muted-2">Gaming Community</small>
+            </span>
+          </a>
+
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#forgeonNav"
+            aria-controls="forgeonNav"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+
+          <div class="collapse navbar-collapse" id="forgeonNav">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0 gap-lg-3">
+              <li class="nav-item">
+                <a class="nav-link text-muted-2" href="../Home/forums.html">Forums</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link text-muted-2" href="../Groups/user_groups.html">Groups</a>
+              </li>
+            </ul>
+
+            <div class="d-flex align-items-center gap-2">
+              <a class="btn btn-link text-muted-2 px-2" href="../Groups/search.html" aria-label="Search">
+                <i class="bi bi-search fs-5"></i>
+              </a>
+              <button
+                class="btn btn-link text-muted-2 px-2"
+                type="button"
+                aria-label="Notifications"
+                data-bs-toggle="modal"
+                data-bs-target="#notificationsModal"
+              >
+                <i class="bi bi-bell fs-5"></i>
+              </button>
+              <a class="btn btn-link text-muted-2 px-2" href="../Groups/friend_requests.html" aria-label="Friend Requests">
+                <i class="bi bi-people fs-5"></i>
+              </a>
+              <a class="btn btn-link text-muted-2 px-2 nav-logout-btn" href="../Login_Register/login.html" aria-label="Log out" title="Log out">
+                <i class="bi bi-box-arrow-right fs-5"></i>
+              </a>
+              <a
+                class="btn btn-link text-muted-2 px-2 d-inline-flex align-items-center justify-content-center nav-profile-avatar"
+                href="./profile.html"
+                aria-label="Profile"
+                aria-current="page"
+              >
+                <img
+                  class="nav-profile-img"
+                  src="/assets/images/default-avatar.svg"
+                  alt=""
+                  width="36"
+                  height="36"
+                />
+              </a>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="profile-wrapper">
+      <header class="profile-header">
+        <div id="profileViewBanner" class="profile-view-banner is-hidden" role="status">
+          <span class="profile-view-banner__text">You are viewing another member’s profile.</span>
+          <a class="profile-view-banner__link" href="./profile.html">Back to my profile</a>
+        </div>
+        <h1>My Profile</h1>
+        <p>Manage your personal information and achievements</p>
+      </header>
+
+      <section class="profile-card">
+        <div class="avatar-zone" id="avatarZone" data-user-level="1">
+          <div class="user-level-badge" id="userLevelBadge" aria-label="User level">Lvl 1</div>
+          <div class="avatar-zone__top-row">
+            <div class="avatar-zone__avatar-col">
+              <div class="avatar-visual">
+                <div
+                  class="avatar-shell"
+                  id="avatarShell"
+                  data-forgeon-avatar
+                  data-user-level="1"
+                  data-forgeon-use-stored-frame="true"
+                  data-frame-tier="0"
+                  title="Profile frames unlock every 10 levels up to Mythic Legend at level 70."
+                >
+                  <div class="avatar-frame" id="avatarFrame" aria-hidden="true"></div>
+                  <button type="button" class="avatar-btn" id="avatarButton" aria-label="Change profile picture">
+                    <img
+                      id="avatarPreview"
+                      src="/assets/images/default-avatar.svg"
+                      alt="Profile picture"
+                    />
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="avatar-zone__header-actions profile-owner-only">
+              <a
+                class="profile-manage-groups-btn"
+                href="../Groups/group_management.html"
+                aria-label="Open group management"
+                title="Manage your groups"
+              >
+                Manage groups
+              </a>
+            </div>
+          </div>
+          <div class="avatar-frame-row">
+            <p class="avatar-frame-name" id="avatarFrameName" aria-live="polite"></p>
+            <button type="button" class="frame-edit-btn profile-owner-only" id="openFramePickerButton">
+              Edit frame
+            </button>
+          </div>
+          <p class="avatar-hint profile-owner-only">Click to change profile picture</p>
+          <input id="avatarInput" type="file" accept="image/*" hidden />
+
+          <div class="forgeon-xp-panel" id="forgeonXpPanel" aria-label="Level progress">
+            <div class="forgeon-xp-panel__head">
+              <span class="forgeon-xp-panel__title">Level progress</span>
+              <span class="forgeon-xp-panel__meta" id="forgeonXpMeta"></span>
+            </div>
+            <div class="forgeon-xp-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="forgeonXpBar" aria-labelledby="forgeonXpMeta">
+              <div class="forgeon-xp-bar__fill" id="forgeonXpBarFill" style="width: 0%"></div>
+            </div>
+            <p class="forgeon-xp-hint" id="forgeonXpHint">
+              XP increases when you post threads, comment, create forums or groups, join squads, and add friends.
+            </p>
+          </div>
+        </div>
+
+        <div class="field-block">
+          <label for="username">Username</label>
+          <input
+            class="text-input text-input--readonly"
+            id="username"
+            type="text"
+            value="Miku39"
+            readonly
+            aria-readonly="true"
+            title="Change your username in Account Settings below"
+          />
+        </div>
+
+        <div class="field-block">
+          <label for="birthday">Birthday</label>
+          <input class="text-input" id="birthday" type="date" />
+        </div>
+
+        <h2 class="section-title">Statistics</h2>
+        <div class="stats-list">
+          <article class="stats-item">
+            <div class="stat-icon">📝</div>
+            <div>
+              <p class="stat-label">Posts Published</p>
+              <p class="stat-value" id="postsStatValue">0</p>
+            </div>
+          </article>
+          <a class="stats-item stats-clickable" id="groupsCard" href="../Groups/user_groups.html" aria-label="View My Groups">
+            <div class="stat-icon">👥</div>
+            <div>
+              <p class="stat-label">Groups</p>
+              <p class="stat-value" id="groupsStatValue">0</p>
+            </div>
+          </a>
+        </div>
+
+        <div class="badge-header-row">
+          <h2 class="badge-header">
+            <span>My Badges</span>
+            <span class="badge-count" id="badgeCountLabel">(0 of 15)</span>
+          </h2>
+          <div class="badge-actions-inline">
+            <div class="badge-controls">
+              <label class="badge-filter-label" for="badgeFilterSelect">Filter badges:</label>
+              <select id="badgeFilterSelect" class="badge-filter-select">
+                <option value="recent">Most recent first</option>
+                <option value="rarity">By rarity</option>
+              </select>
+            </div>
+            <button type="button" class="all-badges-btn" id="allBadgesButton">All my badges</button>
+          </div>
+        </div>
+        <div class="badge-list" id="profileBadgeList"></div>
+        <button type="button" class="more-badges-toggle" id="toggleMoreBadgesButton">Show more badges ▾</button>
+      </section>
+
+        <section class="profile-card profile-owner-only">
+          <h2 class="section-title">Forums</h2>
+          <p class="account-subtitle">Manage forums you created. You can visit or permanently delete them here.</p>
+
+          <div id="myForumsList" class="forum-list">
+            <div class="forgeon-card p-3">Loading your forums…</div>
+          </div>
+        </section>
+
+        <section class="profile-card account-card profile-owner-only">
+        <h2 class="section-title">Account Settings</h2>
+        <p class="account-subtitle">Update your account data and security preferences.</p>
+
+        <div class="field-block">
+          <label for="newUsername">Change Username</label>
+          <div class="username-row">
+            <input
+              class="text-input"
+              id="newUsername"
+              type="text"
+              placeholder="Enter a new username"
+              autocomplete="username"
+            />
+            <button class="check-btn" type="button">Check</button>
+          </div>
+          <p class="field-hint">Username must be unique. Availability check will be connected next.</p>
+        </div>
+
+        <div class="field-block">
+          <label for="newPassword">New Password</label>
+          <input
+            class="text-input"
+            id="newPassword"
+            type="password"
+            placeholder="Create a new password"
+            autocomplete="new-password"
+          />
+        </div>
+
+        <div class="field-block">
+          <label for="confirmNewPassword">Confirm New Password</label>
+          <input
+            class="text-input"
+            id="confirmNewPassword"
+            type="password"
+            placeholder="Repeat the new password"
+            autocomplete="new-password"
+          />
+          <p class="field-hint">Both password fields must match.</p>
+        </div>
+
+        <div class="account-actions">
+          <button type="button" class="primary-action">Save Changes</button>
+        </div>
+
+        <div class="danger-zone">
+          <h3>Danger Zone</h3>
+          <p>This action permanently deletes your account and all related data.</p>
+          <button type="button" class="danger-action" id="deleteAccountButton">Delete Account</button>
+        </div>
+      </section>
+    </main>
+
+    <div class="modal-backdrop is-hidden" id="deleteModalBackdrop" aria-hidden="true">
+      <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="deleteModalTitle">
+        <h3 id="deleteModalTitle">Confirm account deletion</h3>
+        <p>
+          This action cannot be undone. Type your username exactly as shown on your profile
+          (<span class="required-message" id="deleteConfirmUsernameHint">Miku39</span>).
+        </p>
+        <label for="deleteConfirmInput">Your username</label>
+        <input
+          class="text-input"
+          id="deleteConfirmInput"
+          type="text"
+          placeholder="Enter your username"
+          autocomplete="username"
+        />
+        <p class="modal-feedback" id="deleteModalFeedback"></p>
+        <div class="modal-actions">
+          <button type="button" class="modal-btn modal-btn-secondary" id="cancelDeleteButton">Cancel</button>
+          <button type="button" class="modal-btn modal-btn-danger" id="confirmDeleteButton">
+            Confirm delete
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-backdrop is-hidden" id="deletedModalBackdrop" aria-hidden="true">
+      <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="deletedModalTitle">
+        <h3 id="deletedModalTitle">Account deleted</h3>
+        <p>Your account has been removed. You will be signed out.</p>
+        <div class="modal-actions">
+          <button type="button" class="modal-btn modal-btn-primary" id="closeDeletedModalButton">Close</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-backdrop is-hidden" id="allBadgesModalBackdrop" aria-hidden="true">
+      <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="allBadgesModalTitle">
+        <h3 id="allBadgesModalTitle">All my badges</h3>
+        <p id="allBadgesModalIntro">Loading badges…</p>
+        <ul class="all-badges-list" id="allBadgesModalList"></ul>
+        <div class="modal-actions">
+          <button type="button" class="modal-btn modal-btn-primary" id="closeAllBadgesModalButton">Close</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-backdrop is-hidden" id="badgeDetailsModalBackdrop" aria-hidden="true">
+      <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="badgeDetailsTitle">
+        <h3 id="badgeDetailsTitle">Badge details</h3>
+        <p class="badge-detail-line"><strong>Name:</strong> <span id="badgeDetailName"></span></p>
+        <p class="badge-detail-line"><strong>Description:</strong> <span id="badgeDetailDescription"></span></p>
+        <p class="badge-detail-line"><strong>Rarity:</strong> <span id="badgeDetailRarity"></span></p>
+        <p class="badge-detail-line"><strong>How it was obtained:</strong> <span id="badgeDetailMethod"></span></p>
+        <p class="badge-detail-line"><strong>Date obtained:</strong> <span id="badgeDetailDate"></span></p>
+        <div class="modal-actions">
+          <button type="button" class="modal-btn modal-btn-primary" id="closeBadgeDetailsModalButton">Close</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-backdrop is-hidden" id="framePickerModalBackdrop" aria-hidden="true">
+      <div
+        class="modal-card modal-card--frame-picker"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="framePickerModalTitle"
+      >
+        <h3 id="framePickerModalTitle">Profile frames</h3>
+        <p class="frame-picker-intro">
+          Pick any frame unlocked for your level (every 10 levels through 60, then Mythic Legend at 70).
+          Locked cards show the level you still need.
+        </p>
+        <div class="frame-picker-grid" id="framePickerGrid" aria-label="Profile frames"></div>
+        <div class="modal-actions">
+          <button type="button" class="modal-btn modal-btn-primary" id="closeFramePickerButton">Done</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="notificationsModal" tabindex="-1" aria-labelledby="notificationsModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content forgeon-modal">
+          <div class="modal-body p-4">
+            <div class="d-flex align-items-start justify-content-between gap-3 mb-3">
+              <div>
+                <h2 class="h5 mb-1" id="notificationsModalLabel">Notifications</h2>
+                <div class="text-muted-2 small">Your latest activity</div>
+              </div>
+              <button type="button" class="btn btn-link text-muted-2 p-0" data-bs-dismiss="modal" aria-label="Close">
+                <i class="bi bi-x-lg"></i>
+              </button>
+            </div>
+
+            <div class="forgeon-card p-3">
+              <div class="d-flex gap-3">
+                <div class="tv-notif-dot" aria-hidden="true">
+                  <i class="bi bi-bell"></i>
+                </div>
+                <div class="flex-grow-1">
+                  <div class="fw-medium">Placeholder notification</div>
+                  <div class="text-muted-2 small">
+                    Someone replied to your thread <span class="text-white-50">“Switch limits”</span>.
+                  </div>
+                  <div class="text-muted-3 small mt-2">Just now</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+      crossorigin="anonymous"
+    ></script>
+    <script src="../../assets/scripts/my-groups-sync.js"></script>
+    <script src="../../assets/scripts/avatar-frames.js"></script>
+    <script src="../../assets/scripts/forgeon-avatar-url.js"></script>
+    <script src="../../assets/scripts/profile_username.js"></script>
+    <script>
+      (function () {
+        var avatarButton = document.getElementById("avatarButton");
+        var avatarInput = document.getElementById("avatarInput");
+        var avatarPreview = document.getElementById("avatarPreview");
+        var deleteAccountButton = document.getElementById("deleteAccountButton");
+        var deleteModalBackdrop = document.getElementById("deleteModalBackdrop");
+        var deletedModalBackdrop = document.getElementById("deletedModalBackdrop");
+        var deleteConfirmInput = document.getElementById("deleteConfirmInput");
+        var deleteModalFeedback = document.getElementById("deleteModalFeedback");
+        var cancelDeleteButton = document.getElementById("cancelDeleteButton");
+        var confirmDeleteButton = document.getElementById("confirmDeleteButton");
+        var closeDeletedModalButton = document.getElementById("closeDeletedModalButton");
+        var usernameField = document.getElementById("username");
+        var deleteConfirmUsernameHint = document.getElementById("deleteConfirmUsernameHint");
+        var allBadgesButton = document.getElementById("allBadgesButton");
+        var allBadgesModalBackdrop = document.getElementById("allBadgesModalBackdrop");
+        var closeAllBadgesModalButton = document.getElementById("closeAllBadgesModalButton");
+        var badgeDetailsModalBackdrop = document.getElementById("badgeDetailsModalBackdrop");
+        var closeBadgeDetailsModalButton = document.getElementById("closeBadgeDetailsModalButton");
+        var avatarZone = document.getElementById("avatarZone");
+        var avatarShell = document.getElementById("avatarShell");
+        var avatarFrame = document.getElementById("avatarFrame");
+        var avatarFrameName = document.getElementById("avatarFrameName");
+        var userLevelBadge = document.getElementById("userLevelBadge");
+        var openFramePickerButton = document.getElementById("openFramePickerButton");
+        var framePickerModalBackdrop = document.getElementById("framePickerModalBackdrop");
+        var framePickerGrid = document.getElementById("framePickerGrid");
+        var closeFramePickerButton = document.getElementById("closeFramePickerButton");
+        var FF = window.ForgeonAvatarFrames;
+
+        function getProfileLevel() {
+          var raw = avatarZone && avatarZone.getAttribute("data-user-level");
+          var level = parseInt(raw, 10);
+          if (isNaN(level) || level < 1) level = 1;
+          return level;
+        }
+
+        function syncProfileLevelUI() {
+          var level = getProfileLevel();
+          var info = FF.getResolvedEquippedFrame(level);
+          if (userLevelBadge) {
+            userLevelBadge.textContent = "Lvl " + level;
+            userLevelBadge.setAttribute("aria-label", "User level " + level);
+          }
+          if (avatarShell) {
+            avatarShell.setAttribute("data-user-level", String(level));
+            FF.applyShell(avatarShell);
+          }
+          if (avatarFrameName) {
+            avatarFrameName.textContent = "Equipped: " + info.name;
+          }
+        }
+
+        window.ForgeonProfileSyncLevelUi = syncProfileLevelUI;
+
+        function buildFramePickerGrid() {
+          if (!framePickerGrid) return;
+          var level = getProfileLevel();
+          var equipped = FF.getResolvedEquippedFrame(level).key;
+          framePickerGrid.innerHTML = "";
+
+          FF.FRAME_TIERS.forEach(function (f) {
+            var unlocked = level >= f.minLevel;
+            var card = document.createElement("button");
+            card.type = "button";
+            card.className = "frame-picker-card" + (f.key === equipped ? " frame-picker-card--active" : "");
+            card.disabled = !unlocked;
+            card.setAttribute(
+              "aria-label",
+              unlocked
+                ? (f.key === equipped ? f.name + " (equipped)" : "Equip " + f.name)
+                : f.name + ", locked until level " + f.minLevel
+            );
+
+            var wrap = document.createElement("div");
+            wrap.className = "frame-picker-preview-wrap";
+
+            var shell = document.createElement("div");
+            shell.className = "avatar-shell frame-picker-mini-shell";
+            shell.setAttribute("aria-hidden", "true");
+
+            var frameEl = document.createElement("div");
+            frameEl.className = "avatar-frame avatar-frame--" + f.key;
+
+            var standin = document.createElement("div");
+            standin.className = "frame-picker-standin";
+
+            shell.appendChild(frameEl);
+            shell.appendChild(standin);
+            wrap.appendChild(shell);
+
+            if (!unlocked) {
+              var lock = document.createElement("div");
+              lock.className = "frame-picker-lock-overlay";
+              lock.setAttribute("aria-hidden", "true");
+              lock.innerHTML =
+                '<span class="frame-picker-lock-icon" aria-hidden="true">' +
+                '<svg class="frame-picker-lock-svg" viewBox="0 0 24 24" fill="none" focusable="false" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
+                '<rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>' +
+                '<path d="M7 11V7a5 5 0 0 1 10 0v4"/>' +
+                "</svg></span>" +
+                '<span class="frame-picker-lock-meta">Lvl ' +
+                f.minLevel +
+                "</span>";
+              wrap.appendChild(lock);
+            }
+
+            var label = document.createElement("span");
+            label.className = "frame-picker-card-title";
+            label.textContent = f.name;
+
+            var meta = document.createElement("span");
+            meta.className = "frame-picker-card-meta";
+            meta.textContent = f.minLevel === 0 ? "Always" : "Unlocks Lv " + f.minLevel;
+
+            card.appendChild(wrap);
+            card.appendChild(label);
+            card.appendChild(meta);
+
+            if (unlocked) {
+              card.addEventListener("click", function () {
+                FF.writeStoredFrameKey(f.key);
+                syncProfileLevelUI();
+                closeModal(framePickerModalBackdrop);
+              });
+            }
+
+            framePickerGrid.appendChild(card);
+          });
+        }
+
+        function openModal(modal) {
+          modal.classList.remove("is-hidden");
+          modal.setAttribute("aria-hidden", "false");
+        }
+
+        function closeModal(modal) {
+          modal.classList.add("is-hidden");
+          modal.setAttribute("aria-hidden", "true");
+        }
+
+        if (!window.ForgeonProfileViewUserId) {
+          if (avatarButton && avatarInput) {
+            avatarButton.addEventListener("click", function () {
+              avatarInput.click();
+            });
+
+            avatarInput.addEventListener("change", function (event) {
+              var file = event.target.files && event.target.files[0];
+              if (!file) return;
+              if (!window.ForgeonUsersController || typeof window.ForgeonUsersController.uploadAvatar !== "function") {
+                if (avatarPreview) avatarPreview.src = URL.createObjectURL(file);
+                event.target.value = "";
+                return;
+              }
+              (async function () {
+                try {
+                  var data = await window.ForgeonUsersController.uploadAvatar(file);
+                  var url = data && data.avatarUrl ? data.avatarUrl : "";
+                  if (url) {
+                    if (typeof window.resolveForgeonAvatarUrl === "function") {
+                      url = window.resolveForgeonAvatarUrl(url);
+                    }
+                    if (avatarPreview) avatarPreview.src = url;
+                    document.querySelectorAll(".nav-profile-img").forEach(function (img) {
+                      img.src = url;
+                    });
+                  }
+                  if (data && data.user) {
+                    try {
+                      localStorage.setItem("forgeonCurrentUser", JSON.stringify(data.user));
+                    } catch (_e) {}
+                  }
+                } catch (err) {
+                  window.alert(err && err.message ? err.message : "Could not upload profile picture.");
+                } finally {
+                  event.target.value = "";
+                }
+              })();
+            });
+          }
+
+          if (deleteAccountButton) {
+            deleteAccountButton.addEventListener("click", function () {
+              deleteConfirmInput.value = "";
+              deleteModalFeedback.textContent = "";
+              deleteModalFeedback.classList.remove("is-error");
+              var expected = usernameField ? usernameField.value.trim() : "";
+              if (deleteConfirmUsernameHint) deleteConfirmUsernameHint.textContent = expected || "—";
+              openModal(deleteModalBackdrop);
+              deleteConfirmInput.focus();
+            });
+          }
+
+          if (cancelDeleteButton) {
+            cancelDeleteButton.addEventListener("click", function () {
+              closeModal(deleteModalBackdrop);
+            });
+          }
+
+          if (confirmDeleteButton) {
+            confirmDeleteButton.addEventListener("click", function () {
+          var typed = deleteConfirmInput.value.trim();
+          var expected = usernameField ? usernameField.value.trim() : "";
+          if (!expected) {
+            deleteModalFeedback.textContent = "No username is set on this profile.";
+            deleteModalFeedback.classList.add("is-error");
+            return;
+          }
+          if (typed !== expected) {
+            deleteModalFeedback.textContent = "That does not match your username. Try again.";
+            deleteModalFeedback.classList.add("is-error");
+            return;
+          }
+
+          if (!window.ForgeonUsersController || typeof window.ForgeonUsersController.remove !== "function") {
+            deleteModalFeedback.textContent = "Could not reach the account service. Refresh the page and try again.";
+            deleteModalFeedback.classList.add("is-error");
+            return;
+          }
+
+          var rawUser;
+          try {
+            rawUser = localStorage.getItem("forgeonCurrentUser");
+          } catch (_e) {
+            rawUser = null;
+          }
+          var current = null;
+          try {
+            current = rawUser ? JSON.parse(rawUser) : null;
+          } catch (_e) {
+            current = null;
+          }
+          var userId = current && (current.id || current._id);
+          if (!userId) {
+            deleteModalFeedback.textContent = "You are not signed in. Reload or log in again.";
+            deleteModalFeedback.classList.add("is-error");
+            return;
+          }
+
+          var prevLabel = confirmDeleteButton.textContent;
+          confirmDeleteButton.disabled = true;
+          confirmDeleteButton.textContent = "Deleting…";
+
+          (async function () {
+            try {
+              await window.ForgeonUsersController.remove(String(userId));
+              try {
+                localStorage.removeItem("forgeonAuthToken");
+                localStorage.removeItem("forgeonCurrentUser");
+              } catch (_e) {}
+              closeModal(deleteModalBackdrop);
+              openModal(deletedModalBackdrop);
+            } catch (err) {
+              deleteModalFeedback.textContent =
+                err && err.message ? err.message : "Could not delete the account. Try again.";
+              deleteModalFeedback.classList.add("is-error");
+            } finally {
+              confirmDeleteButton.disabled = false;
+              confirmDeleteButton.textContent = prevLabel;
+            }
+          })();
+            });
+          }
+
+          if (closeDeletedModalButton) {
+            closeDeletedModalButton.addEventListener("click", function () {
+              closeModal(deletedModalBackdrop);
+              window.location.href = "../Login_Register/login.html";
+            });
+          }
+
+          if (deleteModalBackdrop) {
+            deleteModalBackdrop.addEventListener("click", function (event) {
+              if (event.target === deleteModalBackdrop) closeModal(deleteModalBackdrop);
+            });
+          }
+
+          if (deletedModalBackdrop) {
+            deletedModalBackdrop.addEventListener("click", function (event) {
+              if (event.target === deletedModalBackdrop) {
+                closeModal(deletedModalBackdrop);
+                window.location.href = "../Login_Register/login.html";
+              }
+            });
+          }
+
+          if (openFramePickerButton) {
+            openFramePickerButton.addEventListener("click", function () {
+              buildFramePickerGrid();
+              openModal(framePickerModalBackdrop);
+            });
+          }
+
+          if (closeFramePickerButton) {
+            closeFramePickerButton.addEventListener("click", function () {
+              closeModal(framePickerModalBackdrop);
+            });
+          }
+
+          if (framePickerModalBackdrop) {
+            framePickerModalBackdrop.addEventListener("click", function (event) {
+              if (event.target === framePickerModalBackdrop) closeModal(framePickerModalBackdrop);
+            });
+          }
+        }
+
+        closeAllBadgesModalButton.addEventListener("click", function () {
+          closeModal(allBadgesModalBackdrop);
+        });
+
+        allBadgesModalBackdrop.addEventListener("click", function (event) {
+          if (event.target === allBadgesModalBackdrop) closeModal(allBadgesModalBackdrop);
+        });
+
+        closeBadgeDetailsModalButton.addEventListener("click", function () {
+          closeModal(badgeDetailsModalBackdrop);
+        });
+
+        badgeDetailsModalBackdrop.addEventListener("click", function (event) {
+          if (event.target === badgeDetailsModalBackdrop) closeModal(badgeDetailsModalBackdrop);
+        });
+
+        syncProfileLevelUI();
+      })();
+    </script>
+    <script src="../../controllers/users_api_controller.js"></script>
+    <script src="../../controllers/group_memberships_controller.js"></script>
+    <script src="../../assets/scripts/profile_progression.js"></script>
+    <script src="../../controllers/friends_invitations_controller.js"></script>
+    <script src="../../controllers/groups_invitations_controller.js"></script>
+    <script src="../../controllers/notification.controller.js"></script>
+    <script src="../../assets/scripts/loading-overlay.js"></script>
+    <script src="../../assets/scripts/notifications.js"></script>
+    <script src="../../assets/scripts/nav-profile-avatar.js"></script>
+    <script src="../../assets/scripts/nav-logout.js"></script>
+    <script>
+      (function () {
+        var USER_KEY = 'forgeonCurrentUser';
+        function getCurrentUser() {
+          try {
+            return JSON.parse(localStorage.getItem(USER_KEY) || 'null');
+          } catch (_e) {
+            return null;
+          }
+        }
+
+        async function loadMyForums() {
+          if (window.ForgeonProfileViewUserId) return;
+          var container = document.getElementById('myForumsList');
+          if (!container) return;
+          container.innerHTML = '<div class="forgeon-card p-3">Loading your forums…</div>';
+          var currentUser = getCurrentUser();
+          if (!currentUser || !currentUser.id) {
+            container.innerHTML = '<div class="forgeon-card p-3">You must be signed in to manage forums.</div>';
+            return;
+          }
+
+          try {
+            var res = await fetch('/api/forums', { credentials: 'include' });
+            if (!res.ok) throw new Error('Failed to load forums');
+            var forums = await res.json();
+            var mine = forums.filter(function (f) {
+              var cb = f.createdBy || f.createdBy_id || f.createdById || (f.createdBy && f.createdBy.toString && f.createdBy.toString());
+              if (!cb) return false;
+              return cb.toString() === currentUser.id.toString();
+            });
+
+            if (!mine.length) {
+              container.innerHTML = '<div class="forgeon-card p-3">You have not created any forums yet.</div>';
+              return;
+            }
+
+            container.innerHTML = '';
+            mine.forEach(function (f) {
+              var card = document.createElement('div');
+              card.className = 'forgeon-card p-3 d-flex align-items-center justify-content-between mb-2';
+              var left = document.createElement('div');
+              left.innerHTML = '<div class="fw-medium">' + escapeHtml(f.name) + '</div><div class="text-muted-2 small">' + (f.description ? escapeHtml(f.description) : '') + '</div>';
+              var right = document.createElement('div');
+              right.className = 'd-flex gap-2 align-items-center';
+              var view = document.createElement('a');
+              view.className = 'btn btn-sm btn-outline-primary';
+              view.href = '/Home/forumpage.html?forum=' + encodeURIComponent(f.slug || f._id);
+              view.textContent = 'Open';
+              view.setAttribute('aria-label', 'Open forum ' + (f.name || 'forum'));
+              var del = document.createElement('button');
+              del.className = 'btn btn-sm btn-danger';
+              del.textContent = 'Delete';
+              del.addEventListener('click', function () {
+                if (!confirm('Delete forum "' + (f.name || '') + '"? This cannot be undone.')) return;
+                deleteForum(f._id, card);
+              });
+              right.appendChild(view);
+              right.appendChild(del);
+              card.appendChild(left);
+              card.appendChild(right);
+              container.appendChild(card);
+            });
+          } catch (err) {
+            console.error(err);
+            container.innerHTML = '<div class="forgeon-card p-3">Could not load forums.</div>';
+          }
+        }
+
+        function escapeHtml(str) {
+          return String(str || '').replace(/[&<>\"]/g, function (s) {
+            return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[s];
+          });
+        }
+
+        async function deleteForum(id, cardEl) {
+          try {
+            var res = await fetch('/api/forums/' + encodeURIComponent(id), { method: 'DELETE', credentials: 'include' });
+            if (!res.ok) {
+              var body = await res.json().catch(function () { return {}; });
+              alert(body.error || body.message || 'Failed to delete forum');
+              return;
+            }
+            if (cardEl && cardEl.parentNode) cardEl.parentNode.removeChild(cardEl);
+          } catch (err) {
+            console.error(err);
+            alert('Server error while deleting forum');
+          }
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+          loadMyForums();
+        });
+      })();
+    </script>
+  </body>
+</html>
