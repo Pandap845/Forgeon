@@ -85,7 +85,7 @@
               >
                 <img
                   class="nav-profile-img"
-                  src="https://i.pinimg.com/736x/b1/21/18/b1211897266308c27112a58eacad7482.jpg"
+                  src="/assets/images/default-avatar.svg"
                   alt=""
                   width="36"
                   height="36"
@@ -122,7 +122,7 @@
                   <button type="button" class="avatar-btn" id="avatarButton" aria-label="Change profile picture">
                     <img
                       id="avatarPreview"
-                      src="https://i.pinimg.com/736x/b1/21/18/b1211897266308c27112a58eacad7482.jpg"
+                      src="/assets/images/default-avatar.svg"
                       alt="Profile picture"
                     />
                   </button>
@@ -194,7 +194,7 @@
             <div class="stat-icon">👥</div>
             <div>
               <p class="stat-label">Groups</p>
-              <p class="stat-value" id="groupsStatValue">6</p>
+              <p class="stat-value" id="groupsStatValue">0</p>
             </div>
           </a>
         </div>
@@ -309,11 +309,8 @@
 
     <div class="modal-backdrop is-hidden" id="deletedModalBackdrop" aria-hidden="true">
       <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="deletedModalTitle">
-        <h3 id="deletedModalTitle">Account deleted (Interface Demo)</h3>
-        <p>
-          The username matched correctly. In the final backend integration, this step will trigger the permanent
-          account deletion.
-        </p>
+        <h3 id="deletedModalTitle">Account deleted</h3>
+        <p>Your account has been removed. You will be signed out.</p>
         <div class="modal-actions">
           <button type="button" class="modal-btn modal-btn-primary" id="closeDeletedModalButton">Close</button>
         </div>
@@ -404,26 +401,10 @@
     ></script>
     <script src="../../assets/scripts/my-groups-sync.js"></script>
     <script src="../../assets/scripts/avatar-frames.js"></script>
+    <script src="../../assets/scripts/forgeon-avatar-url.js"></script>
     <script src="../../assets/scripts/profile_username.js"></script>
     <script>
       (function () {
-        var groupsStatValue = document.getElementById("groupsStatValue");
-        var groupsCard = document.getElementById("groupsCard");
-        function syncGroupsStatFromStorage() {
-          var MG = window.ForgeonMyGroups;
-          if (!groupsStatValue || !MG) return;
-          var n = MG.getCount(6);
-          groupsStatValue.textContent = String(n);
-          if (groupsCard) {
-            groupsCard.setAttribute(
-              "aria-label",
-              "View My Groups (" + n + (n === 1 ? " group)" : " groups)")
-            );
-          }
-        }
-        syncGroupsStatFromStorage();
-        window.addEventListener("pageshow", syncGroupsStatFromStorage);
-
         var avatarButton = document.getElementById("avatarButton");
         var avatarInput = document.getElementById("avatarInput");
         var avatarPreview = document.getElementById("avatarPreview");
@@ -571,7 +552,35 @@
         avatarInput.addEventListener("change", function (event) {
           var file = event.target.files && event.target.files[0];
           if (!file) return;
-          avatarPreview.src = URL.createObjectURL(file);
+          if (!window.ForgeonUsersController || typeof window.ForgeonUsersController.uploadAvatar !== "function") {
+            if (avatarPreview) avatarPreview.src = URL.createObjectURL(file);
+            event.target.value = "";
+            return;
+          }
+          (async function () {
+            try {
+              var data = await window.ForgeonUsersController.uploadAvatar(file);
+              var url = data && data.avatarUrl ? data.avatarUrl : "";
+              if (url) {
+                if (typeof window.resolveForgeonAvatarUrl === "function") {
+                  url = window.resolveForgeonAvatarUrl(url);
+                }
+                if (avatarPreview) avatarPreview.src = url;
+                document.querySelectorAll(".nav-profile-img").forEach(function (img) {
+                  img.src = url;
+                });
+              }
+              if (data && data.user) {
+                try {
+                  localStorage.setItem("forgeonCurrentUser", JSON.stringify(data.user));
+                } catch (_e) {}
+              }
+            } catch (err) {
+              window.alert(err && err.message ? err.message : "Could not upload profile picture.");
+            } finally {
+              event.target.value = "";
+            }
+          })();
         });
 
         deleteAccountButton.addEventListener("click", function () {
@@ -602,12 +611,58 @@
             return;
           }
 
-          closeModal(deleteModalBackdrop);
-          openModal(deletedModalBackdrop);
+          if (!window.ForgeonUsersController || typeof window.ForgeonUsersController.remove !== "function") {
+            deleteModalFeedback.textContent = "Could not reach the account service. Refresh the page and try again.";
+            deleteModalFeedback.classList.add("is-error");
+            return;
+          }
+
+          var rawUser;
+          try {
+            rawUser = localStorage.getItem("forgeonCurrentUser");
+          } catch (_e) {
+            rawUser = null;
+          }
+          var current = null;
+          try {
+            current = rawUser ? JSON.parse(rawUser) : null;
+          } catch (_e) {
+            current = null;
+          }
+          var userId = current && (current.id || current._id);
+          if (!userId) {
+            deleteModalFeedback.textContent = "You are not signed in. Reload or log in again.";
+            deleteModalFeedback.classList.add("is-error");
+            return;
+          }
+
+          var prevLabel = confirmDeleteButton.textContent;
+          confirmDeleteButton.disabled = true;
+          confirmDeleteButton.textContent = "Deleting…";
+
+          (async function () {
+            try {
+              await window.ForgeonUsersController.remove(String(userId));
+              try {
+                localStorage.removeItem("forgeonAuthToken");
+                localStorage.removeItem("forgeonCurrentUser");
+              } catch (_e) {}
+              closeModal(deleteModalBackdrop);
+              openModal(deletedModalBackdrop);
+            } catch (err) {
+              deleteModalFeedback.textContent =
+                err && err.message ? err.message : "Could not delete the account. Try again.";
+              deleteModalFeedback.classList.add("is-error");
+            } finally {
+              confirmDeleteButton.disabled = false;
+              confirmDeleteButton.textContent = prevLabel;
+            }
+          })();
         });
 
         closeDeletedModalButton.addEventListener("click", function () {
           closeModal(deletedModalBackdrop);
+          window.location.href = "../Login_Register/login.html";
         });
 
         deleteModalBackdrop.addEventListener("click", function (event) {
@@ -615,7 +670,10 @@
         });
 
         deletedModalBackdrop.addEventListener("click", function (event) {
-          if (event.target === deletedModalBackdrop) closeModal(deletedModalBackdrop);
+          if (event.target === deletedModalBackdrop) {
+            closeModal(deletedModalBackdrop);
+            window.location.href = "../Login_Register/login.html";
+          }
         });
 
         closeAllBadgesModalButton.addEventListener("click", function () {
@@ -657,6 +715,7 @@
       })();
     </script>
     <script src="../../controllers/users_api_controller.js"></script>
+    <script src="../../controllers/group_memberships_controller.js"></script>
     <script src="../../assets/scripts/profile_progression.js"></script>
     <script src="../../controllers/friends_invitations_controller.js"></script>
     <script src="../../controllers/groups_invitations_controller.js"></script>

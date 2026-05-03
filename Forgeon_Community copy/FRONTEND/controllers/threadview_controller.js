@@ -1,4 +1,10 @@
 (function () {
+  function resolveAvatarUrl(url) {
+    if (typeof window.resolveForgeonAvatarUrl === 'function') return window.resolveForgeonAvatarUrl(url);
+    const s = url && String(url).trim();
+    return s || '/assets/images/default-avatar.svg';
+  }
+
   function escapeHtml(str) {
     if (!str) return '';
     return str.replace(/[&"'<>]/g, function (m) {
@@ -71,7 +77,7 @@
     article.className = 'tv-comment';
     article.dataset.commentId = comment._id;
 
-    const avatarUrl = comment.author && (comment.author.avatarUrl || '') || '';
+    const avatarUrl = resolveAvatarUrl(comment.author && (comment.author.avatarUrl || ''));
     const authorName = comment.author && (comment.author.username || comment.author.name) ? (comment.author.username || comment.author.name) : 'Unknown';
 
     article.innerHTML = `
@@ -290,8 +296,8 @@
       // Author
       const authorName = thread.author && (thread.author.username || thread.author.name || thread.author.displayName) ? (thread.author.username || thread.author.name || thread.author.displayName) : 'Unknown';
       setText('tvAuthorName', authorName);
-      const avatar = (thread.author && (thread.author.avatarUrl || thread.author.avatar)) || '';
-      if (avatar) setAttr('tvAuthorAvatar', 'src', avatar);
+      const avatar = resolveAvatarUrl((thread.author && (thread.author.avatarUrl || thread.author.avatar)) || '');
+      setAttr('tvAuthorAvatar', 'src', avatar);
 
       // Date
       setText('tvPostDate', thread.createdAt ? ('Published ' + timeAgo(thread.createdAt) + ' ago') : '');

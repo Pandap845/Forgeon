@@ -229,6 +229,8 @@
     var toggleMoreBadgesButton = document.getElementById("toggleMoreBadgesButton");
     var badgeCountLabel = document.getElementById("badgeCountLabel");
     var postsStatValue = document.getElementById("postsStatValue");
+    var groupsStatValue = document.getElementById("groupsStatValue");
+    var groupsCard = document.getElementById("groupsCard");
     var avatarZone = document.getElementById("avatarZone");
     var allBadgesButton = document.getElementById("allBadgesButton");
     var allBadgesModalBackdrop = document.getElementById("allBadgesModalBackdrop");
@@ -264,6 +266,18 @@
       localStorage.setItem(USER_KEY, JSON.stringify(merged));
     } catch (_e) {}
 
+    var resolvedAvatar =
+      typeof window.resolveForgeonAvatarUrl === "function"
+        ? window.resolveForgeonAvatarUrl(user.avatarUrl)
+        : user.avatarUrl && String(user.avatarUrl).trim()
+          ? String(user.avatarUrl).trim()
+          : "/assets/images/default-avatar.svg";
+    var preview = document.getElementById("avatarPreview");
+    if (preview) preview.src = resolvedAvatar;
+    document.querySelectorAll(".nav-profile-img").forEach(function (img) {
+      img.src = resolvedAvatar;
+    });
+
     if (avatarZone && user.level != null) {
       avatarZone.setAttribute("data-user-level", String(user.level));
     }
@@ -273,6 +287,26 @@
     if (postsStatValue && user.postsPublished != null) {
       postsStatValue.textContent = String(user.postsPublished);
     }
+
+    var groupCount =
+      user.groupsJoinedCount != null && user.groupsJoinedCount !== undefined
+        ? Number(user.groupsJoinedCount)
+        : Number(user.groupsCount) || 0;
+    if (Number.isNaN(groupCount) || groupCount < 0) groupCount = 0;
+    if (groupsStatValue) {
+      groupsStatValue.textContent = String(groupCount);
+    }
+    if (groupsCard) {
+      groupsCard.setAttribute(
+        "aria-label",
+        "View My Groups (" + groupCount + (groupCount === 1 ? " group)" : " groups)")
+      );
+    }
+    try {
+      if (window.ForgeonMyGroups && typeof window.ForgeonMyGroups.setCount === "function") {
+        window.ForgeonMyGroups.setCount(groupCount);
+      }
+    } catch (_e) {}
 
     var earned = user.badgesEarned || [];
     var total = user.badgeCatalogTotal || (catalog && catalog.length) || 15;
@@ -304,9 +338,19 @@
     }
   }
 
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", load);
-  } else {
+  function boot() {
     load();
   }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", boot);
+  } else {
+    boot();
+  }
+
+  window.addEventListener("pageshow", function (ev) {
+    if (ev.persisted) load();
+  });
+
+  window.ForgeonProfileRefreshStats = load;
 })();
