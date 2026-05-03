@@ -72,6 +72,7 @@ registerProtectedView(routerApi, ['/home.html', '/homepage.html', '/Home/homepag
 registerProtectedView(routerApi, ['/forumpage.html', '/Home/forumpage.html'], 'Home/forumpage.html');
 registerProtectedView(routerApi, ['/threadview.html', '/Home/threadview.html'], 'Home/threadview.html');
 registerProtectedView(routerApi, ['/profile.html', '/Profile/profile.html'], 'Profile/profile.html');
+registerProtectedView(routerApi, ['/forums.html', '/Home/forums.html'], 'Home/forums.html');
 
 registerProtectedView(routerApi, ['/discover_groups.html', '/Groups/discover_groups.html'], 'Groups/discover_groups.html');
 registerProtectedView(routerApi, ['/friend_requests.html', '/Groups/friend_requests.html'], 'Groups/friend_requests.html');

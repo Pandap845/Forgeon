@@ -1,6 +1,7 @@
 module.exports = {
   User: require("./User"),
   Threads: require("./Threads"),
+  Forum: require("./Forum"),
   Comments: require("./Comments"),
   Groups: require("./Groups"),
   Category: require("./Category"),

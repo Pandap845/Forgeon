@@ -20,7 +20,7 @@ const threadSchema = new mongoose.Schema(
     publishTo: {
       type: String,
       required: true,
-      enum: ["general", "group"],
+      enum: ["general", "group", "forum"],
       default: "general",
     },
     author: {
@@ -32,6 +32,12 @@ const threadSchema = new mongoose.Schema(
     group: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Groups",
+      default: null,
+      index: true,
+    },
+    forum: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Forum",
       default: null,
       index: true,
     },

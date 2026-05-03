@@ -11,8 +11,10 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous" />
 
-    <link rel="stylesheet" href="../../assets/styles/forumpage.css" />
+    <link rel="stylesheet" href="../../assets/styles/header.css" />
     <link rel="stylesheet" href="../../assets/styles/avatar-frames.css" />
+    <link rel="stylesheet" href="../../assets/styles/homepage.css" />
+    <link rel="stylesheet" href="../../assets/styles/forumpage.css" />
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
 </head>
@@ -39,7 +41,7 @@
                 <div class="collapse navbar-collapse" id="forgeonNav">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0 gap-lg-3">
                         <li class="nav-item">
-                            <a class="nav-link text-muted-2" href="./homepage.html">Forums</a>
+                            <a class="nav-link text-muted-2" href="./forums.html">Forums</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-muted-2" href="../Groups/user_groups.html">Groups</a>
@@ -83,17 +85,15 @@
                 <span class="text-muted-3">›</span>
                 <span class="text-muted-2">Forums</span>
                 <span class="text-muted-3">›</span>
-                <span class="text-white">Nintendo Switch</span>
+                <span id="breadcrumbForumName" class="text-white">Forum</span>
             </div>
 
             <div class="row g-4">
                 <div class="col-12 col-lg-8">
                     <div class="d-flex flex-column flex-md-row align-items-md-start justify-content-between gap-3 mb-4">
                         <div>
-                            <h1 class="display-6 fw-medium mb-2" style="letter-spacing: -0.02em">Nintendo Switch</h1>
-                            <p class="mb-0 text-muted-2">
-                                Discussion about Nintendo Switch console, games, and homebrew
-                            </p>
+                            <h1 id="forumTitle" class="display-6 fw-medium mb-2" style="letter-spacing: -0.02em">Forum</h1>
+                            <p id="forumDescription" class="mb-0 text-muted-2">Forum description</p>
                         </div>
                         <div class="pt-md-1">
                             <button type="button" class="btn btn-gradient-red px-4 py-2 rounded-3"
@@ -106,161 +106,16 @@
                     <div class="d-flex flex-wrap gap-4 mb-4 text-muted-2 small">
                         <span class="d-inline-flex align-items-center gap-2">
                             <i class="bi bi-chat-left-dots"></i>
-                            68,154 threads
+                            <span id="threadsCount">0</span> threads
                         </span>
                         <span class="d-inline-flex align-items-center gap-2">
                             <i class="bi bi-collection"></i>
-                            1,831,497 posts
+                            <span id="postsCount">0</span> posts
                         </span>
                     </div>
 
-                    <div class="d-flex flex-column gap-3">
-                        <article class="forgeon-card forgeon-thread p-3 p-md-4 position-relative">
-                            <div class="d-flex gap-3">
-                                <div class="avatar-shell avatar-shell--hp avatar-shell--border flex-shrink-0"
-                                    data-forgeon-avatar data-user-level="28">
-                                    <div class="avatar-frame" aria-hidden="true"></div>
-                                    <img class="forgeon-avatar" alt="SwitchFan2024 avatar"
-                                        src="https://c4.wallpaperflare.com/wallpaper/330/21/172/nintendo-nintendo-switch-video-games-minimalism-hd-wallpaper-preview.jpg" />
-                                </div>
-                                <div class="flex-grow-1">
-                                    <div class="d-flex align-items-start gap-2">
-                                        <span class="badge rounded-2 text-bg-info-subtle text-info-emphasis">
-                                            <i class="bi bi-pin-angle-fill me-1"></i> Pin
-                                        </span>
-                                        <span class="badge rounded-2 text-bg-danger-subtle text-danger-emphasis">
-                                            <i class="bi bi-fire me-1"></i> Hot
-                                        </span>
-                                        <h3 class="h5 mb-0 flex-grow-1">
-                                            <a class="stretched-link forgeon-thread-link" href="./threadview.html">
-                                                Nintendo Switch 2 Rumors - Everything We Know So Far
-                                            </a>
-                                        </h3>
-                                        <button type="button"
-                                            class="btn btn-link forgeon-icon-btn p-0 position-relative z-1"
-                                            aria-label="Edit thread" data-bs-toggle="modal"
-                                            data-bs-target="#editThreadModal">
-                                            <i class="bi bi-pencil"></i>
-                                        </button>
-                                    </div>
-
-                                    <div class="d-flex flex-wrap align-items-center gap-3 mt-2 text-muted-2 small">
-                                        <span>SwitchFan2024</span>
-                                        <span class="text-muted-3">•</span>
-                                        <span class="d-inline-flex align-items-center gap-2">
-                                            <i class="bi bi-chat-left"></i> 1,847
-                                        </span>
-                                        <span class="d-inline-flex align-items-center gap-2">
-                                            <i class="bi bi-eye"></i> 45,392
-                                        </span>
-                                    </div>
-
-                                    <div
-                                        class="border-top mt-3 pt-3 d-flex align-items-center justify-content-between small">
-                                        <span class="text-muted-2">
-                                            Latest: <span class="text-white-50">GameMaster99</span>
-                                        </span>
-                                        <span class="text-muted-3">2 minutes ago</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </article>
-
-                        <article class="forgeon-card forgeon-thread p-3 p-md-4 position-relative">
-                            <div class="d-flex gap-3">
-                                <div class="avatar-shell avatar-shell--hp avatar-shell--border flex-shrink-0"
-                                    data-forgeon-avatar data-user-level="55">
-                                    <div class="avatar-frame" aria-hidden="true"></div>
-                                    <img class="forgeon-avatar" alt="TechAnalyst avatar"
-                                        src="https://c4.wallpaperflare.com/wallpaper/330/21/172/nintendo-nintendo-switch-video-games-minimalism-hd-wallpaper-preview.jpg" />
-                                </div>
-                                <div class="flex-grow-1">
-                                    <div class="d-flex align-items-start gap-2">
-                                        <span class="badge rounded-2 text-bg-danger-subtle text-danger-emphasis">
-                                            <i class="bi bi-fire me-1"></i> Hot
-                                        </span>
-                                        <h3 class="h5 mb-0 flex-grow-1">
-                                            <a class="stretched-link forgeon-thread-link" href="./threadview.html">
-                                                Tears of the Kingdom Performance Analysis - FPS Testing Results
-                                            </a>
-                                        </h3>
-                                        <button type="button"
-                                            class="btn btn-link forgeon-icon-btn p-0 position-relative z-1"
-                                            aria-label="Edit thread" data-bs-toggle="modal"
-                                            data-bs-target="#editThreadModal">
-                                            <i class="bi bi-pencil"></i>
-                                        </button>
-                                    </div>
-
-                                    <div class="d-flex flex-wrap align-items-center gap-3 mt-2 text-muted-2 small">
-                                        <span>TechAnalyst</span>
-                                        <span class="text-muted-3">•</span>
-                                        <span class="d-inline-flex align-items-center gap-2">
-                                            <i class="bi bi-chat-left"></i> 563
-                                        </span>
-                                        <span class="d-inline-flex align-items-center gap-2">
-                                            <i class="bi bi-eye"></i> 28,941
-                                        </span>
-                                    </div>
-
-                                    <div
-                                        class="border-top mt-3 pt-3 d-flex align-items-center justify-content-between small">
-                                        <span class="text-muted-2">
-                                            Latest: <span class="text-white-50">ZeldaFan</span>
-                                        </span>
-                                        <span class="text-muted-3">15 minutes ago</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </article>
-
-                        <article class="forgeon-card forgeon-thread p-3 p-md-4 position-relative">
-                            <div class="d-flex gap-3">
-                                <div class="avatar-shell avatar-shell--hp avatar-shell--border flex-shrink-0"
-                                    data-forgeon-avatar data-user-level="8">
-                                    <div class="avatar-frame" aria-hidden="true"></div>
-                                    <img class="forgeon-avatar" alt="NewsBot avatar"
-                                        src="https://c4.wallpaperflare.com/wallpaper/330/21/172/nintendo-nintendo-switch-video-games-minimalism-hd-wallpaper-preview.jpg" />
-                                </div>
-                                <div class="flex-grow-1">
-                                    <div class="d-flex align-items-start gap-2">
-                                        <span class="badge rounded-2 text-bg-info-subtle text-info-emphasis">
-                                            <i class="bi bi-megaphone-fill me-1"></i> News
-                                        </span>
-                                        <h3 class="h5 mb-0 flex-grow-1">
-                                            <a class="stretched-link forgeon-thread-link" href="./threadview.html">
-                                                Official: Nintendo Direct Scheduled for April 15th
-                                            </a>
-                                        </h3>
-                                        <button type="button"
-                                            class="btn btn-link forgeon-icon-btn p-0 position-relative z-1"
-                                            aria-label="Edit thread" data-bs-toggle="modal"
-                                            data-bs-target="#editThreadModal">
-                                            <i class="bi bi-pencil"></i>
-                                        </button>
-                                    </div>
-
-                                    <div class="d-flex flex-wrap align-items-center gap-3 mt-2 text-muted-2 small">
-                                        <span>NewsBot</span>
-                                        <span class="text-muted-3">•</span>
-                                        <span class="d-inline-flex align-items-center gap-2">
-                                            <i class="bi bi-chat-left"></i> 892
-                                        </span>
-                                        <span class="d-inline-flex align-items-center gap-2">
-                                            <i class="bi bi-eye"></i> 34,210
-                                        </span>
-                                    </div>
-
-                                    <div
-                                        class="border-top mt-3 pt-3 d-flex align-items-center justify-content-between small">
-                                        <span class="text-muted-2">
-                                            Latest: <span class="text-white-50">HypeTrainConductor</span>
-                                        </span>
-                                        <span class="text-muted-3">28 minutes ago</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </article>
+                    <div id="threadFeed" class="d-flex flex-column gap-3">
+                        <!-- Threads will be injected here by controllers/threads_controller.js -->
                     </div>
 
                     <nav class="mt-4">
@@ -278,23 +133,9 @@
                     <div class="d-flex flex-column gap-3">
                         <section class="forgeon-card p-3 p-md-4">
                             <h2 class="h5 mb-3 forgeon-sidebar-title">Groups</h2>
-                            <div class="d-flex flex-column gap-2 small">
-                                <div class="d-flex justify-content-between text-muted-2">
-                                    <a href="/Forgeon_Community/FRONTEND/views/Groups/group_detail.html" class="text-decoration-none text-muted-2">Nintendo Switch</a>
-                                </div>
-                                <div class="d-flex justify-content-between text-muted-2">
-                                    <a href="/Forgeon_Community/FRONTEND/views/Groups/group_detail.html" class="text-decoration-none text-muted-2">Dorx Youtube</a>
-                                </div>
-                                <div class="d-flex justify-content-between text-muted-2">
-                                    <a href="/Forgeon_Community/FRONTEND/views/Groups/group_detail.html" class="text-decoration-none text-muted-2">Xbox</a>
-                                </div>
-                                <div class="d-flex justify-content-between text-muted-2">
-                                    <a href="/Forgeon_Community/FRONTEND/views/Groups/group_detail.html" class="text-decoration-none text-muted-2">PC Gaming</a>
-                                </div>
-                                <div class="d-flex justify-content-between text-muted-2">
-                                    <a href="/Forgeon_Community/FRONTEND/views/Groups/group_detail.html" class="text-decoration-none text-muted-2">HackRooms</a>
-                                </div>
-                            </div>
+                            <ul id="recentGroupsList" class="list-unstyled mb-0 small d-flex flex-column gap-2">
+                                <!-- Populated dynamically with recent groups -->
+                            </ul>
                         </section>
 
                         <section class="position-relative forgeon-featured p-3 d-flex align-items-end"
@@ -361,21 +202,8 @@
 
                         <div class="mb-4">
                             <div class="form-label fw-medium mb-2">Publish to</div>
-                            <div class="d-flex flex-column gap-3">
-                                <label class="forgeon-radio-card">
-                                    <input type="radio" name="publishTo" value="general" />
-                                    <span class="forgeon-radio-dot" aria-hidden="true"></span>
-                                    <span class="d-flex flex-column">
-                                        <span class="fw-medium">General Forum</span>
-                                        <small class="text-muted-2">Visible to all users</small>
-                                    </span>
-                                </label>
-
-                                <label class="forgeon-radio-card">
-                                    <input type="radio" name="publishTo" value="group" />
-                                    <span class="forgeon-radio-dot" aria-hidden="true"></span>
-                                    <span class="fw-medium">Group Forum</span>
-                                </label>
+                            <div id="publishTargets" class="d-flex flex-column gap-3">
+                                <!-- Populated by controllers/threads_controller.js: groups and forums. No General option. -->
                             </div>
                         </div>
 
@@ -474,6 +302,7 @@
     <script src="../../assets/scripts/loading-overlay.js"></script>
     <script src="../../assets/scripts/notifications.js"></script>
     <script src="../../assets/scripts/nav-logout.js"></script>
+    <script src="../../controllers/threads_controller.js"></script>
 </body>
 
 </html>

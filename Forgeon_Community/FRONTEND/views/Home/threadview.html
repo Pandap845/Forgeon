@@ -58,9 +58,7 @@
           <div class="collapse navbar-collapse" id="forgeonNav">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0 gap-lg-3">
               <li class="nav-item">
-                <a class="nav-link text-muted-2" href="./homepage.html"
-                  >Forums</a
-                >
+                <a class="nav-link text-muted-2" href="./forums.html">Forums</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link text-muted-2" href="../Groups/user_groups.html">Groups</a>
@@ -109,16 +107,13 @@
     <main class="py-4">
       <div class="container-fluid px-4">
         <div class="d-flex align-items-center gap-2 mb-4 small text-muted-2">
-          <a class="text-muted-2 text-decoration-none" href="./homepage.html">
+          <a class="text-muted-2 text-decoration-none" href="./forums.html">
             <i class="bi bi-house"></i>
           </a>
           <span class="text-muted-3">›</span>
-          <a class="text-muted-2 text-decoration-none" href="./homepage.html"
-            >Forums</a
-          >
+          <a class="text-muted-2 text-decoration-none" href="./forums.html">Forums</a>
           <span class="text-muted-3">›</span>
-          <a class="text-muted-2 text-decoration-none" href="./forumpage.html"
-            >Nintendo Switch</a
+          <a id="breadcrumbForumLink" class="text-muted-2 text-decoration-none" href="./forumpage.html">Nintendo Switch</a>
           >
           <span class="text-muted-3">›</span>
           <span class="text-white">Thread</span>
@@ -127,82 +122,44 @@
         <div class="row g-4">
           <div class="col-12 col-lg-8">
             <article class="forgeon-card tv-post-card p-4 p-md-5 mb-4">
-              <div class="tv-post-kicker text-muted-2 small mb-2">
-                Switch modding community
-              </div>
+              <div id="tvForumName" class="tv-post-kicker text-muted-2 small mb-2">Forum</div>
 
-              <div
-                class="d-flex flex-column flex-md-row align-items-start justify-content-between gap-3"
-              >
+              <div class="d-flex flex-column flex-md-row align-items-start justify-content-between gap-3">
                 <div class="flex-grow-1">
-                  <h1 class="tv-post-title h2 fw-semibold mb-3">
-                    Switch limits
-                  </h1>
+                  <h1 id="tvPostTitle" class="tv-post-title h2 fw-semibold mb-3">Switch limits</h1>
 
-                  <div
-                    class="d-flex align-items-center gap-3 flex-wrap tv-author mb-3"
-                  >
+                  <div class="d-flex align-items-center gap-3 flex-wrap tv-author mb-3">
                     <div class="avatar-shell avatar-shell--tv-lg avatar-shell--border flex-shrink-0" data-forgeon-avatar data-user-level="42">
                       <div class="avatar-frame" aria-hidden="true"></div>
-                      <img
-                      class="forgeon-avatar tv-avatar-lg"
-                      alt="Sarah Chen avatar"
-                      src="https://c4.wallpaperflare.com/wallpaper/330/21/172/nintendo-nintendo-switch-video-games-minimalism-hd-wallpaper-preview.jpg"
-                    />
+                      <img id="tvAuthorAvatar" class="forgeon-avatar tv-avatar-lg" alt="Author avatar" src="https://c4.wallpaperflare.com/wallpaper/330/21/172/nintendo-nintendo-switch-video-games-minimalism-hd-wallpaper-preview.jpg" />
                     </div>
                     <div class="d-flex flex-column">
-                      <div class="d-flex align-items-center gap-2">
-                        <span class="fw-medium">Sarah Chen</span>
-                        <span class="badge tv-lvl-badge">Lvl 42</span>
-                      </div>
-                      <div class="text-muted-2 small">Published 2d ago</div>
+                          <div class="d-flex align-items-center gap-2">
+                            <span id="tvAuthorName" class="fw-medium">Sarah Chen</span>
+                          </div>
+                      <div id="tvPostDate" class="text-muted-2 small">Published 2d ago</div>
                     </div>
                   </div>
                 </div>
 
-                <button
-                  type="button"
-                  class="btn btn-link forgeon-icon-btn p-0 tv-post-more"
-                  aria-label="More"
-                >
+                <button type="button" class="btn btn-link forgeon-icon-btn p-0 tv-post-more" aria-label="More">
                   <i class="bi bi-three-dots-vertical fs-5"></i>
                 </button>
               </div>
 
-              <p class="tv-post-body text-muted-2 mb-4">
-                I’ve been pushing the limits of my console using the latest
-                Atmosphere patches. We’ve managed to stabilize to 60 FPS in
-                demanding titles by tweaking sys-clk profiles. I’m sharing my
-                voltage and frequency settings for docked mode here. Watch those
-                temps!
-              </p>
+              <p id="tvPostBody" class="tv-post-body text-muted-2 mb-4">I’ve been pushing the limits of my console using the latest Atmosphere patches. We’ve managed to stabilize to 60 FPS in demanding titles by tweaking sys-clk profiles. I’m sharing my voltage and frequency settings for docked mode here. Watch those temps!</p>
 
-              <div class="tv-media-grid mb-4">
-                <div class="tv-media tv-media-wide">
-                  <img
-                    alt="Atmosphere"
-                    src="https://atmosphereswitch.com/wp-content/uploads/2024/01/atmospherenx4.png"
-                  />
-                </div>
-                <div class="tv-media tv-media-tall">
-                  <img
-                    alt="System overlay"
-                    src="https://i.postimg.cc/Njg19CGN/400px-Tesla-Overlay-sys-clk-Overlay-3489103447.jpg"
-                  />
-                </div>
-              </div>
+              <div id="tvMediaGrid" class="tv-media-grid mb-4"></div>
 
-              <div
-                class="d-flex align-items-center justify-content-between pt-3 tv-post-actions"
-              >
+              <div class="d-flex align-items-center justify-content-between pt-3 tv-post-actions">
                 <div class="d-flex align-items-center gap-4 text-muted-2 small">
                   <span class="d-inline-flex align-items-center gap-2">
                     <i class="bi bi-heart"></i>
-                    247
+                    <span id="tvLikesCount">0</span>
                   </span>
                   <span class="d-inline-flex align-items-center gap-2">
                     <i class="bi bi-chat-left"></i>
-                    18
+                    <span id="tvCommentsCount">0</span>
                   </span>
                 </div>
 
@@ -219,265 +176,57 @@
             <section class="forgeon-card tv-comments-card p-4 p-md-5">
               <div class="d-flex align-items-center gap-2 mb-4">
                 <i class="bi bi-chat-left text-muted-2"></i>
-                <h2 class="h5 mb-0">Comments (5)</h2>
+                <h2 id="commentsHeader" class="h5 mb-0">Comments (0)</h2>
               </div>
 
-              <div class="d-flex flex-column gap-4">
-                <article class="tv-comment">
-                  <div class="d-flex gap-3">
-                    <div class="avatar-shell avatar-shell--tv avatar-shell--border flex-shrink-0" data-forgeon-avatar data-user-level="35">
-                      <div class="avatar-frame" aria-hidden="true"></div>
-                      <img
-                      class="forgeon-avatar"
-                      alt="Mike Johnson avatar"
-                      src="https://c4.wallpaperflare.com/wallpaper/330/21/172/nintendo-nintendo-switch-video-games-minimalism-hd-wallpaper-preview.jpg"
-                    />
-                    </div>
-                    <div class="flex-grow-1">
-                      <div
-                        class="d-flex align-items-center justify-content-between gap-3"
-                      >
-                        <div class="d-flex align-items-center gap-2 flex-wrap">
-                          <span class="fw-medium">Mike Johnson</span>
-                          <span class="badge tv-lvl-badge tv-lvl-badge-sm"
-                            >Lvl 35</span
-                          >
-                          <span class="text-muted-2 small">1d ago</span>
-                        </div>
-                        <button
-                          type="button"
-                          class="btn btn-link forgeon-icon-btn p-0"
-                          aria-label="More"
-                        >
-                          <i class="bi bi-three-dots"></i>
-                        </button>
-                      </div>
-                      <p class="text-muted-2 mb-3 mt-2">
-                        Exactly what I needed! I was struggling with stuttering
-                        in RetroArch, and these changing profiles fixed it.
-                      </p>
-                      <div
-                        class="d-flex align-items-center gap-2 text-muted-2 small"
-                      >
-                        <i class="bi bi-heart"></i>
-                        23
-                      </div>
-                    </div>
-                  </div>
-                </article>
-
-                <article class="tv-comment">
-                  <div class="d-flex gap-3">
-                    <div class="avatar-shell avatar-shell--tv avatar-shell--border flex-shrink-0" data-forgeon-avatar data-user-level="51">
-                      <div class="avatar-frame" aria-hidden="true"></div>
-                      <img
-                      class="forgeon-avatar"
-                      alt="Emily Rodriguez avatar"
-                      src="https://c4.wallpaperflare.com/wallpaper/330/21/172/nintendo-nintendo-switch-video-games-minimalism-hd-wallpaper-preview.jpg"
-                    />
-                    </div>
-                    <div class="flex-grow-1">
-                      <div
-                        class="d-flex align-items-center justify-content-between gap-3"
-                      >
-                        <div class="d-flex align-items-center gap-2 flex-wrap">
-                          <span class="fw-medium">Emily Rodriguez</span>
-                          <span class="badge tv-lvl-badge tv-lvl-badge-sm"
-                            >Lvl 51</span
-                          >
-                          <span class="text-muted-2 small">1d ago</span>
-                        </div>
-                        <button
-                          type="button"
-                          class="btn btn-link forgeon-icon-btn p-0"
-                          aria-label="More"
-                        >
-                          <i class="bi bi-three-dots"></i>
-                        </button>
-                      </div>
-                      <p class="text-muted-2 mb-3 mt-2">
-                        Great post! Have you tried using Tesla Menu for
-                        real-time temp monitoring? It’s been a game changer for
-                        me.
-                      </p>
-                      <div
-                        class="d-flex align-items-center gap-2 small tv-like-accent"
-                      >
-                        <i class="bi bi-heart-fill"></i>
-                        45
-                      </div>
-                    </div>
-                  </div>
-                </article>
-
-                <article class="tv-comment">
-                  <div class="d-flex gap-3">
-                    <div class="avatar-shell avatar-shell--tv avatar-shell--border flex-shrink-0" data-forgeon-avatar data-user-level="28">
-                      <div class="avatar-frame" aria-hidden="true"></div>
-                      <img
-                      class="forgeon-avatar"
-                      alt="Alex Kumar avatar"
-                      src="https://c4.wallpaperflare.com/wallpaper/330/21/172/nintendo-nintendo-switch-video-games-minimalism-hd-wallpaper-preview.jpg"
-                    />
-                    </div>
-                    <div class="flex-grow-1">
-                      <div
-                        class="d-flex align-items-center justify-content-between gap-3"
-                      >
-                        <div class="d-flex align-items-center gap-2 flex-wrap">
-                          <span class="fw-medium">Alex Kumar</span>
-                          <span class="badge tv-lvl-badge tv-lvl-badge-sm"
-                            >Lvl 28</span
-                          >
-                          <span class="text-muted-2 small">1d ago</span>
-                        </div>
-                        <button
-                          type="button"
-                          class="btn btn-link forgeon-icon-btn p-0"
-                          aria-label="More"
-                        >
-                          <i class="bi bi-three-dots"></i>
-                        </button>
-                      </div>
-                      <p class="text-muted-2 mb-3 mt-2">
-                        Thanks for sharing! Quick question—how do you handle
-                        EmuMMC partition safety when pushing high clocks? We
-                        have a 512GB setup.
-                      </p>
-                      <div
-                        class="d-flex align-items-center gap-2 text-muted-2 small"
-                      >
-                        <i class="bi bi-heart"></i>
-                        12
-                      </div>
-                    </div>
-                  </div>
-                </article>
-
-                <article class="tv-comment">
-                  <div class="d-flex gap-3">
-                    <div class="avatar-shell avatar-shell--tv avatar-shell--border flex-shrink-0" data-forgeon-avatar data-user-level="63">
-                      <div class="avatar-frame" aria-hidden="true"></div>
-                      <img
-                      class="forgeon-avatar"
-                      alt="Lisa Anderson avatar"
-                      src="https://c4.wallpaperflare.com/wallpaper/330/21/172/nintendo-nintendo-switch-video-games-minimalism-hd-wallpaper-preview.jpg"
-                    />
-                    </div>
-                    <div class="flex-grow-1">
-                      <div
-                        class="d-flex align-items-center justify-content-between gap-3"
-                      >
-                        <div class="d-flex align-items-center gap-2 flex-wrap">
-                          <span class="fw-medium">Lisa Anderson</span>
-                          <span class="badge tv-lvl-badge tv-lvl-badge-sm"
-                            >Lvl 63</span
-                          >
-                          <span class="text-muted-2 small">1d ago</span>
-                        </div>
-                        <button
-                          type="button"
-                          class="btn btn-link forgeon-icon-btn p-0"
-                          aria-label="More"
-                        >
-                          <i class="bi bi-three-dots"></i>
-                        </button>
-                      </div>
-                      <p class="text-muted-2 mb-3 mt-2">
-                        Excellent write-up! I’d also recommend looking into
-                        MissionControl for Bluetooth controller support. The new
-                        features are incredibly powerful.
-                      </p>
-                      <div
-                        class="d-flex align-items-center gap-2 text-muted-2 small"
-                      >
-                        <i class="bi bi-heart"></i>
-                        67
-                      </div>
-                    </div>
-                  </div>
-                </article>
-
-                <article class="tv-comment">
-                  <div class="d-flex gap-3">
-                    <div class="avatar-shell avatar-shell--tv avatar-shell--border flex-shrink-0" data-forgeon-avatar data-user-level="19">
-                      <div class="avatar-frame" aria-hidden="true"></div>
-                      <img
-                      class="forgeon-avatar"
-                      alt="David Park avatar"
-                      src="https://c4.wallpaperflare.com/wallpaper/330/21/172/nintendo-nintendo-switch-video-games-minimalism-hd-wallpaper-preview.jpg"
-                    />
-                    </div>
-                    <div class="flex-grow-1">
-                      <div
-                        class="d-flex align-items-center justify-content-between gap-3"
-                      >
-                        <div class="d-flex align-items-center gap-2 flex-wrap">
-                          <span class="fw-medium">David Park</span>
-                          <span class="badge tv-lvl-badge tv-lvl-badge-sm"
-                            >Lvl 19</span
-                          >
-                          <span class="text-muted-2 small">1d ago</span>
-                        </div>
-                        <button
-                          type="button"
-                          class="btn btn-link forgeon-icon-btn p-0"
-                          aria-label="More"
-                        >
-                          <i class="bi bi-three-dots"></i>
-                        </button>
-                      </div>
-                      <p class="text-muted-2 mb-3 mt-2">
-                        This helped me solve a major bottleneck in handheld
-                        mode. Appreciate the detailed explanation!
-                      </p>
-                      <div
-                        class="d-flex align-items-center gap-2 text-muted-2 small"
-                      >
-                        <i class="bi bi-heart"></i>
-                        8
-                      </div>
-                    </div>
-                  </div>
-                </article>
+              <div id="commentsList" class="d-flex flex-column gap-4">
+                <div id="noComments" class="text-muted-2">No comments yet. Be the first to comment.</div>
               </div>
 
               <div class="tv-comment-divider my-4"></div>
 
               <div class="d-flex gap-3 align-items-end">
-                <div class="avatar-shell avatar-shell--tv avatar-shell--border flex-shrink-0" data-forgeon-avatar data-user-level="25">
+                <div class="avatar-shell avatar-shell--tv avatar-shell--border flex-shrink-0" data-forgeon-avatar>
                   <div class="avatar-frame" aria-hidden="true"></div>
-                  <img
-                  class="forgeon-avatar"
-                  alt="You avatar"
-                  src="https://c4.wallpaperflare.com/wallpaper/330/21/172/nintendo-nintendo-switch-video-games-minimalism-hd-wallpaper-preview.jpg"
-                />
+                  <img id="currentUserAvatar" class="forgeon-avatar" alt="You avatar" src="https://c4.wallpaperflare.com/wallpaper/330/21/172/nintendo-nintendo-switch-video-games-minimalism-hd-wallpaper-preview.jpg" />
                 </div>
                 <div class="flex-grow-1">
                   <div class="tv-comment-input input-group">
-                    <span
-                      class="input-group-text tv-input-addon"
-                      id="comment-addon"
-                    >
+                    <span class="input-group-text tv-input-addon" id="comment-addon">
                       <i class="bi bi-chat-left"></i>
                     </span>
-                    <input
-                      type="text"
-                      class="form-control tv-input"
-                      placeholder="Add a comment..."
-                      aria-label="Add a comment"
-                      aria-describedby="comment-addon"
-                    />
+                    <input id="newCommentInput" type="text" class="form-control tv-input" placeholder="Add a comment..." aria-label="Add a comment" aria-describedby="comment-addon" />
                   </div>
                 </div>
-                <button
-                  type="button"
-                  class="btn btn-outline-light tv-post-comment-btn"
-                >
-                  Post Comment
-                </button>
+                <button id="postCommentBtn" type="button" class="btn btn-outline-light tv-post-comment-btn">Post Comment</button>
               </div>
             </section>
+
+            <!-- Edit Comment Modal -->
+            <div class="modal fade" id="editCommentModal" tabindex="-1" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content forgeon-modal">
+                  <div class="modal-body p-4">
+                    <div class="d-flex align-items-start justify-content-between gap-3 mb-3">
+                      <div>
+                        <h2 class="h5 mb-1">Edit comment</h2>
+                        <div class="text-muted-2 small">Update your comment content below.</div>
+                      </div>
+                      <button type="button" class="btn btn-link text-muted-2 p-0" data-bs-dismiss="modal" aria-label="Close">
+                        <i class="bi bi-x-lg"></i>
+                      </button>
+                    </div>
+                    <div class="mb-3">
+                      <textarea id="editCommentTextarea" class="form-control" rows="4"></textarea>
+                    </div>
+                    <div class="d-flex justify-content-end gap-2">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                      <button id="saveCommentEditBtn" type="button" class="btn btn-primary">Save</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
 
           <aside class="col-12 col-lg-4">
@@ -645,5 +394,6 @@
     <script src="../../assets/scripts/loading-overlay.js"></script>
     <script src="../../assets/scripts/notifications.js"></script>
     <script src="../../assets/scripts/nav-logout.js"></script>
+    <script src="../../controllers/threadview_controller.js"></script>
   </body>
 </html>
