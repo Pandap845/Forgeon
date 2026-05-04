@@ -129,7 +129,7 @@
   function renderEmpty() {
     panel.className = "sr-empty dg-surface-card";
     panel.innerHTML = [
-      '<img class="sr-empty__icon" src="https://www.figma.com/api/mcp/asset/2ec120f2-a579-4b81-b357-5c1b37701b3b" alt="" width="48" height="48" />',
+      '<i class="sr-empty__icon fa-solid fa-magnifying-glass" aria-hidden="true"></i>',
       "<h2 class=\"sr-empty__title\">Start Searching</h2>",
       "<p class=\"sr-empty__hint\">Type in the search bar above to find groups, threads, or users.</p>",
       '<a class="sr-empty__link" href="./discover_groups.html">Browse Discover Groups</a>',
@@ -139,7 +139,7 @@
   function renderLoading() {
     panel.className = "sr-empty dg-surface-card";
     panel.innerHTML = [
-      '<img class="sr-empty__icon" src="https://www.figma.com/api/mcp/asset/2ec120f2-a579-4b81-b357-5c1b37701b3b" alt="" width="48" height="48" />',
+      '<i class="sr-empty__icon fa-solid fa-magnifying-glass" aria-hidden="true"></i>',
       "<h2 class=\"sr-empty__title\">Searching...</h2>",
       "<p class=\"sr-empty__hint\">Finding matching groups, threads, and users</p>",
     ].join("");

@@ -17,6 +17,7 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap"
       rel="stylesheet"
     />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
     <link rel="stylesheet" href="../../assets/styles/groups.css" />
     <link rel="stylesheet" href="../../assets/styles/avatar-frames.css" />
     <link rel="stylesheet" href="../../assets/styles/header.css" />
@@ -141,7 +142,7 @@
                 <p class="gs-icon-copy__hint">Square image, at least 200×200px</p>
                 <input id="iconInput" class="gs-file-input" type="file" accept="image/*" aria-label="Upload group icon" />
                 <button type="button" class="gs-btn-remove">
-                  <img src="https://www.figma.com/api/mcp/asset/fcb72571-9b4c-4e56-98f3-24e2f8f09bd6" alt="" width="16" height="16" />
+                  <i class="fa-regular fa-trash-can" aria-hidden="true"></i>
                   Remove Icon
                 </button>
               </div>
@@ -180,7 +181,7 @@
                 <option value="other">Other</option>
               </select>
               <span class="gs-select-chevron" aria-hidden="true">
-                <img src="https://www.figma.com/api/mcp/asset/474947ff-f470-4bf2-8c61-be02526b5f31" alt="" width="16" height="16" />
+                <i class="fa-solid fa-chevron-down"></i>
               </span>
             </div>
           </div>
@@ -193,10 +194,7 @@
           <p class="gc-invite-lead">Open invitations for this group.</p>
           <a id="gsInviteLink" href="#" class="gc-invite-btn">
             <span class="gc-invite-btn__icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24">
-                <circle cx="10" cy="8" r="3"></circle>
-                <path d="M4.5 17a5.5 5.5 0 0 1 11 0M18 8v4M16 10h4"></path>
-              </svg>
+              <i class="fa-solid fa-user-plus"></i>
             </span>
             Search and Invite Users
           </a>
@@ -204,7 +202,7 @@
 
         <section class="gs-card gs-card--danger dg-surface-card" aria-labelledby="danger-heading">
           <div class="gs-danger-head">
-            <img src="https://www.figma.com/api/mcp/asset/3a9c0b0a-d423-415a-a3e8-1c9cce2293b6" alt="" width="20" height="20" />
+            <i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i>
             <h2 id="danger-heading" class="gs-section-title gs-section-title--danger">Danger Zone</h2>
           </div>
           <p class="gs-danger-lead">Irreversible actions that will affect your group</p>
@@ -215,7 +213,7 @@
               <span class="gs-panel-row__desc">Make group read-only. No new posts or members allowed.</span>
             </div>
             <button type="button" class="gs-btn-archive">
-              <img src="https://www.figma.com/api/mcp/asset/87570d4f-4c21-4c4f-a13a-f2dca36f1c47" alt="" width="16" height="16" />
+              <i class="fa-solid fa-box-archive" aria-hidden="true"></i>
               Archive
             </button>
           </div>
@@ -226,7 +224,7 @@
               <span class="gs-panel-row__desc">Permanently delete this group and all its content.</span>
             </div>
             <button type="button" class="gs-btn-delete">
-              <img src="https://www.figma.com/api/mcp/asset/2765145d-a7fa-4820-8c38-242169ca22b6" alt="" width="16" height="16" />
+              <i class="fa-solid fa-trash" aria-hidden="true"></i>
               Delete
             </button>
           </div>
@@ -235,7 +233,7 @@
         <div class="gs-actions">
           <a href="./group_management.html" class="gs-footer-btn gs-footer-btn--secondary">Cancel</a>
           <button type="submit" class="gs-footer-btn gs-footer-btn--primary">
-            <img src="https://www.figma.com/api/mcp/asset/ccfb4951-be0d-49da-848e-0bfe5aa65127" alt="" width="16" height="16" />
+            <i class="fa-solid fa-floppy-disk" aria-hidden="true"></i>
             Save Changes
           </button>
         </div>
@@ -252,14 +250,14 @@
                 <div class="text-muted-2 small">Your latest activity</div>
               </div>
               <button type="button" class="btn btn-link text-muted-2 p-0" data-bs-dismiss="modal" aria-label="Close">
-                <i class="bi bi-x-lg"></i>
+                <i class="fa-solid fa-xmark"></i>
               </button>
             </div>
 
             <div class="forgeon-card p-3">
               <div class="d-flex gap-3">
                 <div class="tv-notif-dot" aria-hidden="true">
-                  <i class="bi bi-bell"></i>
+                  <i class="fa-solid fa-bell"></i>
                 </div>
                 <div class="flex-grow-1">
                   <div class="fw-medium">Placeholder notification</div>

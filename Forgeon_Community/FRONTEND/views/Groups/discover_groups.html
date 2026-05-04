@@ -17,6 +17,7 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap"
       rel="stylesheet"
     />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
     <link rel="stylesheet" href="../../assets/styles/groups.css" />
     <link rel="stylesheet" href="../../assets/styles/avatar-frames.css" />
     <link rel="stylesheet" href="../../assets/styles/header.css" />
@@ -103,7 +104,7 @@
       <section class="dg-toolbar" aria-label="Search and filters">
         <div class="dg-search-wrap">
           <span class="dg-search-icon" aria-hidden="true">
-            <img src="https://www.figma.com/api/mcp/asset/7fbe92ab-1622-4606-8b96-16a3263926e6" alt="" width="20" height="20" />
+            <i class="fa-solid fa-magnifying-glass"></i>
           </span>
           <input
             id="groupSearch"
@@ -119,24 +120,24 @@
             <label class="dg-sort-label" for="sortSelect">Sort by:</label>
             <div class="dg-sort-control">
               <span class="dg-sort-icon" aria-hidden="true">
-                <img src="https://www.figma.com/api/mcp/asset/8a7c50c3-6063-4bc2-bf3d-3b88dfbb48c0" alt="" width="16" height="16" />
+                <i class="fa-solid fa-arrow-down-wide-short"></i>
               </span>
               <select id="sortSelect" class="dg-select" aria-label="Sort groups">
                 <option value="members" selected>Most Members</option>
                 <option value="newest">Newest</option>
               </select>
               <span class="dg-select-chevron" aria-hidden="true">
-                <img src="https://www.figma.com/api/mcp/asset/0410da67-41e5-4bcd-8895-af38439ebee3" alt="" width="16" height="16" />
+                <i class="fa-solid fa-chevron-down"></i>
               </span>
             </div>
           </div>
 
           <div class="dg-view-toggle" role="group" aria-label="Layout">
             <button type="button" id="btnGridView" class="dg-view-btn dg-view-btn--active" aria-pressed="true" title="Grid view">
-              <img src="https://www.figma.com/api/mcp/asset/1ef5e593-6380-439a-bdb1-eb5c085364e6" alt="" width="16" height="16" />
+              <i class="fa-solid fa-grip"></i>
             </button>
             <button type="button" id="btnListView" class="dg-view-btn" aria-pressed="false" title="List view">
-              <img src="https://www.figma.com/api/mcp/asset/030df371-14bf-479d-a5b0-31e1eeb999f1" alt="" width="16" height="16" />
+              <i class="fa-solid fa-list"></i>
             </button>
           </div>
           <a class="dg-btn dg-btn--ghost dg-btn--search-page" href="./search.html">Advanced Search</a>
@@ -160,14 +161,14 @@
                 <div class="text-muted-2 small">Your latest activity</div>
               </div>
               <button type="button" class="btn btn-link text-muted-2 p-0" data-bs-dismiss="modal" aria-label="Close">
-                <i class="bi bi-x-lg"></i>
+                <i class="fa-solid fa-xmark"></i>
               </button>
             </div>
 
             <div class="forgeon-card p-3">
               <div class="d-flex gap-3">
                 <div class="tv-notif-dot" aria-hidden="true">
-                  <i class="bi bi-bell"></i>
+                  <i class="fa-solid fa-bell"></i>
                 </div>
                 <div class="flex-grow-1">
                   <div class="fw-medium">Placeholder notification</div>

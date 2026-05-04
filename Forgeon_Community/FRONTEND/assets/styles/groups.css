@@ -92,7 +92,8 @@ body.dg-page {
   pointer-events: none;
 }
 
-.dg-search-icon img {
+.dg-search-icon img,
+.dg-search-icon i {
   display: block;
 }
 
@@ -147,25 +148,31 @@ body.dg-page {
   padding: 0 12px;
   border-radius: var(--dg-radius);
   border: 0.8px solid var(--dg-border);
-  background: var(--dg-surface);
+  background: #000;
 }
 
 .dg-sort-icon {
   flex-shrink: 0;
   display: flex;
+  color: var(--dg-muted);
 }
 
 .dg-select {
   flex: 1;
   appearance: none;
   border: 0;
-  background: transparent;
+  background: #000;
   color: var(--dg-text);
   font-family: inherit;
   font-size: 14px;
   font-weight: 500;
   padding: 0;
   cursor: pointer;
+}
+
+.dg-select option {
+  background: #000;
+  color: #fff;
 }
 
 .dg-select:focus {
@@ -176,6 +183,7 @@ body.dg-page {
   flex-shrink: 0;
   display: flex;
   pointer-events: none;
+  color: var(--dg-muted);
 }
 
 .dg-view-toggle {
@@ -231,6 +239,7 @@ a.gc-btn[aria-disabled="true"] {
   align-items: center;
   justify-content: center;
   padding: 0 10px;
+  color: var(--dg-text);
 }
 
 .dg-view-btn:hover {
@@ -728,7 +737,8 @@ body.dg-page--detail {
   color: var(--dg-muted);
 }
 
-.gd-meta img {
+.gd-meta img,
+.gd-meta i {
   display: block;
 }
 
@@ -2242,7 +2252,8 @@ body.dg-page--group-settings .dg-main.gs-main {
   cursor: pointer;
 }
 
-.gs-btn-remove img {
+.gs-btn-remove img,
+.gs-btn-remove i {
   display: block;
 }
 
@@ -2331,7 +2342,8 @@ body.dg-page--group-settings .dg-main.gs-main {
   display: flex;
 }
 
-.gs-select-chevron img {
+.gs-select-chevron img,
+.gs-select-chevron i {
   display: block;
 }
 
@@ -2457,8 +2469,13 @@ body.dg-page--group-settings .dg-main.gs-main {
   gap: 8px;
 }
 
-.gs-danger-head img {
+.gs-danger-head img,
+.gs-danger-head i {
   display: block;
+}
+
+.gs-danger-head i {
+  color: var(--fr-tab-alert);
 }
 
 .gs-danger-lead {
@@ -2514,7 +2531,8 @@ body.dg-page--group-settings .dg-main.gs-main {
   color: var(--gs-archive);
 }
 
-.gs-btn-archive img {
+.gs-btn-archive img,
+.gs-btn-archive i {
   display: block;
 }
 
@@ -2524,7 +2542,8 @@ body.dg-page--group-settings .dg-main.gs-main {
   color: var(--fr-tab-alert);
 }
 
-.gs-btn-delete img {
+.gs-btn-delete img,
+.gs-btn-delete i {
   display: block;
 }
 
@@ -2574,7 +2593,8 @@ body.dg-page--group-settings .dg-main.gs-main {
   color: #000000;
 }
 
-.gs-footer-btn--primary img {
+.gs-footer-btn--primary img,
+.gs-footer-btn--primary i {
   display: block;
 }
 
@@ -3111,6 +3131,9 @@ body.dg-page--group-creation .dg-main.gc-main {
 .gc-invite-btn__icon {
   width: 16px;
   height: 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .gc-invite-btn__icon svg {
@@ -3121,6 +3144,11 @@ body.dg-page--group-creation .dg-main.gc-main {
   stroke-width: 1.7;
   stroke-linecap: round;
   stroke-linejoin: round;
+}
+
+.gc-invite-btn__icon i {
+  font-size: 14px;
+  line-height: 1;
 }
 
 .gc-actions {
