@@ -1,6 +1,7 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { User, Threads, GroupMemberships } = require('../models');
+const { runAccountDeletionSideEffects, tryRemoveUploadedProfilePicture } = require('../services/accountDeletionService');
 const { progressionPayload, ensureProgressionFields, syncFrameBadgesForLevel, getLevelFromXp } = require('../utils/forgeonProgression');
 const userProgressionService = require('../services/userProgressionService');
 
@@ -315,8 +316,9 @@ async function deleteUser(req, res) {
       return res.status(404).json({ message: 'User not found.' });
     }
 
-    user.isDeleted = true;
-    await user.save();
+    tryRemoveUploadedProfilePicture(user.avatarUrl);
+    await runAccountDeletionSideEffects(id);
+    await User.deleteOne({ _id: id });
 
     clearAuthCookie(res);
 

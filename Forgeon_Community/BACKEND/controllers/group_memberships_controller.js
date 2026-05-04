@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const { GroupMemberships, Groups, User } = require('../models');
 const userProgressionService = require('../services/userProgressionService');
+const { publicAuthorFromLean, publicGroupMemberUserLean, PUBLIC_USER_AUTHOR_FIELDS } = require('../utils/publicAuthor');
 
 function isObjectId(value) {
   return mongoose.isValidObjectId(value);
@@ -106,13 +107,21 @@ async function getGroupMemberships(req, res) {
       query.user = actorId;
     }
 
-    const memberships = await GroupMemberships.find(query)
+    const USER_POP = 'username email avatarUrl level isDeleted';
+    const rows = await GroupMemberships.find(query)
       .sort({ createdAt: -1 })
       .populate('group', 'name isArchived isDeleted')
-      .populate('user', 'username email avatarUrl level')
-      .populate('invitedBy', 'username email');
+      .populate('user', USER_POP)
+      .populate('invitedBy', PUBLIC_USER_AUTHOR_FIELDS)
+      .lean();
 
-    return res.status(200).json(memberships);
+    const mapped = (rows || []).map((m) => ({
+      ...m,
+      user: m.user ? publicGroupMemberUserLean(m.user) : m.user,
+      invitedBy: m.invitedBy ? publicAuthorFromLean(m.invitedBy) : m.invitedBy,
+    }));
+
+    return res.status(200).json(mapped);
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
@@ -126,10 +135,12 @@ async function getGroupMembershipById(req, res) {
       return res.status(400).json({ message: 'Invalid membership id.' });
     }
 
+    const USER_POP = 'username email avatarUrl level isDeleted';
     const membership = await GroupMemberships.findById(id)
       .populate('group', 'name isArchived isDeleted')
-      .populate('user', 'username email avatarUrl level')
-      .populate('invitedBy', 'username email');
+      .populate('user', USER_POP)
+      .populate('invitedBy', PUBLIC_USER_AUTHOR_FIELDS)
+      .lean();
     if (!membership) {
       return res.status(404).json({ message: 'Membership not found.' });
     }
@@ -139,7 +150,11 @@ async function getGroupMembershipById(req, res) {
       return res.status(403).json({ message: 'Forbidden membership access.' });
     }
 
-    return res.status(200).json(membership);
+    return res.status(200).json({
+      ...membership,
+      user: membership.user ? publicGroupMemberUserLean(membership.user) : membership.user,
+      invitedBy: membership.invitedBy ? publicAuthorFromLean(membership.invitedBy) : membership.invitedBy,
+    });
   } catch (error) {
     return res.status(400).json({ message: error.message });
   }

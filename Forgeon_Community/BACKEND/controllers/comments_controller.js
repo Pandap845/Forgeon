@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 const Models = require('../models');
 const userProgressionService = require('../services/userProgressionService');
+const { publicAuthorFromLean, PUBLIC_USER_AUTHOR_FIELDS } = require('../utils/publicAuthor');
 
 const AUTH_COOKIE_NAME = 'forgeon_auth_token';
 
@@ -23,7 +24,7 @@ async function listComments(req, res) {
 
     const comments = await Models.Comments.find({ thread: threadId, isDeleted: false })
       .sort({ createdAt: 1 })
-      .populate('author', 'username avatarUrl');
+      .populate('author', PUBLIC_USER_AUTHOR_FIELDS);
 
     // try to extract current user id (optional)
     let currentUserId = null;
@@ -37,15 +38,18 @@ async function listComments(req, res) {
       }
     }
 
-    const out = (comments || []).map(c => ({
-      _id: c._id,
-      content: c.content,
-      likesCount: c.likesCount,
-      createdAt: c.createdAt,
-      updatedAt: c.updatedAt,
-      author: c.author ? { _id: c.author._id, username: c.author.username, avatarUrl: c.author.avatarUrl } : null,
-      isMine: currentUserId ? String(c.author?._id) === String(currentUserId) : false,
-    }));
+    const out = (comments || []).map((c) => {
+      const authorPub = c.author ? publicAuthorFromLean(c.author) : null;
+      return {
+        _id: c._id,
+        content: c.content,
+        likesCount: c.likesCount,
+        createdAt: c.createdAt,
+        updatedAt: c.updatedAt,
+        author: authorPub,
+        isMine: currentUserId ? String(c.author?._id) === String(currentUserId) : false,
+      };
+    });
 
     return res.status(200).json(out);
   } catch (error) {
@@ -69,7 +73,7 @@ async function createComment(req, res) {
     // increment thread comments count
     await Models.Threads.updateOne({ _id: threadDoc._id }, { $inc: { commentsCount: 1 } });
 
-    await comment.populate('author', 'username avatarUrl');
+    await comment.populate('author', PUBLIC_USER_AUTHOR_FIELDS);
 
     userProgressionService.afterCommentCreated(userId).catch((err) => console.warn('progression afterCommentCreated', err));
 
@@ -79,7 +83,7 @@ async function createComment(req, res) {
       likesCount: comment.likesCount,
       createdAt: comment.createdAt,
       updatedAt: comment.updatedAt,
-      author: comment.author ? { _id: comment.author._id, username: comment.author.username, avatarUrl: comment.author.avatarUrl } : null,
+      author: comment.author ? publicAuthorFromLean(comment.author.toObject ? comment.author.toObject() : comment.author) : null,
       isMine: true,
     });
   } catch (error) {
@@ -102,7 +106,7 @@ async function updateComment(req, res) {
 
     comment.content = String(content).trim();
     await comment.save();
-    await comment.populate('author', 'username avatarUrl');
+    await comment.populate('author', PUBLIC_USER_AUTHOR_FIELDS);
 
     return res.status(200).json({
       _id: comment._id,
@@ -110,7 +114,7 @@ async function updateComment(req, res) {
       likesCount: comment.likesCount,
       createdAt: comment.createdAt,
       updatedAt: comment.updatedAt,
-      author: comment.author ? { _id: comment.author._id, username: comment.author.username, avatarUrl: comment.author.avatarUrl } : null,
+      author: comment.author ? publicAuthorFromLean(comment.author.toObject ? comment.author.toObject() : comment.author) : null,
       isMine: true,
     });
   } catch (error) {

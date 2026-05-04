@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const { Threads, Forum, Groups, GroupMemberships } = require('../models');
 const userProgressionService = require('../services/userProgressionService');
+const { PUBLIC_USER_AUTHOR_FIELDS, mapThreadsAuthors, mapThreadAuthor } = require('../utils/publicAuthor');
 
 function isObjectId(value) {
   return mongoose.isValidObjectId(value);
@@ -117,12 +118,12 @@ async function listThreads(req, res) {
     const threads = await Threads.find(query)
       .sort({ createdAt: -1 })
       .limit(limit)
-      .populate('author', 'username avatarUrl')
+      .populate('author', PUBLIC_USER_AUTHOR_FIELDS)
       .populate('group', 'name')
       .populate('forum', 'name slug')
       .lean();
 
-    return res.status(200).json(threads);
+    return res.status(200).json(mapThreadsAuthors(threads));
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
@@ -135,13 +136,13 @@ async function getThread(req, res) {
     if (!isObjectId(id)) return res.status(400).json({ message: 'Invalid thread id.' });
 
     const thread = await Threads.findOne({ _id: id, isDeleted: false })
-      .populate('author', 'username avatarUrl')
+      .populate('author', PUBLIC_USER_AUTHOR_FIELDS)
       .populate('forum', 'name slug description')
       .populate('group', 'name')
       .lean();
 
     if (!thread) return res.status(404).json({ message: 'Thread not found.' });
-    return res.status(200).json(thread);
+    return res.status(200).json(mapThreadAuthor(thread));
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }

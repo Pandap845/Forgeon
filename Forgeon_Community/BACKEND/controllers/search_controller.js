@@ -1,4 +1,5 @@
 const { User, Groups, Threads } = require('../models');
+const { publicAuthorFromLean, PUBLIC_USER_AUTHOR_FIELDS } = require('../utils/publicAuthor');
 
 const ALLOWED_SCOPES = new Set(['all', 'groups', 'threads', 'users']);
 
@@ -43,10 +44,10 @@ function mapGroup(group) {
         }
       : null,
     creator: group.creator
-      ? {
-          id: group.creator._id,
-          username: group.creator.username,
-        }
+      ? (() => {
+          const c = publicAuthorFromLean(group.creator);
+          return { id: c._id, username: c.username };
+        })()
       : null,
   };
 }
@@ -61,10 +62,10 @@ function mapThread(thread) {
     likesCount: thread.likesCount,
     commentsCount: thread.commentsCount,
     author: thread.author
-      ? {
-          id: thread.author._id,
-          username: thread.author.username,
-        }
+      ? (() => {
+          const a = publicAuthorFromLean(thread.author);
+          return { id: a._id, username: a.username };
+        })()
       : null,
     group: thread.group
       ? {
@@ -109,7 +110,7 @@ async function search(req, res) {
             .sort({ memberCount: -1, createdAt: -1 })
             .limit(limit)
             .populate('category', 'name')
-            .populate('creator', 'username')
+            .populate('creator', PUBLIC_USER_AUTHOR_FIELDS)
         : Promise.resolve([]),
       shouldSearchThreads
         ? Threads.find({
@@ -118,7 +119,7 @@ async function search(req, res) {
           })
             .sort({ lastActivityAt: -1, createdAt: -1 })
             .limit(limit)
-            .populate('author', 'username')
+            .populate('author', PUBLIC_USER_AUTHOR_FIELDS)
             .populate('group', 'name')
         : Promise.resolve([]),
       shouldSearchUsers

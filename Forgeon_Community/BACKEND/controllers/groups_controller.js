@@ -6,6 +6,7 @@ const {
   getLevelFromXp,
   MIN_LEVEL_CREATE_GROUP,
 } = require('../utils/forgeonProgression');
+const { publicAuthorFromLean, PUBLIC_USER_AUTHOR_FIELDS } = require('../utils/publicAuthor');
 
 function isObjectId(value) {
   return mongoose.isValidObjectId(value);
@@ -121,9 +122,14 @@ async function getGroups(req, res) {
     const groups = await Groups.find(query)
       .sort({ createdAt: -1 })
       .populate('category', 'name')
-      .populate('creator', 'username email avatarUrl');
+      .populate('creator', PUBLIC_USER_AUTHOR_FIELDS)
+      .lean();
 
-    return res.status(200).json(groups);
+    const out = (groups || []).map((g) => ({
+      ...g,
+      creator: publicAuthorFromLean(g.creator),
+    }));
+    return res.status(200).json(out);
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
@@ -139,12 +145,16 @@ async function getGroupById(req, res) {
 
     const group = await Groups.findOne({ _id: id, isDeleted: false })
       .populate('category', 'name')
-      .populate('creator', 'username email avatarUrl');
+      .populate('creator', PUBLIC_USER_AUTHOR_FIELDS)
+      .lean();
     if (!group) {
       return res.status(404).json({ message: 'Group not found.' });
     }
 
-    return res.status(200).json(group);
+    return res.status(200).json({
+      ...group,
+      creator: publicAuthorFromLean(group.creator),
+    });
   } catch (error) {
     return res.status(400).json({ message: error.message });
   }

@@ -1,5 +1,6 @@
 const Forum = require('../models/Forum');
 const userProgressionService = require('../services/userProgressionService');
+const { publicAuthorFromLean, PUBLIC_USER_AUTHOR_FIELDS } = require('../utils/publicAuthor');
 
 function slugify(name) {
   return name.toString().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
@@ -26,8 +27,16 @@ exports.createForum = async (req, res) => {
 
 exports.listForums = async (_req, res) => {
   try {
-    const forums = await Forum.find().sort({ createdAt: -1 }).limit(100).lean();
-    return res.json(forums);
+    const forums = await Forum.find()
+      .sort({ createdAt: -1 })
+      .limit(100)
+      .populate('createdBy', PUBLIC_USER_AUTHOR_FIELDS)
+      .lean();
+    const out = (forums || []).map((f) => ({
+      ...f,
+      createdBy: publicAuthorFromLean(f.createdBy),
+    }));
+    return res.json(out);
   } catch (err) {
     return res.status(500).json({ error: 'Server error' });
   }
@@ -35,9 +44,12 @@ exports.listForums = async (_req, res) => {
 
 exports.getForum = async (req, res) => {
   try {
-    const forum = await Forum.findById(req.params.id).lean();
+    const forum = await Forum.findById(req.params.id).populate('createdBy', PUBLIC_USER_AUTHOR_FIELDS).lean();
     if (!forum) return res.status(404).json({ error: 'Forum not found' });
-    return res.json(forum);
+    return res.json({
+      ...forum,
+      createdBy: publicAuthorFromLean(forum.createdBy),
+    });
   } catch (err) {
     return res.status(500).json({ error: 'Server error' });
   }
