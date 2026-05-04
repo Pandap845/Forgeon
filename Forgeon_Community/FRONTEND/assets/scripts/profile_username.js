@@ -5,6 +5,8 @@
 
   if (!usernameField && !deleteConfirmUsernameHint) return;
 
+  if (window.ForgeonProfileViewUserId) return;
+
   var rawUser = localStorage.getItem(USER_KEY);
   if (!rawUser) return;
 

@@ -257,7 +257,9 @@
             '<p class="gd-profile-card__meta">' + escapeHtml(meta) + "</p>",
             "</div>",
             '<div class="d-flex align-items-center gap-2">',
-            '<a class="gd-profile-card__link" href="../Profile/profile.html">View profile</a>',
+            '<a class="gd-profile-card__link" href="../Profile/profile.html' +
+              (userId ? "?id=" + encodeURIComponent(userId) : "") +
+              '">View profile</a>',
             '<button type="button" class="gd-profile-card__link" data-action="send-friend-invitation" data-user-id="' + escapeHtml(userId) + '"' + (inviteDisabled ? " disabled" : "") + ">" + escapeHtml(inviteLabel) + "</button>",
             "</div>",
             "</article>",

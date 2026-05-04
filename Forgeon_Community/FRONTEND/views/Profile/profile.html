@@ -23,6 +23,26 @@
     <link rel="stylesheet" href="../../assets/styles/profile.css" />
   </head>
   <body class="profile-page">
+    <script>
+      (function () {
+        try {
+          var q = new URLSearchParams(window.location.search);
+          var vid = (q.get("id") || "").trim();
+          var me = null;
+          try {
+            me = JSON.parse(localStorage.getItem("forgeonCurrentUser") || "null");
+          } catch (_e) {}
+          var myId = me && (me.id || me._id) ? String(me.id || me._id) : "";
+          window.ForgeonProfileViewUserId = null;
+          if (vid && (!myId || vid !== myId)) {
+            window.ForgeonProfileViewUserId = vid;
+            document.body.classList.add("profile-page--view-only");
+          }
+        } catch (_e) {
+          window.ForgeonProfileViewUserId = null;
+        }
+      })();
+    </script>
     <header class="forgeon-navbar">
       <nav class="navbar navbar-expand-lg py-3">
         <div class="container-fluid px-4">
@@ -99,6 +119,10 @@
 
     <main class="profile-wrapper">
       <header class="profile-header">
+        <div id="profileViewBanner" class="profile-view-banner is-hidden" role="status">
+          <span class="profile-view-banner__text">You are viewing another member’s profile.</span>
+          <a class="profile-view-banner__link" href="./profile.html">Back to my profile</a>
+        </div>
         <h1>My Profile</h1>
         <p>Manage your personal information and achievements</p>
       </header>
@@ -129,7 +153,7 @@
                 </div>
               </div>
             </div>
-            <div class="avatar-zone__header-actions">
+            <div class="avatar-zone__header-actions profile-owner-only">
               <a
                 class="profile-manage-groups-btn"
                 href="../Groups/group_management.html"
@@ -142,11 +166,11 @@
           </div>
           <div class="avatar-frame-row">
             <p class="avatar-frame-name" id="avatarFrameName" aria-live="polite"></p>
-            <button type="button" class="frame-edit-btn" id="openFramePickerButton">
+            <button type="button" class="frame-edit-btn profile-owner-only" id="openFramePickerButton">
               Edit frame
             </button>
           </div>
-          <p class="avatar-hint">Click to change profile picture</p>
+          <p class="avatar-hint profile-owner-only">Click to change profile picture</p>
           <input id="avatarInput" type="file" accept="image/*" hidden />
 
           <div class="forgeon-xp-panel" id="forgeonXpPanel" aria-label="Level progress">
@@ -219,7 +243,7 @@
         <button type="button" class="more-badges-toggle" id="toggleMoreBadgesButton">Show more badges ▾</button>
       </section>
 
-        <section class="profile-card">
+        <section class="profile-card profile-owner-only">
           <h2 class="section-title">Forums</h2>
           <p class="account-subtitle">Manage forums you created. You can visit or permanently delete them here.</p>
 
@@ -228,7 +252,7 @@
           </div>
         </section>
 
-        <section class="profile-card account-card">
+        <section class="profile-card account-card profile-owner-only">
         <h2 class="section-title">Account Settings</h2>
         <p class="account-subtitle">Update your account data and security preferences.</p>
 
@@ -545,59 +569,67 @@
           modal.setAttribute("aria-hidden", "true");
         }
 
-        avatarButton.addEventListener("click", function () {
-          avatarInput.click();
-        });
+        if (!window.ForgeonProfileViewUserId) {
+          if (avatarButton && avatarInput) {
+            avatarButton.addEventListener("click", function () {
+              avatarInput.click();
+            });
 
-        avatarInput.addEventListener("change", function (event) {
-          var file = event.target.files && event.target.files[0];
-          if (!file) return;
-          if (!window.ForgeonUsersController || typeof window.ForgeonUsersController.uploadAvatar !== "function") {
-            if (avatarPreview) avatarPreview.src = URL.createObjectURL(file);
-            event.target.value = "";
-            return;
-          }
-          (async function () {
-            try {
-              var data = await window.ForgeonUsersController.uploadAvatar(file);
-              var url = data && data.avatarUrl ? data.avatarUrl : "";
-              if (url) {
-                if (typeof window.resolveForgeonAvatarUrl === "function") {
-                  url = window.resolveForgeonAvatarUrl(url);
-                }
-                if (avatarPreview) avatarPreview.src = url;
-                document.querySelectorAll(".nav-profile-img").forEach(function (img) {
-                  img.src = url;
-                });
+            avatarInput.addEventListener("change", function (event) {
+              var file = event.target.files && event.target.files[0];
+              if (!file) return;
+              if (!window.ForgeonUsersController || typeof window.ForgeonUsersController.uploadAvatar !== "function") {
+                if (avatarPreview) avatarPreview.src = URL.createObjectURL(file);
+                event.target.value = "";
+                return;
               }
-              if (data && data.user) {
+              (async function () {
                 try {
-                  localStorage.setItem("forgeonCurrentUser", JSON.stringify(data.user));
-                } catch (_e) {}
-              }
-            } catch (err) {
-              window.alert(err && err.message ? err.message : "Could not upload profile picture.");
-            } finally {
-              event.target.value = "";
-            }
-          })();
-        });
+                  var data = await window.ForgeonUsersController.uploadAvatar(file);
+                  var url = data && data.avatarUrl ? data.avatarUrl : "";
+                  if (url) {
+                    if (typeof window.resolveForgeonAvatarUrl === "function") {
+                      url = window.resolveForgeonAvatarUrl(url);
+                    }
+                    if (avatarPreview) avatarPreview.src = url;
+                    document.querySelectorAll(".nav-profile-img").forEach(function (img) {
+                      img.src = url;
+                    });
+                  }
+                  if (data && data.user) {
+                    try {
+                      localStorage.setItem("forgeonCurrentUser", JSON.stringify(data.user));
+                    } catch (_e) {}
+                  }
+                } catch (err) {
+                  window.alert(err && err.message ? err.message : "Could not upload profile picture.");
+                } finally {
+                  event.target.value = "";
+                }
+              })();
+            });
+          }
 
-        deleteAccountButton.addEventListener("click", function () {
-          deleteConfirmInput.value = "";
-          deleteModalFeedback.textContent = "";
-          deleteModalFeedback.classList.remove("is-error");
-          var expected = usernameField ? usernameField.value.trim() : "";
-          if (deleteConfirmUsernameHint) deleteConfirmUsernameHint.textContent = expected || "—";
-          openModal(deleteModalBackdrop);
-          deleteConfirmInput.focus();
-        });
+          if (deleteAccountButton) {
+            deleteAccountButton.addEventListener("click", function () {
+              deleteConfirmInput.value = "";
+              deleteModalFeedback.textContent = "";
+              deleteModalFeedback.classList.remove("is-error");
+              var expected = usernameField ? usernameField.value.trim() : "";
+              if (deleteConfirmUsernameHint) deleteConfirmUsernameHint.textContent = expected || "—";
+              openModal(deleteModalBackdrop);
+              deleteConfirmInput.focus();
+            });
+          }
 
-        cancelDeleteButton.addEventListener("click", function () {
-          closeModal(deleteModalBackdrop);
-        });
+          if (cancelDeleteButton) {
+            cancelDeleteButton.addEventListener("click", function () {
+              closeModal(deleteModalBackdrop);
+            });
+          }
 
-        confirmDeleteButton.addEventListener("click", function () {
+          if (confirmDeleteButton) {
+            confirmDeleteButton.addEventListener("click", function () {
           var typed = deleteConfirmInput.value.trim();
           var expected = usernameField ? usernameField.value.trim() : "";
           if (!expected) {
@@ -658,23 +690,50 @@
               confirmDeleteButton.textContent = prevLabel;
             }
           })();
-        });
-
-        closeDeletedModalButton.addEventListener("click", function () {
-          closeModal(deletedModalBackdrop);
-          window.location.href = "../Login_Register/login.html";
-        });
-
-        deleteModalBackdrop.addEventListener("click", function (event) {
-          if (event.target === deleteModalBackdrop) closeModal(deleteModalBackdrop);
-        });
-
-        deletedModalBackdrop.addEventListener("click", function (event) {
-          if (event.target === deletedModalBackdrop) {
-            closeModal(deletedModalBackdrop);
-            window.location.href = "../Login_Register/login.html";
+            });
           }
-        });
+
+          if (closeDeletedModalButton) {
+            closeDeletedModalButton.addEventListener("click", function () {
+              closeModal(deletedModalBackdrop);
+              window.location.href = "../Login_Register/login.html";
+            });
+          }
+
+          if (deleteModalBackdrop) {
+            deleteModalBackdrop.addEventListener("click", function (event) {
+              if (event.target === deleteModalBackdrop) closeModal(deleteModalBackdrop);
+            });
+          }
+
+          if (deletedModalBackdrop) {
+            deletedModalBackdrop.addEventListener("click", function (event) {
+              if (event.target === deletedModalBackdrop) {
+                closeModal(deletedModalBackdrop);
+                window.location.href = "../Login_Register/login.html";
+              }
+            });
+          }
+
+          if (openFramePickerButton) {
+            openFramePickerButton.addEventListener("click", function () {
+              buildFramePickerGrid();
+              openModal(framePickerModalBackdrop);
+            });
+          }
+
+          if (closeFramePickerButton) {
+            closeFramePickerButton.addEventListener("click", function () {
+              closeModal(framePickerModalBackdrop);
+            });
+          }
+
+          if (framePickerModalBackdrop) {
+            framePickerModalBackdrop.addEventListener("click", function (event) {
+              if (event.target === framePickerModalBackdrop) closeModal(framePickerModalBackdrop);
+            });
+          }
+        }
 
         closeAllBadgesModalButton.addEventListener("click", function () {
           closeModal(allBadgesModalBackdrop);
@@ -692,25 +751,6 @@
           if (event.target === badgeDetailsModalBackdrop) closeModal(badgeDetailsModalBackdrop);
         });
 
-        if (openFramePickerButton) {
-          openFramePickerButton.addEventListener("click", function () {
-            buildFramePickerGrid();
-            openModal(framePickerModalBackdrop);
-          });
-        }
-
-        if (closeFramePickerButton) {
-          closeFramePickerButton.addEventListener("click", function () {
-            closeModal(framePickerModalBackdrop);
-          });
-        }
-
-        if (framePickerModalBackdrop) {
-          framePickerModalBackdrop.addEventListener("click", function (event) {
-            if (event.target === framePickerModalBackdrop) closeModal(framePickerModalBackdrop);
-          });
-        }
-
         syncProfileLevelUI();
       })();
     </script>
@@ -722,6 +762,7 @@
     <script src="../../controllers/notification.controller.js"></script>
     <script src="../../assets/scripts/loading-overlay.js"></script>
     <script src="../../assets/scripts/notifications.js"></script>
+    <script src="../../assets/scripts/nav-profile-avatar.js"></script>
     <script src="../../assets/scripts/nav-logout.js"></script>
     <script>
       (function () {
@@ -735,6 +776,7 @@
         }
 
         async function loadMyForums() {
+          if (window.ForgeonProfileViewUserId) return;
           var container = document.getElementById('myForumsList');
           if (!container) return;
           container.innerHTML = '<div class="forgeon-card p-3">Loading your forums…</div>';

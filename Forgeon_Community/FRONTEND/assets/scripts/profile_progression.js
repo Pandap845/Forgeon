@@ -232,12 +232,30 @@
     var groupsStatValue = document.getElementById("groupsStatValue");
     var groupsCard = document.getElementById("groupsCard");
     var avatarZone = document.getElementById("avatarZone");
+    var avatarShell = document.getElementById("avatarShell");
     var allBadgesButton = document.getElementById("allBadgesButton");
     var allBadgesModalBackdrop = document.getElementById("allBadgesModalBackdrop");
 
+    var viewUserId = window.ForgeonProfileViewUserId || null;
+    var viewOnly = !!viewUserId;
     var current = getCurrentUser();
     var token = getToken();
-    if (!current || !current.id || !token) {
+
+    if (!token) {
+      if (badgeList) {
+        badgeList.innerHTML =
+          '<p class="field-hint" style="padding:0.5rem 0">Sign in to view profiles.</p>';
+      }
+      return;
+    }
+
+    var targetId = viewUserId || (current && (current.id || current._id));
+    if (!targetId) {
+      if (badgeList) badgeList.innerHTML = "";
+      return;
+    }
+
+    if (!viewUserId && (!current || !(current.id || current._id))) {
       if (badgeList) badgeList.innerHTML = "";
       return;
     }
@@ -251,20 +269,61 @@
     }
 
     try {
+      var tid = String(targetId);
       if (window.ForgeonUsersController && window.ForgeonUsersController.getById) {
-        user = await window.ForgeonUsersController.getById(current.id);
+        user = await window.ForgeonUsersController.getById(tid);
       } else {
-        user = await fetchJson("/api/users/" + encodeURIComponent(current.id));
+        user = await fetchJson("/api/users/" + encodeURIComponent(tid));
       }
     } catch (err) {
       console.warn("profile progression load failed", err);
+      if (badgeList) {
+        badgeList.innerHTML =
+          '<p class="field-hint" style="padding:0.5rem 0">Could not load this profile.</p>';
+      }
       return;
     }
 
-    try {
-      var merged = Object.assign({}, current, user);
-      localStorage.setItem(USER_KEY, JSON.stringify(merged));
-    } catch (_e) {}
+    if (!viewOnly) {
+      try {
+        var merged = Object.assign({}, current, user);
+        localStorage.setItem(USER_KEY, JSON.stringify(merged));
+      } catch (_e) {}
+    }
+
+    var banner = document.getElementById("profileViewBanner");
+    var ph = document.querySelector(".profile-header h1");
+    var psub = document.querySelector(".profile-header p");
+    if (viewOnly) {
+      if (banner) banner.classList.remove("is-hidden");
+      if (ph) ph.textContent = (user.username || "Member") + "'s profile";
+      if (psub) psub.textContent = "View only — you cannot edit this account.";
+      document.title = "Forgeon — " + (user.username || "Profile");
+    } else {
+      if (banner) banner.classList.add("is-hidden");
+      if (ph) ph.textContent = "My Profile";
+      if (psub) psub.textContent = "Manage your personal information and achievements";
+      document.title = "Forgeon - My Profile";
+    }
+
+    var badgeHeaderLabel = document.querySelector(".badge-header > span:first-child");
+    if (badgeHeaderLabel) badgeHeaderLabel.textContent = viewOnly ? "Badges" : "My Badges";
+
+    var allBadgesTitle = document.getElementById("allBadgesModalTitle");
+    if (allBadgesTitle) allBadgesTitle.textContent = viewOnly ? "All badges" : "All my badges";
+
+    var usernameInput = document.getElementById("username");
+    if (usernameInput && user.username) usernameInput.value = String(user.username);
+
+    var birthdayEl = document.getElementById("birthday");
+    if (birthdayEl) {
+      birthdayEl.value = user.birthday ? String(user.birthday).slice(0, 10) : "";
+      birthdayEl.readOnly = viewOnly;
+    }
+
+    if (avatarShell) {
+      avatarShell.setAttribute("data-forgeon-use-stored-frame", viewOnly ? "false" : "true");
+    }
 
     var resolvedAvatar =
       typeof window.resolveForgeonAvatarUrl === "function"
@@ -274,9 +333,11 @@
           : "/assets/images/default-avatar.svg";
     var preview = document.getElementById("avatarPreview");
     if (preview) preview.src = resolvedAvatar;
-    document.querySelectorAll(".nav-profile-img").forEach(function (img) {
-      img.src = resolvedAvatar;
-    });
+    if (!viewOnly) {
+      document.querySelectorAll(".nav-profile-img").forEach(function (img) {
+        img.src = resolvedAvatar;
+      });
+    }
 
     if (avatarZone && user.level != null) {
       avatarZone.setAttribute("data-user-level", String(user.level));
@@ -297,16 +358,31 @@
       groupsStatValue.textContent = String(groupCount);
     }
     if (groupsCard) {
-      groupsCard.setAttribute(
-        "aria-label",
-        "View My Groups (" + groupCount + (groupCount === 1 ? " group)" : " groups)")
-      );
-    }
-    try {
-      if (window.ForgeonMyGroups && typeof window.ForgeonMyGroups.setCount === "function") {
-        window.ForgeonMyGroups.setCount(groupCount);
+      if (viewOnly) {
+        groupsCard.removeAttribute("href");
+        groupsCard.classList.remove("stats-clickable");
+        groupsCard.setAttribute("role", "group");
+        groupsCard.setAttribute(
+          "aria-label",
+          "Groups joined: " + groupCount + (groupCount === 1 ? " group" : " groups")
+        );
+      } else {
+        groupsCard.setAttribute("href", "../Groups/user_groups.html");
+        groupsCard.classList.add("stats-clickable");
+        groupsCard.removeAttribute("role");
+        groupsCard.setAttribute(
+          "aria-label",
+          "View My Groups (" + groupCount + (groupCount === 1 ? " group)" : " groups)")
+        );
       }
-    } catch (_e) {}
+    }
+    if (!viewOnly) {
+      try {
+        if (window.ForgeonMyGroups && typeof window.ForgeonMyGroups.setCount === "function") {
+          window.ForgeonMyGroups.setCount(groupCount);
+        }
+      } catch (_e) {}
+    }
 
     var earned = user.badgesEarned || [];
     var total = user.badgeCatalogTotal || (catalog && catalog.length) || 15;
@@ -335,6 +411,9 @@
 
     if (typeof window.ForgeonProfileSyncLevelUi === "function") {
       window.ForgeonProfileSyncLevelUi();
+    }
+    if (window.ForgeonAvatarFrames && typeof window.ForgeonAvatarFrames.refreshAll === "function") {
+      window.ForgeonAvatarFrames.refreshAll();
     }
   }
 

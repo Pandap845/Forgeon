@@ -1051,3 +1051,51 @@ a.stats-item {
     color: rgba(255, 255, 255, 0.8);
     flex: 0 0 auto;
 }
+
+/* Viewing another member's profile (?id=) */
+.profile-view-banner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    margin-bottom: 1rem;
+    border-radius: 10px;
+    background: rgba(125, 143, 245, 0.12);
+    border: 1px solid rgba(125, 143, 245, 0.35);
+    color: var(--profile-text);
+    font-size: 0.9rem;
+}
+
+.profile-view-banner.is-hidden {
+    display: none;
+}
+
+.profile-view-banner__text {
+    color: rgba(243, 246, 251, 0.92);
+}
+
+.profile-view-banner__link {
+    font-weight: 600;
+    color: var(--profile-accent);
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.profile-view-banner__link:hover {
+    text-decoration: underline;
+}
+
+body.profile-page--view-only .profile-owner-only {
+    display: none !important;
+}
+
+body.profile-page--view-only #avatarButton {
+    pointer-events: none;
+    cursor: default;
+}
+
+body.profile-page--view-only #groupsCard.stats-clickable {
+    cursor: default;
+}

@@ -294,9 +294,9 @@ function progressionPayload(userDoc) {
 
 /** XP rewards per action — tune here only (used by userProgressionService). */
 const XP = {
-  THREAD: 220,
+  THREAD: 120,
   THREAD_IMAGE_BONUS: 55,
-  COMMENT: 676,
+  COMMENT: 35,
   FORUM_CREATED: 320,
   GROUP_CREATED: 260,
   GROUP_JOIN: 95,

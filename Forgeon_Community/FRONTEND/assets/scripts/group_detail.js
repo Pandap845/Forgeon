@@ -84,6 +84,10 @@
 
   function buildMemberCard(membership) {
     var user = membership && membership.user ? membership.user : {};
+    var memberUserId = user && (user._id || user.id) ? String(user._id || user.id) : "";
+    var profileHref = memberUserId
+      ? "../Profile/profile.html?id=" + encodeURIComponent(memberUserId)
+      : "../Profile/profile.html";
     var username = user && user.username ? user.username : user && user.email ? user.email : "Unknown user";
     var level = Number(user && user.level) || 1;
     var roleLabel = membership && membership.role === "owner" ? "Group Owner" : "Member";
@@ -111,7 +115,7 @@
       '<p class="gd-profile-card__handle">@' + escapeHtml(username) + "</p>",
       '<p class="gd-profile-card__meta">' + roleLabel + "</p>",
       "</div>",
-      '<a class="gd-profile-card__link" href="../Profile/profile.html">View profile</a>',
+      '<a class="gd-profile-card__link" href="' + escapeHtml(profileHref) + '">View profile</a>',
       "</article>",
       "</li>",
     ].join("");
