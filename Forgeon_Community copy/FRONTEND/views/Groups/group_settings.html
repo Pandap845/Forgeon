@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+    <title>Forgeon — Group Settings</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../../assets/styles/groups.css" />
+    <link rel="stylesheet" href="../../assets/styles/avatar-frames.css" />
+    <link rel="stylesheet" href="../../assets/styles/header.css" />
+  </head>
+  <body class="dg-page dg-page--group-settings">
+    <header class="forgeon-navbar">
+      <nav class="navbar navbar-expand-lg py-3">
+        <div class="container-fluid px-4">
+          <a class="navbar-brand d-flex align-items-center gap-3" href="../Home/homepage.html" title="Home">
+            <span class="forgeon-brand-badge d-inline-flex align-items-center justify-content-center">
+              <img src="https://cdn-icons-png.flaticon.com/512/686/686589.png" alt="logo" class="logo-img" />
+            </span>
+            <span class="d-flex flex-column lh-sm">
+              <span class="fw-medium">Forgeon</span>
+              <small class="text-muted-2">Gaming Community</small>
+            </span>
+          </a>
+
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#forgeonNav"
+            aria-controls="forgeonNav"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+
+          <div class="collapse navbar-collapse" id="forgeonNav">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0 gap-lg-3">
+                <li class="nav-item">
+                <a class="nav-link text-muted-2" href="../Home/forums.html">Forums</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link text-muted-2" href="./user_groups.html">Groups</a>
+              </li>
+            </ul>
+
+            <div class="d-flex align-items-center gap-2">
+              <a class="btn btn-link text-muted-2 px-2" href="./search.html" aria-label="Search">
+                <i class="bi bi-search fs-5"></i>
+              </a>
+              <button
+                class="btn btn-link text-muted-2 px-2"
+                type="button"
+                aria-label="Notifications"
+                data-bs-toggle="modal"
+                data-bs-target="#notificationsModal"
+              >
+                <i class="bi bi-bell fs-5"></i>
+              </button>
+              <a class="btn btn-link text-muted-2 px-2" href="../Groups/friend_requests.html" aria-label="Friend Requests">
+                <i class="bi bi-people fs-5"></i>
+              </a>
+              <a class="btn btn-link text-muted-2 px-2 nav-logout-btn" href="../Login_Register/login.html" aria-label="Log out" title="Log out">
+                <i class="bi bi-box-arrow-right fs-5"></i>
+              </a>
+              <a
+                class="btn btn-link text-muted-2 px-2 d-inline-flex align-items-center justify-content-center nav-profile-avatar"
+                href="../Profile/profile.html"
+                aria-label="Profile"
+              >
+                <img
+                  class="nav-profile-img"
+                  src="/assets/images/default-avatar.svg"
+                  alt=""
+                  width="36"
+                  height="36"
+                />
+              </a>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+    <main class="dg-main gs-main">
+      <header class="gs-header">
+        <div class="gs-header__row">
+          <h1 id="gsPageTitle" class="gs-title">Group Settings</h1>
+          <span class="gs-badge-owner">Owner</span>
+        </div>
+        <p class="gs-subtitle">Manage your group configuration and settings</p>
+        <p id="gsMetaInfo" class="gs-hint"></p>
+      </header>
+
+      <form id="groupSettingsForm" action="#" method="post" novalidate>
+        <section class="gs-card dg-surface-card" aria-labelledby="basic-heading">
+          <h2 id="basic-heading" class="gs-section-title">Basic Information</h2>
+
+          <div class="gs-field">
+            <label class="gs-label" for="coverInput">Cover Image</label>
+            <div class="gs-cover">
+              <img
+                id="gsCoverImage"
+                class="gs-cover__img"
+                src="https://www.figma.com/api/mcp/asset/91985f62-8b0c-4635-b2b5-f7506e04f1af"
+                alt=""
+                width="1200"
+                height="475"
+              />
+              <label class="visually-hidden" for="coverInput">Replace cover image</label>
+              <input id="coverInput" class="gs-file-input" type="file" accept="image/*" />
+            </div>
+          </div>
+
+          <div class="gs-field">
+            <span class="gs-label">Group Icon</span>
+            <div class="gs-icon-row">
+              <div class="gs-icon-preview">
+                <img
+                  id="gsIconImage"
+                  src="https://www.figma.com/api/mcp/asset/c966ed5c-7865-4850-bf65-8fcf694fcacd"
+                  alt=""
+                  width="94"
+                  height="94"
+                />
+              </div>
+              <div class="gs-icon-copy">
+                <p class="gs-icon-copy__primary">Upload a group icon</p>
+                <p class="gs-icon-copy__hint">Square image, at least 200×200px</p>
+                <input id="iconInput" class="gs-file-input" type="file" accept="image/*" aria-label="Upload group icon" />
+                <button type="button" class="gs-btn-remove">
+                  <img src="https://www.figma.com/api/mcp/asset/fcb72571-9b4c-4e56-98f3-24e2f8f09bd6" alt="" width="16" height="16" />
+                  Remove Icon
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="gs-divider" aria-hidden="true"></div>
+
+          <div class="gs-field gs-field--compact">
+            <label class="gs-label" for="groupName">Group Name <span class="gs-req">*</span></label>
+            <input
+              id="groupName"
+              name="name"
+              class="gs-input"
+              type="text"
+              required
+              value="React Developers Community"
+              autocomplete="off"
+            />
+          </div>
+
+          <div class="gs-field gs-field--compact">
+            <label class="gs-label" for="groupDesc">Description <span class="gs-req">*</span></label>
+            <textarea id="groupDesc" name="description" class="gs-textarea" rows="5" required>A vibrant community of React developers sharing knowledge, best practices, and helping each other build amazing applications with React and its ecosystem.</textarea>
+            <p id="charCount" class="gs-hint gs-hint--count" aria-live="polite">0 characters</p>
+          </div>
+
+          <div class="gs-field gs-field--compact">
+            <label class="gs-label" for="category">Category <span class="gs-req">*</span></label>
+            <div class="gs-select-wrap">
+              <select id="category" name="category" class="gs-select" required>
+                <option value="technology" selected>Technology</option>
+                <option value="business">Business</option>
+                <option value="gaming">Gaming</option>
+                <option value="health">Health &amp; Fitness</option>
+                <option value="other">Other</option>
+              </select>
+              <span class="gs-select-chevron" aria-hidden="true">
+                <img src="https://www.figma.com/api/mcp/asset/474947ff-f470-4bf2-8c61-be02526b5f31" alt="" width="16" height="16" />
+              </span>
+            </div>
+          </div>
+
+        </section>
+        <p id="gsFormMessage" class="gs-hint mt-3"></p>
+
+        <section class="gc-card dg-surface-card" aria-labelledby="gsInviteHeading">
+          <h2 id="gsInviteHeading" class="gc-section-title">Invite Members</h2>
+          <p class="gc-invite-lead">Open invitations for this group.</p>
+          <a id="gsInviteLink" href="#" class="gc-invite-btn">
+            <span class="gc-invite-btn__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <circle cx="10" cy="8" r="3"></circle>
+                <path d="M4.5 17a5.5 5.5 0 0 1 11 0M18 8v4M16 10h4"></path>
+              </svg>
+            </span>
+            Search and Invite Users
+          </a>
+        </section>
+
+        <section class="gs-card gs-card--danger dg-surface-card" aria-labelledby="danger-heading">
+          <div class="gs-danger-head">
+            <img src="https://www.figma.com/api/mcp/asset/3a9c0b0a-d423-415a-a3e8-1c9cce2293b6" alt="" width="20" height="20" />
+            <h2 id="danger-heading" class="gs-section-title gs-section-title--danger">Danger Zone</h2>
+          </div>
+          <p class="gs-danger-lead">Irreversible actions that will affect your group</p>
+
+          <div class="gs-danger-row">
+            <div class="gs-danger-row__text">
+              <span class="gs-panel-row__title">Archive Group</span>
+              <span class="gs-panel-row__desc">Make group read-only. No new posts or members allowed.</span>
+            </div>
+            <button type="button" class="gs-btn-archive">
+              <img src="https://www.figma.com/api/mcp/asset/87570d4f-4c21-4c4f-a13a-f2dca36f1c47" alt="" width="16" height="16" />
+              Archive
+            </button>
+          </div>
+
+          <div class="gs-danger-row gs-danger-row--delete">
+            <div class="gs-danger-row__text">
+              <span class="gs-panel-row__title">Delete Group</span>
+              <span class="gs-panel-row__desc">Permanently delete this group and all its content.</span>
+            </div>
+            <button type="button" class="gs-btn-delete">
+              <img src="https://www.figma.com/api/mcp/asset/2765145d-a7fa-4820-8c38-242169ca22b6" alt="" width="16" height="16" />
+              Delete
+            </button>
+          </div>
+        </section>
+
+        <div class="gs-actions">
+          <a href="./group_management.html" class="gs-footer-btn gs-footer-btn--secondary">Cancel</a>
+          <button type="submit" class="gs-footer-btn gs-footer-btn--primary">
+            <img src="https://www.figma.com/api/mcp/asset/ccfb4951-be0d-49da-848e-0bfe5aa65127" alt="" width="16" height="16" />
+            Save Changes
+          </button>
+        </div>
+      </form>
+    </main>
+
+    <div class="modal fade" id="notificationsModal" tabindex="-1" aria-labelledby="notificationsModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content forgeon-modal">
+          <div class="modal-body p-4">
+            <div class="d-flex align-items-start justify-content-between gap-3 mb-3">
+              <div>
+                <h2 class="h5 mb-1" id="notificationsModalLabel">Notifications</h2>
+                <div class="text-muted-2 small">Your latest activity</div>
+              </div>
+              <button type="button" class="btn btn-link text-muted-2 p-0" data-bs-dismiss="modal" aria-label="Close">
+                <i class="bi bi-x-lg"></i>
+              </button>
+            </div>
+
+            <div class="forgeon-card p-3">
+              <div class="d-flex gap-3">
+                <div class="tv-notif-dot" aria-hidden="true">
+                  <i class="bi bi-bell"></i>
+                </div>
+                <div class="flex-grow-1">
+                  <div class="fw-medium">Placeholder notification</div>
+                  <div class="text-muted-2 small">
+                    Someone replied to your thread <span class="text-white-50">“Switch limits”</span>.
+                  </div>
+                  <div class="text-muted-3 small mt-2">Just now</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="../../assets/scripts/avatar-frames.js"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+      crossorigin="anonymous"
+    ></script>
+    <script src="../../controllers/categories_controller.js"></script>
+    <script src="../../controllers/groups_controller.js"></script>
+    <script src="../../assets/scripts/group_settings.js"></script>
+    <script src="../../controllers/friends_invitations_controller.js"></script>
+    <script src="../../controllers/groups_invitations_controller.js"></script>
+    <script src="../../controllers/notification.controller.js"></script>
+    <script src="../../assets/scripts/loading-overlay.js"></script>
+    <script src="../../assets/scripts/notifications.js"></script>
+    <script src="../../assets/scripts/forgeon-avatar-url.js"></script>
+    <script src="../../assets/scripts/nav-profile-avatar.js"></script>
+    <script src="../../assets/scripts/nav-logout.js"></script>
+  </body>
+</html>
