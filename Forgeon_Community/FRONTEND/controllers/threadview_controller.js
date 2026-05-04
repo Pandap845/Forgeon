@@ -326,9 +326,25 @@
         }
       }
 
-      // Forum / breadcrumb
+      // Forum / group breadcrumb
+      const rootLink = document.getElementById('breadcrumbRootLink');
       const forum = thread.forum;
-      if (forum && (forum._id || forum.id || forum.name)) {
+      const group = thread.group;
+      if (group && (group._id || group.id || group.name)) {
+        const groupId = group._id || group.id;
+        const groupName = group.name || 'Group';
+        setText('tvForumName', groupName);
+        const bc = document.getElementById('breadcrumbForumLink');
+        if (bc) {
+          bc.textContent = groupName;
+          bc.href = '../Groups/group_detail.html?groupId=' + encodeURIComponent(groupId);
+        }
+        if (rootLink) {
+          rootLink.textContent = 'Groups';
+          rootLink.href = '../Groups/user_groups.html';
+        }
+        document.title = (thread.title || 'Thread') + ' - ' + groupName + ' - Forgeon';
+      } else if (forum && (forum._id || forum.id || forum.name)) {
         const forumId = forum._id || forum.id;
         const forumName = forum.name || forum;
         setText('tvForumName', forumName || 'Forum');
@@ -337,14 +353,21 @@
           bc.textContent = forumName || 'Forum';
           bc.href = './forumpage.html?forum=' + encodeURIComponent(forumId);
         }
+        if (rootLink) {
+          rootLink.textContent = 'Forums';
+          rootLink.href = './forums.html';
+        }
         document.title = (thread.title || 'Thread') + ' - ' + (forumName || 'Forum') + ' - Forgeon';
       } else {
-        // fallback: clear forum breadcrumb
         setText('tvForumName', 'Forum');
         const bc = document.getElementById('breadcrumbForumLink');
         if (bc) {
           bc.textContent = 'Forums';
           bc.href = './forums.html';
+        }
+        if (rootLink) {
+          rootLink.textContent = 'Forums';
+          rootLink.href = './forums.html';
         }
         document.title = (thread.title || 'Thread') + ' - Forgeon';
       }

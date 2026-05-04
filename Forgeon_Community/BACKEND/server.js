@@ -22,6 +22,7 @@ app.use(express.json());
 const uploadsRoot = path.resolve(__dirname, './uploads');
 fs.mkdirSync(path.resolve(uploadsRoot, 'groups'), { recursive: true });
 fs.mkdirSync(path.resolve(uploadsRoot, 'profile-pictures'), { recursive: true });
+fs.mkdirSync(path.resolve(uploadsRoot, 'threads'), { recursive: true });
 
 // connect to MongoDB
 mongoose.connect(process.env.MONGO_URI)

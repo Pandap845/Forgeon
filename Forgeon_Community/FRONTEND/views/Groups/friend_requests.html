@@ -10,6 +10,7 @@
       crossorigin="anonymous"
     />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
     <title>Forgeon — Friend Requests</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -113,7 +114,7 @@
           aria-controls="panel-incoming"
         >
             <span class="fr-tab__inner">
-              <img src="https://www.figma.com/api/mcp/asset/149f6942-2e46-4d21-add4-19f9b0a60aea" alt="" width="16" height="16" />
+              <i class="fa-solid fa-inbox fr-icon-white" aria-hidden="true"></i>
               <span class="fr-tab__label">Incoming</span>
               <span id="frIncomingTabCount" class="fr-tab-badge fr-tab-badge--alert">0</span>
             </span>
@@ -127,7 +128,7 @@
           aria-controls="panel-sent"
         >
             <span class="fr-tab__inner">
-              <img src="https://www.figma.com/api/mcp/asset/67d57eba-df94-49f6-83c5-cc45573343c2" alt="" width="16" height="16" />
+              <i class="fa-regular fa-paper-plane fr-icon-white" aria-hidden="true"></i>
               <span class="fr-tab__label">Sent</span>
               <span id="frSentTabCount" class="fr-tab-badge fr-tab-badge--muted">0</span>
             </span>
@@ -141,7 +142,7 @@
           aria-controls="panel-friends"
         >
             <span class="fr-tab__inner">
-              <i class="bi bi-people" aria-hidden="true"></i>
+              <i class="fa-solid fa-user-group fr-icon-white" aria-hidden="true"></i>
               <span class="fr-tab__label">Friends</span>
               <span id="frFriendsTabCount" class="fr-tab-badge fr-tab-badge--muted">0</span>
             </span>
@@ -162,7 +163,7 @@
       <section class="fr-summary" aria-label="Request counts">
         <article class="fr-stat dg-surface-card">
           <div class="fr-stat__icon fr-stat__icon--incoming">
-            <img src="https://www.figma.com/api/mcp/asset/eaac9621-6ddc-42de-a063-d3ea83c27b7e" alt="" width="24" height="24" />
+            <i class="fa-solid fa-arrow-down fr-icon-white" aria-hidden="true"></i>
           </div>
           <div class="fr-stat__text">
             <p class="fr-stat__label">Incoming Requests</p>
@@ -171,7 +172,7 @@
         </article>
         <article class="fr-stat dg-surface-card">
           <div class="fr-stat__icon fr-stat__icon--sent">
-            <img src="https://www.figma.com/api/mcp/asset/32216015-a1f4-4c5b-a0d6-fec3eec9b74a" alt="" width="24" height="24" />
+            <i class="fa-solid fa-arrow-up fr-icon-white" aria-hidden="true"></i>
           </div>
           <div class="fr-stat__text">
             <p class="fr-stat__label">Sent Requests</p>
@@ -191,14 +192,14 @@
                 <div class="text-muted-2 small">Your latest activity</div>
               </div>
               <button type="button" class="btn btn-link text-muted-2 p-0" data-bs-dismiss="modal" aria-label="Close">
-                <i class="bi bi-x-lg"></i>
+                <i class="fa-solid fa-xmark fr-icon-white" aria-hidden="true"></i>
               </button>
             </div>
 
             <div class="forgeon-card p-3">
               <div class="d-flex gap-3">
                 <div class="tv-notif-dot" aria-hidden="true">
-                  <i class="bi bi-bell"></i>
+                  <i class="fa-solid fa-bell fr-icon-white" aria-hidden="true"></i>
                 </div>
                 <div class="flex-grow-1">
                   <div class="fw-medium">Placeholder notification</div>
@@ -224,7 +225,7 @@
     <script src="../../controllers/groups_invitations_controller.js"></script>
     <script src="../../assets/scripts/avatar-frames.js"></script>
     <script src="../../assets/scripts/friend_requests.js"></script>
-    <script src="../../controllers/notification.controller.js"></script>
+    <script src="../../controllers/notification_controller.js"></script>
     <script src="../../assets/scripts/loading-overlay.js"></script>
     <script src="../../assets/scripts/notifications.js"></script>
     <script src="../../assets/scripts/forgeon-avatar-url.js"></script>

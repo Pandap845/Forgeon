@@ -10,6 +10,8 @@ function isObjectId(value) {
 async function createThread(req, res) {
   try {
     const { title, description, imageUrl, publishTo, group, forum } = req.body;
+    const uploadedImage = req.file ? `/uploads/threads/${req.file.filename}` : '';
+    const finalImageUrl = uploadedImage || imageUrl || '';
     if (!title || !description || !publishTo) {
       return res.status(400).json({ message: 'title, description and publishTo are required.' });
     }
@@ -30,7 +32,7 @@ async function createThread(req, res) {
     const thread = await Threads.create({
       title,
       description,
-      imageUrl,
+      imageUrl: finalImageUrl,
       publishTo,
       author: req.user.userId,
       group: publishTo === 'group' ? group : null,
@@ -40,7 +42,7 @@ async function createThread(req, res) {
     });
 
     userProgressionService
-      .afterThreadCreated(req.user.userId, { imageUrl })
+      .afterThreadCreated(req.user.userId, { imageUrl: finalImageUrl })
       .catch((err) => console.warn('progression afterThreadCreated', err));
 
     return res.status(201).json(thread);
@@ -71,48 +73,66 @@ async function listThreads(req, res) {
       console.warn('Failed to cleanup orphan forum threads', cleanupErr);
     }
 
-    // if a forum filter is provided, return only threads for that forum
-    const forumFilter = req.query.forum;
     let query;
-    if (forumFilter) {
-      // accept forum id, slug or name
-      let forumIdToUse = null;
-      if (isObjectId(forumFilter)) {
-        forumIdToUse = forumFilter;
-      } else {
-        // try find by slug or exact case-insensitive name
-        const forumDoc = await Forum.findOne({
-          $or: [
-            { slug: forumFilter },
-            { name: forumFilter },
-            { name: new RegExp('^' + forumFilter.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '$', 'i') },
-          ],
-        }).select('_id').lean();
-        if (forumDoc) forumIdToUse = forumDoc._id;
-      }
 
-      if (forumIdToUse) {
-        query = { isDeleted: false, publishTo: 'forum', forum: forumIdToUse };
-      } else {
-        // forum not found - return empty list to avoid leaking other forums' threads
+    // if a group filter is provided, return only threads for that group
+    const groupFilter = req.query.group;
+    if (groupFilter) {
+      if (!isObjectId(groupFilter)) {
         return res.status(200).json([]);
       }
-    } else {
-      // get groups where user is member
-      let memberGroupIds = [];
-      if (actorId) {
-        const memberships = await GroupMemberships.find({ user: actorId }).select('group');
-        memberGroupIds = memberships.map((m) => m.group);
+
+      const groupDoc = await Groups.findOne({ _id: groupFilter, isDeleted: false, isArchived: false })
+        .select('_id')
+        .lean();
+      if (!groupDoc) {
+        return res.status(200).json([]);
       }
 
-      query = {
-        isDeleted: false,
-        $or: [
-          { publishTo: 'general' },
-          { publishTo: 'forum', forum: { $exists: true, $ne: null } },
-          { $and: [{ publishTo: 'group' }, { group: { $in: memberGroupIds } }] },
-        ],
-      };
+      query = { isDeleted: false, publishTo: 'group', group: groupFilter };
+    } else {
+      // if a forum filter is provided, return only threads for that forum
+      const forumFilter = req.query.forum;
+      if (forumFilter) {
+        // accept forum id, slug or name
+        let forumIdToUse = null;
+        if (isObjectId(forumFilter)) {
+          forumIdToUse = forumFilter;
+        } else {
+          // try find by slug or exact case-insensitive name
+          const forumDoc = await Forum.findOne({
+            $or: [
+              { slug: forumFilter },
+              { name: forumFilter },
+              { name: new RegExp('^' + forumFilter.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '$', 'i') },
+            ],
+          }).select('_id').lean();
+          if (forumDoc) forumIdToUse = forumDoc._id;
+        }
+
+        if (forumIdToUse) {
+          query = { isDeleted: false, publishTo: 'forum', forum: forumIdToUse };
+        } else {
+          // forum not found - return empty list to avoid leaking other forums' threads
+          return res.status(200).json([]);
+        }
+      } else {
+        // get groups where user is member
+        let memberGroupIds = [];
+        if (actorId) {
+          const memberships = await GroupMemberships.find({ user: actorId }).select('group');
+          memberGroupIds = memberships.map((m) => m.group);
+        }
+
+        query = {
+          isDeleted: false,
+          $or: [
+            { publishTo: 'general' },
+            { publishTo: 'forum', forum: { $exists: true, $ne: null } },
+            { $and: [{ publishTo: 'group' }, { group: { $in: memberGroupIds } }] },
+          ],
+        };
+      }
     }
 
     const threads = await Threads.find(query)

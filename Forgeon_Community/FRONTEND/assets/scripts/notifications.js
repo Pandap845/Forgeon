@@ -50,7 +50,7 @@
 
     if (!items.length) {
       host.innerHTML =
-        '<div class="forgeon-card p-3"><div class="text-muted-2 small">No new invitations.</div></div>';
+        '<div class="forgeon-card p-3"><div class="text-muted-2 small">No new notifications.</div></div>';
       return;
     }
 
@@ -84,6 +84,9 @@
     try {
       var items = await notificationsController.listReceivedNotifications();
       renderItems(items);
+      if (typeof notificationsController.markAsSeen === "function") {
+        notificationsController.markAsSeen(items);
+      }
     } catch (_error) {
       host.innerHTML =
         '<div class="forgeon-card p-3"><div class="text-muted-2 small">Could not load notifications.</div></div>';

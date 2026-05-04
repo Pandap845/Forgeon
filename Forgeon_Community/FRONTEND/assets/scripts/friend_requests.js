@@ -213,6 +213,7 @@
       .map(function (friendship) {
         var userA = friendship && friendship.userA ? friendship.userA : {};
         var userB = friendship && friendship.userB ? friendship.userB : {};
+        var friendshipId = friendship && (friendship._id || friendship.id) ? String(friendship._id || friendship.id) : "";
 
         var resolvedFriend = userA;
         if (currentUserId) {
@@ -224,6 +225,11 @@
 
         var friendName = escapeHtml(getName(resolvedFriend));
         var connectedAt = formatRelativeTime(friendship && (friendship.connectedAt || friendship.createdAt));
+        var removeButtonHtml = friendshipId
+          ? '<div class="fr-request__actions"><button type="button" class="fr-btn fr-btn--reject fr-btn--cancel" data-action="remove-friend" data-friendship-id="' +
+            escapeHtml(friendshipId) +
+            '">Remove friend</button></div>'
+          : "";
         return (
           '<li><article class="fr-request fr-request--sent dg-surface-card">' +
           '<div class="avatar-shell avatar-shell--fr avatar-shell--border flex-shrink-0" data-forgeon-avatar data-user-level="1">' +
@@ -238,6 +244,7 @@
           escapeHtml(connectedAt) +
           "</span></div>" +
           "</div>" +
+          removeButtonHtml +
           "</article></li>"
         );
       })
@@ -320,11 +327,31 @@
     }
   }
 
+  async function handleFriendAction(event) {
+    var button = event.target.closest("[data-action='remove-friend'][data-friendship-id]");
+    if (!button) return;
+
+    var friendshipId = button.getAttribute("data-friendship-id");
+    if (!friendshipId) return;
+
+    button.disabled = true;
+
+    try {
+      await friendsController.remove(friendshipId);
+      await loadInvitations();
+    } catch (error) {
+      button.disabled = false;
+      var message = error && error.message ? error.message : "Could not remove friend.";
+      window.alert(message);
+    }
+  }
+
   tabIncoming.addEventListener("click", showIncoming);
   tabSent.addEventListener("click", showSent);
   tabFriends.addEventListener("click", showFriends);
   incomingListElement.addEventListener("click", handleListAction);
   sentListElement.addEventListener("click", handleListAction);
+  friendsListElement.addEventListener("click", handleFriendAction);
 
   loadInvitations();
 })();

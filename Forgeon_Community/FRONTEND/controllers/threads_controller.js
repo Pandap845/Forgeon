@@ -71,12 +71,12 @@
         postCard.className = 'post-card flex-grow-1 p-3 position-relative';
         const author = t.author && t.author.username ? t.author.username : 'unknown';
         const target = t.publishTo === 'group' ? (t.group && t.group.name ? t.group.name : 'Group') : (t.publishTo === 'forum' ? (t.forum && (t.forum.name || t.forum) ? (t.forum.name || t.forum) : 'Forum') : 'General');
-        const threadHref = './threadview.html' + (t._id || t.id ? ('?thread=' + encodeURIComponent(t._id || t.id)) : '');
+          const threadHref = './threadview.html' + (t._id || t.id ? ('?thread=' + encodeURIComponent(t._id || t.id)) : '');
         postCard.innerHTML = `
           <div class="post-meta mb-2">${escapeHtml(target)} • Posted by u/${escapeHtml(author)} ${timeAgo(t.createdAt)} ago</div>
           <h2 class="post-title mb-3"><a href="${threadHref}" class="stretched-link text-decoration-none text-white">${escapeHtml(t.title)}</a></h2>
           <div class="post-actions d-flex flex-wrap gap-4 position-relative z-1">
-            <a href="./threadview.html" class="post-action text-decoration-none"><i class="bi bi-chat"></i> ${t.commentsCount || 0} Comments</a>
+            <a href="${threadHref}" class="post-action text-decoration-none"><i class="bi bi-chat"></i> ${t.commentsCount || 0} Comments</a>
             <a class="post-action text-decoration-none"><i class="bi bi-share"></i> Share</a>
           </div>
         `;
@@ -204,7 +204,7 @@
         li.className = 'd-flex justify-content-between text-muted-2';
         const a = document.createElement('a');
         a.className = 'text-decoration-none text-muted-2';
-        a.href = '../Groups/group_detail.html?group=' + encodeURIComponent(g._id || g.id);
+        a.href = '../Groups/group_detail.html?groupId=' + encodeURIComponent(g._id || g.id);
         a.textContent = g.name || 'Group';
         li.appendChild(a);
         list.appendChild(li);
@@ -366,19 +366,23 @@
   async function publishThread() {
     const title = document.getElementById('threadTitle')?.value?.trim();
     const desc = document.getElementById('threadDescription')?.value?.trim();
+    const imageInput = document.getElementById('threadImage');
     const selected = document.querySelector('input[name="publishTo"]:checked');
     if (!title || !desc || !selected) return;
     const publishTo = selected.value;
-    const payload = { title, description: desc, publishTo };
-    if (publishTo === 'group' && selected.dataset.groupId) payload.group = selected.dataset.groupId;
-    if (publishTo === 'forum' && selected.dataset.forumId) payload.forum = selected.dataset.forumId;
+    const formData = new FormData();
+    formData.append('title', title);
+    formData.append('description', desc);
+    formData.append('publishTo', publishTo);
+    if (publishTo === 'group' && selected.dataset.groupId) formData.append('group', selected.dataset.groupId);
+    if (publishTo === 'forum' && selected.dataset.forumId) formData.append('forum', selected.dataset.forumId);
+    if (imageInput && imageInput.files && imageInput.files[0]) formData.append('threadImage', imageInput.files[0]);
 
     try {
       const res = await fetch('/api/threads', {
         method: 'POST',
         credentials: 'include',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
+        body: formData
       });
       if (!res.ok) {
         const err = await res.json().catch(() => ({}));
