@@ -7,6 +7,9 @@
   var currentMembership = null;
   var currentGroup = null;
   var activeThreadId = "";
+  var friendByUserId = {};
+  var sentInvitationByUserId = {};
+  var relationshipStateLoaded = false;
 
   function resolveAssetUrl(url) {
     var value = String(url || "").trim();
@@ -53,6 +56,63 @@
     } catch (_error) {
       return "";
     }
+  }
+
+  function toId(value) {
+    if (!value) return "";
+    if (typeof value === "string") return value;
+    if (typeof value === "object") return String(value._id || value.id || "");
+    return String(value);
+  }
+
+  async function ensureRelationshipState() {
+    if (relationshipStateLoaded) return;
+    if (!currentUserId) {
+      currentUserId = readCurrentUserId();
+    }
+    if (!currentUserId) {
+      relationshipStateLoaded = true;
+      return;
+    }
+
+    var friendsController = window.ForgeonFriendsController;
+    var friendsInvitationsController = window.ForgeonFriendsInvitationsController;
+    if (!friendsController || !friendsInvitationsController) return;
+
+    var loaded = await Promise.all([friendsController.list(), friendsInvitationsController.list("sent")]);
+    var friends = Array.isArray(loaded[0]) ? loaded[0] : [];
+    var invitations = Array.isArray(loaded[1]) ? loaded[1] : [];
+
+    friendByUserId = {};
+    sentInvitationByUserId = {};
+
+    friends.forEach(function (friend) {
+      var userA = toId(friend && friend.userA);
+      var userB = toId(friend && friend.userB);
+      if (!userA || !userB) return;
+      var otherId = userA === currentUserId ? userB : userB === currentUserId ? userA : "";
+      if (otherId) {
+        friendByUserId[otherId] = true;
+      }
+    });
+
+    invitations.forEach(function (invitation) {
+      var recipientId = toId(invitation && invitation.recipient);
+      var status = String(invitation && invitation.status ? invitation.status : "").toLowerCase();
+      if (recipientId && status === "pending") {
+        sentInvitationByUserId[recipientId] = true;
+      }
+    });
+
+    relationshipStateLoaded = true;
+  }
+
+  function getInviteState(userId) {
+    if (!userId) return "disabled";
+    if (currentUserId && userId === currentUserId) return "self";
+    if (friendByUserId[userId]) return "friends";
+    if (sentInvitationByUserId[userId]) return "pending";
+    return "available";
   }
 
   function isGroupOwner() {
@@ -156,6 +216,16 @@
     var username = user && user.username ? user.username : user && user.email ? user.email : "Unknown user";
     var level = Number(user && user.level) || 1;
     var roleLabel = membership && membership.role === "owner" ? "Group Owner" : "Member";
+    var inviteState = getInviteState(memberUserId);
+    var inviteLabel =
+      inviteState === "self"
+        ? "You"
+        : inviteState === "friends"
+        ? "Friends"
+        : inviteState === "pending"
+        ? "Invitation sent"
+        : "Send Invitation";
+    var inviteDisabled = inviteState !== "available";
     var avatarUrl = resolveAssetUrl(user && user.avatarUrl);
     var avatarMarkup = avatarUrl
       ? '<img class="gd-profile-card__avatar" src="' +
@@ -182,7 +252,16 @@
       '<p class="gd-profile-card__handle">@' + escapeHtml(username) + "</p>",
       '<p class="gd-profile-card__meta">' + roleLabel + "</p>",
       "</div>",
+      '<div class="d-flex align-items-center gap-2">',
       '<a class="gd-profile-card__link" href="' + escapeHtml(profileHref) + '">View profile</a>',
+      '<button type="button" class="dg-btn dg-btn--secondary" data-action="send-friend-invitation" data-user-id="' +
+        escapeHtml(memberUserId) +
+        '"' +
+        (inviteDisabled ? " disabled" : "") +
+        ">" +
+        escapeHtml(inviteLabel) +
+        "</button>",
+      "</div>",
       "</article>",
       "</li>",
     ].join("");
@@ -248,6 +327,7 @@
     if (!membersList || !groupId || !membershipsController) return;
 
     try {
+      await ensureRelationshipState();
       var memberships = await membershipsController.list({ group: groupId });
       var rows = Array.isArray(memberships) ? memberships : [];
       if (!rows.length) {
@@ -269,6 +349,37 @@
           ? "Join this group to view members."
           : "Could not load group members.") +
         "</h3></div></article></li>";
+    }
+  }
+
+  async function handleSendFriendInvitation(targetUserId, triggerButton) {
+    var friendsInvitationsController = window.ForgeonFriendsInvitationsController;
+    if (!targetUserId || !friendsInvitationsController) return;
+    if (friendByUserId[targetUserId] || sentInvitationByUserId[targetUserId] || targetUserId === currentUserId) return;
+
+    try {
+      triggerButton.disabled = true;
+      triggerButton.textContent = "Sending...";
+      await friendsInvitationsController.create({ recipient: targetUserId });
+      sentInvitationByUserId[targetUserId] = true;
+      triggerButton.textContent = "Invitation sent";
+      triggerButton.disabled = true;
+    } catch (error) {
+      var message = String(error && error.message ? error.message : "").toLowerCase();
+      if (message.includes("already friends")) {
+        friendByUserId[targetUserId] = true;
+        triggerButton.textContent = "Friends";
+        triggerButton.disabled = true;
+        return;
+      }
+      if (message.includes("pending invitation") || message.includes("already exists")) {
+        sentInvitationByUserId[targetUserId] = true;
+        triggerButton.textContent = "Invitation sent";
+        triggerButton.disabled = true;
+        return;
+      }
+      triggerButton.textContent = "Send Invitation";
+      triggerButton.disabled = false;
     }
   }
 
@@ -626,6 +737,7 @@
   var threadDescriptionInput = document.getElementById("threadDescription");
   var createThreadModal = document.getElementById("createThreadModal");
   var threadsList = document.getElementById("groupThreadsList");
+  var membersList = document.getElementById("groupMembersList");
   var postThreadCommentButton = document.getElementById("gtvPostCommentBtn");
   var threadCommentInput = document.getElementById("gtvCommentInput");
 
@@ -653,6 +765,14 @@
       if (!link) return;
       event.preventDefault();
       openThreadModal(link.getAttribute("data-thread-id"));
+    });
+  }
+  if (membersList) {
+    membersList.addEventListener("click", function (event) {
+      var inviteButton = event.target.closest("[data-action='send-friend-invitation']");
+      if (!inviteButton) return;
+      event.preventDefault();
+      handleSendFriendInvitation(inviteButton.getAttribute("data-user-id"), inviteButton);
     });
   }
   if (postThreadCommentButton) {

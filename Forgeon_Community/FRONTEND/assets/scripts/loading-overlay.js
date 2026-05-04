@@ -1,9 +1,14 @@
 (function () {
+  if (window.__forgeonLoadingOverlayBootstrapped) return;
+  window.__forgeonLoadingOverlayBootstrapped = true;
+
   var OVERLAY_ID = "forgeonLoadingOverlay";
   var CONTAINER_ID = "forgeonLoadingAnimation";
   var activeRequests = 0;
   var overlayElement = null;
   var animationInstance = null;
+  var animationPromise = null;
+  var lottieRuntimePromise = null;
   var isHooked = false;
 
   // Injects the minimal styles for the loading overlay.
@@ -41,7 +46,8 @@
   // Loads Lottie runtime if it is not already available.
   function loadLottieRuntime() {
     if (window.lottie) return Promise.resolve(window.lottie);
-    return new Promise(function (resolve, reject) {
+    if (lottieRuntimePromise) return lottieRuntimePromise;
+    lottieRuntimePromise = new Promise(function (resolve, reject) {
       var script = document.createElement("script");
       script.src = "https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.12.2/lottie.min.js";
       script.async = true;
@@ -49,29 +55,40 @@
         resolve(window.lottie || null);
       };
       script.onerror = function () {
+        lottieRuntimePromise = null;
         reject(new Error("Could not load lottie runtime."));
       };
       document.head.appendChild(script);
     });
+    return lottieRuntimePromise;
   }
 
   // Creates or reuses the loading animation instance.
   async function ensureAnimation() {
     if (animationInstance) return animationInstance;
-    var lottie = await loadLottieRuntime();
-    if (!lottie) return null;
+    if (animationPromise) return animationPromise;
 
-    var container = document.getElementById(CONTAINER_ID);
-    if (!container) return null;
+    animationPromise = (async function () {
+      var lottie = await loadLottieRuntime();
+      if (!lottie) return null;
 
-    animationInstance = lottie.loadAnimation({
-      container: container,
-      renderer: "svg",
-      loop: true,
-      autoplay: true,
-      path: "/assets/loading.json",
+      var container = document.getElementById(CONTAINER_ID);
+      if (!container) return null;
+
+      if (animationInstance) return animationInstance;
+      animationInstance = lottie.loadAnimation({
+        container: container,
+        renderer: "svg",
+        loop: true,
+        autoplay: true,
+        path: "/assets/loading.json",
+      });
+      return animationInstance;
+    })().finally(function () {
+      animationPromise = null;
     });
-    return animationInstance;
+
+    return animationPromise;
   }
 
   // Shows the loading overlay while requests are in progress.
