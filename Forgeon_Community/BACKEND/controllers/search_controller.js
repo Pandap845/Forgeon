@@ -105,7 +105,6 @@ async function search(req, res) {
       shouldSearchGroups
         ? Groups.find({
             isDeleted: false,
-            isArchived: false,
             $or: [{ name: regex }, { description: regex }],
           })
             .sort({ memberCount: -1, createdAt: -1 })

@@ -82,6 +82,8 @@
 
   function buildJoinedCard(item) {
     var group = item.group || {};
+    var role = item.role === "owner" ? "owner" : "member";
+    var isOwner = role === "owner";
     var categoryName = group.category && group.category.name ? group.category.name : "Uncategorized";
     var groupName = group.name || "Unnamed group";
     var description = group.description || "No description available.";
@@ -104,24 +106,27 @@
       escapeHtml(description) +
       "</p>" +
       '<div class="ug-meta">' +
-      '<span class="dg-badge dg-badge--category">' +
-      escapeHtml(categoryName) +
-      "</span>" +
-      '<span class="dg-members"><span>' +
-      escapeHtml(formatCount(memberCount, "member")) +
-      "</span></span>" +
-      "</div>" +
-      "</div>" +
-      '<div class="ug-actions">' +
-      '<a class="dg-btn dg-btn--ghost ug-btn" href="./group_detail.html?groupId=' +
-      encodeURIComponent(group._id || "") +
-      '">View</a>' +
-      '<button type="button" class="dg-btn dg-btn--secondary ug-btn ug-btn--leave" data-membership-id="' +
-      escapeHtml(item._id) +
-      '">Leave</button>' +
-      "</div>" +
-      "</div>" +
-      "</article>"
+       '<span class="dg-badge dg-badge--category">' +
+       escapeHtml(categoryName) +
+       "</span>" +
+       (isOwner ? '<span class="dg-badge dg-badge--category">Owner</span>' : "") +
+       '<span class="dg-members"><span>' +
+       escapeHtml(formatCount(memberCount, "member")) +
+       "</span></span>" +
+       "</div>" +
+       "</div>" +
+       '<div class="ug-actions">' +
+       '<a class="dg-btn dg-btn--ghost ug-btn" href="./group_detail.html?groupId=' +
+       encodeURIComponent(group._id || "") +
+       '">View</a>' +
+       (isOwner
+         ? ""
+         : '<button type="button" class="dg-btn dg-btn--secondary ug-btn ug-btn--leave" data-membership-id="' +
+           escapeHtml(item._id) +
+           '">Leave</button>') +
+       "</div>" +
+       "</div>" +
+       "</article>"
     );
   }
 
@@ -218,7 +223,7 @@
 
       joinedItems = (Array.isArray(memberships) ? memberships : [])
         .filter(function (membership) {
-          if (!membership || membership.role === "owner") return false;
+          if (!membership) return false;
           if (!membership.group || !membership.group._id) return false;
           return true;
         })

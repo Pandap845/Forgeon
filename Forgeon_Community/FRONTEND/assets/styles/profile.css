@@ -782,6 +782,18 @@ a.stats-item {
     margin-top: 1rem;
 }
 
+.account-feedback {
+    min-height: 1.2rem;
+}
+
+.account-feedback.is-error {
+    color: #ff9f9f;
+}
+
+.account-feedback.is-success {
+    color: #9fffb7;
+}
+
 .primary-action {
     width: 100%;
     border: none;

@@ -266,9 +266,9 @@
               placeholder="Enter a new username"
               autocomplete="username"
             />
-            <button class="check-btn" type="button">Check</button>
+            <button class="check-btn" id="checkUsernameButton" type="button">Check</button>
           </div>
-          <p class="field-hint">Username must be unique. Availability check will be connected next.</p>
+          <p class="field-hint">Username must be unique. Save changes to apply your new username.</p>
         </div>
 
         <div class="field-block">
@@ -295,7 +295,8 @@
         </div>
 
         <div class="account-actions">
-          <button type="button" class="primary-action">Save Changes</button>
+          <button type="button" class="primary-action" id="saveAccountChangesButton">Save Changes</button>
+          <p class="account-feedback field-hint" id="accountSaveFeedback" aria-live="polite"></p>
         </div>
 
         <div class="danger-zone">
@@ -441,6 +442,12 @@
         var confirmDeleteButton = document.getElementById("confirmDeleteButton");
         var closeDeletedModalButton = document.getElementById("closeDeletedModalButton");
         var usernameField = document.getElementById("username");
+        var birthdayField = document.getElementById("birthday");
+        var newUsernameField = document.getElementById("newUsername");
+        var newPasswordField = document.getElementById("newPassword");
+        var confirmNewPasswordField = document.getElementById("confirmNewPassword");
+        var saveAccountChangesButton = document.getElementById("saveAccountChangesButton");
+        var accountSaveFeedback = document.getElementById("accountSaveFeedback");
         var deleteConfirmUsernameHint = document.getElementById("deleteConfirmUsernameHint");
         var allBadgesButton = document.getElementById("allBadgesButton");
         var allBadgesModalBackdrop = document.getElementById("allBadgesModalBackdrop");
@@ -569,7 +576,120 @@
           modal.setAttribute("aria-hidden", "true");
         }
 
+        function setAccountSaveFeedback(message, isError) {
+          if (!accountSaveFeedback) return;
+          accountSaveFeedback.textContent = message || "";
+          accountSaveFeedback.classList.toggle("is-error", !!isError);
+          accountSaveFeedback.classList.toggle("is-success", !!message && !isError);
+        }
+
+        function getCurrentUserFromStorage() {
+          var rawUser;
+          try {
+            rawUser = localStorage.getItem("forgeonCurrentUser");
+          } catch (_e) {
+            return null;
+          }
+          if (!rawUser) return null;
+          try {
+            return JSON.parse(rawUser);
+          } catch (_e) {
+            return null;
+          }
+        }
+
         if (!window.ForgeonProfileViewUserId) {
+          if (saveAccountChangesButton) {
+            saveAccountChangesButton.addEventListener("click", function () {
+              setAccountSaveFeedback("", false);
+
+              if (!window.ForgeonUsersController || typeof window.ForgeonUsersController.update !== "function") {
+                setAccountSaveFeedback("Could not reach the account service. Refresh the page and try again.", true);
+                return;
+              }
+
+              var currentUser = getCurrentUserFromStorage();
+              var userId = currentUser && (currentUser.id || currentUser._id);
+              if (!userId) {
+                setAccountSaveFeedback("You are not signed in. Reload or log in again.", true);
+                return;
+              }
+
+              var payload = {};
+              var typedUsername = newUsernameField ? newUsernameField.value.trim() : "";
+              var currentUsername = currentUser && currentUser.username ? String(currentUser.username).trim() : "";
+              if (typedUsername && typedUsername !== currentUsername) {
+                payload.username = typedUsername;
+              }
+
+              var newPassword = newPasswordField ? newPasswordField.value : "";
+              var confirmPassword = confirmNewPasswordField ? confirmNewPasswordField.value : "";
+              if (newPassword || confirmPassword) {
+                if (!newPassword || !confirmPassword) {
+                  setAccountSaveFeedback("Enter and confirm your new password.", true);
+                  return;
+                }
+                if (newPassword !== confirmPassword) {
+                  setAccountSaveFeedback("Password confirmation does not match.", true);
+                  return;
+                }
+                payload.password = newPassword;
+              }
+
+              if (birthdayField) {
+                var currentBirthday = currentUser && currentUser.birthday ? String(currentUser.birthday).slice(0, 10) : "";
+                if (birthdayField.value !== currentBirthday) {
+                  payload.birthday = birthdayField.value ? birthdayField.value : null;
+                }
+              }
+
+              if (!Object.keys(payload).length) {
+                setAccountSaveFeedback("No changes to save.", true);
+                return;
+              }
+
+              var previousLabel = saveAccountChangesButton.textContent;
+              saveAccountChangesButton.disabled = true;
+              saveAccountChangesButton.textContent = "Saving…";
+
+              (async function () {
+                try {
+                  var data = await window.ForgeonUsersController.update(String(userId), payload);
+                  var updatedUser = data && data.user ? data.user : null;
+
+                  if (updatedUser) {
+                    try {
+                      localStorage.setItem("forgeonCurrentUser", JSON.stringify(updatedUser));
+                    } catch (_e) {}
+
+                    if (usernameField && updatedUser.username) {
+                      usernameField.value = String(updatedUser.username);
+                    }
+                    if (deleteConfirmUsernameHint) {
+                      deleteConfirmUsernameHint.textContent = updatedUser.username || "—";
+                    }
+                    if (birthdayField) {
+                      birthdayField.value = updatedUser.birthday ? String(updatedUser.birthday).slice(0, 10) : "";
+                    }
+                  }
+
+                  if (newUsernameField) newUsernameField.value = "";
+                  if (newPasswordField) newPasswordField.value = "";
+                  if (confirmNewPasswordField) confirmNewPasswordField.value = "";
+                  setAccountSaveFeedback("Account changes saved successfully.", false);
+                } catch (err) {
+                  setAccountSaveFeedback(
+                    err && err.message ? err.message : "Could not save account changes. Try again.",
+                    true
+                  );
+                } finally {
+                  saveAccountChangesButton.disabled = false;
+                  saveAccountChangesButton.textContent = previousLabel;
+                }
+              })();
+            });
+          }
+
           if (avatarButton && avatarInput) {
             avatarButton.addEventListener("click", function () {
               avatarInput.click();
