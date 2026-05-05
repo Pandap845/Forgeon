@@ -102,48 +102,8 @@
       </div>
     `;
 
-    // attach edit/delete handlers if applicable
-    if (comment.isMine) {
-      const editBtn = article.querySelector('.edit-comment-btn');
-      const delBtn = article.querySelector('.delete-comment-btn');
-      if (editBtn) {
-        editBtn.addEventListener('click', (e) => {
-          e.preventDefault();
-          currentEditCommentId = comment._id;
-          const ta = document.getElementById('editCommentTextarea');
-          if (ta) ta.value = comment.content || '';
-          const modalEl = document.getElementById('editCommentModal');
-          if (modalEl) {
-            const bs = new bootstrap.Modal(modalEl);
-            bs.show();
-          }
-        });
-      }
-      if (delBtn) {
-        delBtn.addEventListener('click', async (e) => {
-          e.preventDefault();
-          if (!confirm('Delete this comment?')) return;
-          try {
-            const res = await fetch('/api/comments/' + encodeURIComponent(comment._id), { method: 'DELETE', credentials: 'include' });
-            if (!res.ok) {
-              const err = await res.json().catch(() => ({}));
-              alert(err.message || 'Failed to delete comment');
-              return;
-            }
-            // remove from DOM
-            article.remove();
-            // update counts
-            const currentCount = parseInt(document.getElementById('commentsList')?.children.length || '0', 10);
-            // recompute true count by counting elements with data-comment-id
-            const count = Array.from(document.getElementById('commentsList')?.children || []).filter(ch => ch.dataset && ch.dataset.commentId).length;
-            setCommentsCount(count);
-          } catch (err) {
-            console.error(err);
-            alert('Error deleting comment');
-          }
-        });
-      }
-    }
+    // Note: event handlers for edit/delete are handled via delegation on the
+    // comments container to ensure buttons work for dynamically added items.
 
     return article;
   }
@@ -378,10 +338,71 @@
       } catch (e) {
         // ignore
       }
+      // load related threads for the same forum (if any)
+      try {
+        const forumId = thread.forum && (thread.forum._id || thread.forum.id);
+        if (forumId) {
+          await loadRelatedThreads(forumId, thread._id || thread.id);
+        }
+      } catch (e) {
+        // ignore related threads errors
+      }
     } catch (e) {
       console.error('Error loading thread', e);
       const articleEl2 = document.querySelector('.tv-post-card');
       if (articleEl2) articleEl2.innerHTML = '<div class="text-danger">Error loading thread</div>';
+    }
+  }
+
+  // Render one related item
+  function renderRelatedItem(thread) {
+    const a = document.createElement('a');
+    a.className = 'tv-related-item text-decoration-none';
+    const id = thread._id || thread.id || '';
+    a.href = './threadview.html?thread=' + encodeURIComponent(id);
+    const authorName = thread.author && (thread.author.username || thread.author.name) ? (thread.author.username || thread.author.name) : 'Unknown';
+    const createdAtText = thread.createdAt ? (timeAgo(thread.createdAt) + ' ago') : '';
+    const likes = typeof thread.likesCount === 'number' ? thread.likesCount : (thread.votes || 0);
+    const comments = typeof thread.commentsCount === 'number' ? thread.commentsCount : 0;
+    a.innerHTML = `
+      <div class="fw-semibold tv-related-title">${escapeHtml(thread.title || 'Untitled')}</div>
+      <div class="tv-related-meta"><span class="text-muted-2">by</span> <span class="text-white-50">${escapeHtml(authorName)}</span> <span class="text-muted-3">•</span> <span class="text-muted-2">${escapeHtml(createdAtText)}</span></div>
+      <div class="tv-related-stats">
+        <span class="d-inline-flex align-items-center gap-2"><i class="bi bi-heart"></i> ${likes}</span>
+        <span class="d-inline-flex align-items-center gap-2"><i class="bi bi-chat-left"></i> ${comments}</span>
+      </div>
+    `;
+    return a;
+  }
+
+  // Load related threads for a forum and populate #tvRelatedList
+  async function loadRelatedThreads(forumId, excludeThreadId) {
+    const container = document.getElementById('tvRelatedList');
+    if (!container) return;
+    container.innerHTML = '<div class="text-muted-2">Loading related posts...</div>';
+    try {
+      const res = await fetch('/api/threads?forum=' + encodeURIComponent(forumId) + '&limit=6', { credentials: 'include' });
+      if (!res.ok) {
+        container.innerHTML = '<div class="text-danger">Failed to load related posts</div>';
+        return;
+      }
+      let items = await res.json();
+      if (!Array.isArray(items) || items.length === 0) {
+        container.innerHTML = '<div class="text-muted-2">No related posts found.</div>';
+        return;
+      }
+      // filter out current thread
+      items = items.filter(it => (it._id || it.id) !== (excludeThreadId || ''));
+      if (items.length === 0) {
+        container.innerHTML = '<div class="text-muted-2">No related posts found.</div>';
+        return;
+      }
+      container.innerHTML = '';
+      // show up to 4 related threads
+      items.slice(0, 4).forEach(it => container.appendChild(renderRelatedItem(it)));
+    } catch (e) {
+      console.error('loadRelatedThreads error', e);
+      container.innerHTML = '<div class="text-muted-2 text-danger">Error loading related posts</div>';
     }
   }
 
@@ -393,5 +414,51 @@
     if (saveBtn) saveBtn.addEventListener('click', saveEditedComment);
     const newInput = document.getElementById('newCommentInput');
     if (newInput) newInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); postNewComment(); } });
+    // delegated handlers for edit/delete so dynamically appended comments work
+    const commentsList = document.getElementById('commentsList');
+    if (commentsList) {
+      commentsList.addEventListener('click', async (e) => {
+        const editBtn = e.target.closest && e.target.closest('.edit-comment-btn');
+        if (editBtn && commentsList.contains(editBtn)) {
+          e.preventDefault();
+          const article = editBtn.closest('[data-comment-id]');
+          if (!article) return;
+          const id = article.dataset.commentId;
+          currentEditCommentId = id;
+          const p = article.querySelector('.comment-content');
+          const ta = document.getElementById('editCommentTextarea');
+          if (ta) ta.value = p ? p.textContent : '';
+          const modalEl = document.getElementById('editCommentModal');
+          if (modalEl) {
+            const bs = new bootstrap.Modal(modalEl);
+            bs.show();
+          }
+          return;
+        }
+
+        const delBtn = e.target.closest && e.target.closest('.delete-comment-btn');
+        if (delBtn && commentsList.contains(delBtn)) {
+          e.preventDefault();
+          const article = delBtn.closest('[data-comment-id]');
+          if (!article) return;
+          if (!confirm('Delete this comment?')) return;
+          try {
+            const id = article.dataset.commentId;
+            const res = await fetch('/api/comments/' + encodeURIComponent(id), { method: 'DELETE', credentials: 'include' });
+            if (!res.ok) {
+              const err = await res.json().catch(() => ({}));
+              alert(err.message || 'Failed to delete comment');
+              return;
+            }
+            article.remove();
+            const count = Array.from(commentsList.children || []).filter(ch => ch.dataset && ch.dataset.commentId).length;
+            setCommentsCount(count);
+          } catch (err) {
+            console.error(err);
+            alert('Error deleting comment');
+          }
+        }
+      });
+    }
   });
 })();

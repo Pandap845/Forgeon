@@ -165,10 +165,10 @@
 
                 <button
                   type="button"
-                  class="btn btn-link forgeon-icon-btn p-0"
-                  aria-label="Share"
+                  class="btn btn-link forgeon-icon-btn p-0 share-thread-btn"
+                  aria-label="Copy"
                 >
-                  <i class="bi bi-share"></i>
+                  <i class="bi bi-clipboard"></i> Copy
                 </button>
               </div>
             </article>
@@ -237,86 +237,8 @@
                   <h2 class="h5 mb-0 forgeon-sidebar-title">Related Posts</h2>
                 </div>
 
-                <div class="d-flex flex-column gap-3">
-                  <a class="tv-related-item text-decoration-none" href="#">
-                    <div class="fw-semibold tv-related-title">
-                      Understanding Sigpatches and Fusee Primary
-                    </div>
-                    <div class="tv-related-meta">
-                      <span class="text-muted-2">by</span>
-                      <span class="text-white-50">Cyril Miller</span>
-                      <span class="text-muted-3">•</span>
-                      <span class="text-muted-2">3d ago</span>
-                    </div>
-                    <div class="tv-related-stats">
-                      <span class="d-inline-flex align-items-center gap-2">
-                        <i class="bi bi-eye"></i> 189
-                      </span>
-                      <span class="d-inline-flex align-items-center gap-2">
-                        <i class="bi bi-chat-left"></i> 24
-                      </span>
-                    </div>
-                  </a>
-
-                  <a class="tv-related-item text-decoration-none" href="#">
-                    <div class="fw-semibold tv-related-title">
-                      Migrating from SX OS to Atmosphere
-                    </div>
-                    <div class="tv-related-meta">
-                      <span class="text-muted-2">by</span>
-                      <span class="text-white-50">Jessica Lee</span>
-                      <span class="text-muted-3">•</span>
-                      <span class="text-muted-2">4d ago</span>
-                    </div>
-                    <div class="tv-related-stats">
-                      <span class="d-inline-flex align-items-center gap-2">
-                        <i class="bi bi-eye"></i> 312
-                      </span>
-                      <span class="d-inline-flex align-items-center gap-2">
-                        <i class="bi bi-chat-left"></i> 41
-                      </span>
-                    </div>
-                  </a>
-
-                  <a class="tv-related-item text-decoration-none" href="#">
-                    <div class="fw-semibold tv-related-title">
-                      Advanced SD Card Partitioning (FAT32 vs exFAT)
-                    </div>
-                    <div class="tv-related-meta">
-                      <span class="text-muted-2">by</span>
-                      <span class="text-white-50">Tom Williams</span>
-                      <span class="text-muted-3">•</span>
-                      <span class="text-muted-2">5d ago</span>
-                    </div>
-                    <div class="tv-related-stats">
-                      <span class="d-inline-flex align-items-center gap-2">
-                        <i class="bi bi-eye"></i> 276
-                      </span>
-                      <span class="d-inline-flex align-items-center gap-2">
-                        <i class="bi bi-chat-left"></i> 33
-                      </span>
-                    </div>
-                  </a>
-
-                  <a class="tv-related-item text-decoration-none" href="#">
-                    <div class="fw-semibold tv-related-title">
-                      Building custom themes with NXThemes
-                    </div>
-                    <div class="tv-related-meta">
-                      <span class="text-muted-2">by</span>
-                      <span class="text-white-50">Nina Patel</span>
-                      <span class="text-muted-3">•</span>
-                      <span class="text-muted-2">5d ago</span>
-                    </div>
-                    <div class="tv-related-stats">
-                      <span class="d-inline-flex align-items-center gap-2">
-                        <i class="bi bi-eye"></i> 198
-                      </span>
-                      <span class="d-inline-flex align-items-center gap-2">
-                        <i class="bi bi-chat-left"></i> 18
-                      </span>
-                    </div>
-                  </a>
+                <div id="tvRelatedList" class="d-flex flex-column gap-3">
+                  <div class="text-muted-2">Loading related posts...</div>
                 </div>
 
                 <div class="tv-related-divider my-4"></div>
@@ -397,5 +319,6 @@
     <script src="../../assets/scripts/nav-profile-avatar.js"></script>
     <script src="../../assets/scripts/nav-logout.js"></script>
     <script src="../../controllers/threadview_controller.js"></script>
+    <script src="../../assets/scripts/share_copy.js"></script>
   </body>
 </html>

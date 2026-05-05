@@ -77,7 +77,7 @@
           <h2 class="post-title mb-3"><a href="${threadHref}" class="stretched-link text-decoration-none text-white">${escapeHtml(t.title)}</a></h2>
           <div class="post-actions d-flex flex-wrap gap-4 position-relative z-1">
             <a href="${threadHref}" class="post-action text-decoration-none"><i class="bi bi-chat"></i> ${t.commentsCount || 0} Comments</a>
-            <a class="post-action text-decoration-none"><i class="bi bi-share"></i> Share</a>
+            <a href="#" class="post-action text-decoration-none share-thread-btn" data-thread-href="${threadHref}" data-thread-id="${t._id || t.id}" aria-label="Copy"><i class="bi bi-clipboard"></i> Copy</a>
           </div>
         `;
 

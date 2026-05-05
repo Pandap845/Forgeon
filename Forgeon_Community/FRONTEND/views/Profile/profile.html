@@ -791,9 +791,15 @@
             if (!res.ok) throw new Error('Failed to load forums');
             var forums = await res.json();
             var mine = forums.filter(function (f) {
-              var cb = f.createdBy || f.createdBy_id || f.createdById || (f.createdBy && f.createdBy.toString && f.createdBy.toString());
+              var cb = null;
+              if (f.createdBy) {
+                if (typeof f.createdBy === 'string') cb = f.createdBy;
+                else if (f.createdBy._id) cb = f.createdBy._id;
+                else if (f.createdBy.id) cb = f.createdBy.id;
+              }
+              cb = cb || f.createdBy_id || f.createdById;
               if (!cb) return false;
-              return cb.toString() === currentUser.id.toString();
+              return String(cb) === String(currentUser.id);
             });
 
             if (!mine.length) {
