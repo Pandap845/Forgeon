@@ -123,8 +123,12 @@
     return Boolean(currentUserId && creatorId && currentUserId === creatorId);
   }
 
+  function isGroupArchived() {
+    return Boolean(currentGroup && currentGroup.isArchived);
+  }
+
   function canCreateThread() {
-    return Boolean(currentMembership || isGroupOwner());
+    return Boolean(!isGroupArchived() && (currentMembership || isGroupOwner()));
   }
 
   function validateCreateThreadForm() {
@@ -140,7 +144,7 @@
     var host = document.getElementById("publishTargets");
     if (!host) return;
     host.innerHTML = "";
-    if (!groupId || !currentGroup) {
+    if (!groupId || !currentGroup || !canCreateThread()) {
       host.innerHTML = '<div class="text-muted-2">Group not available.</div>';
       return;
     }
@@ -188,6 +192,15 @@
       return;
     }
 
+    if (isGroupArchived()) {
+      joinButton.textContent = "Archived";
+      joinButton.classList.add("dg-btn--secondary");
+      joinButton.classList.remove("dg-btn--primary");
+      joinButton.setAttribute("href", "#");
+      joinButton.setAttribute("aria-disabled", "true");
+      return;
+    }
+
     joinButton.textContent = "Join Group";
     joinButton.classList.remove("dg-btn--secondary");
     joinButton.classList.add("dg-btn--primary");
@@ -204,7 +217,24 @@
   function setGuestBannerState() {
     var banner = document.querySelector(".gd-guest-banner");
     if (!banner) return;
-    banner.style.display = canCreateThread() ? "none" : "";
+    banner.style.display = canCreateThread() || isGroupArchived() ? "none" : "";
+  }
+
+  function setArchivedBannerState() {
+    var banner = document.getElementById("groupArchivedBanner");
+    if (!banner) return;
+    banner.hidden = !isGroupArchived();
+  }
+
+  function setThreadComposerState() {
+    var input = document.getElementById("gtvCommentInput");
+    var button = document.getElementById("gtvPostCommentBtn");
+    if (!input || !button) return;
+
+    var archived = isGroupArchived();
+    input.disabled = archived;
+    button.disabled = archived;
+    input.placeholder = archived ? "This group is archived. Commenting is disabled." : "Add a comment...";
   }
 
   function buildMemberCard(membership) {
@@ -517,6 +547,7 @@
         mediaWrap.hidden = false;
       }
 
+      setThreadComposerState();
       await loadThreadComments(threadId);
 
       var modalEl = document.getElementById("groupThreadViewModal");
@@ -532,6 +563,7 @@
 
   async function postThreadComment() {
     if (!activeThreadId) return;
+    if (isGroupArchived()) return;
     var input = document.getElementById("gtvCommentInput");
     var button = document.getElementById("gtvPostCommentBtn");
     if (!input || !button) return;
@@ -692,7 +724,7 @@
     if (isGroupOwner()) return;
 
     event.preventDefault();
-    if (!groupId || !membershipsController || currentMembership) return;
+    if (!groupId || !membershipsController || currentMembership || isGroupArchived()) return;
 
     var originalText = button.textContent;
     button.textContent = "Joining...";
@@ -709,9 +741,12 @@
       setThreadFabVisibility();
       setGuestBannerState();
       await Promise.all([loadMembers(), loadGroupThreads()]);
-    } catch (_error) {
+    } catch (error) {
       button.textContent = originalText;
       button.removeAttribute("aria-disabled");
+      if (error && error.message) {
+        window.alert(error.message);
+      }
     }
   }
 
@@ -722,6 +757,8 @@
     setJoinButtonState();
     setThreadFabVisibility();
     setGuestBannerState();
+    setArchivedBannerState();
+    setThreadComposerState();
     await Promise.all([loadMembers(), loadGroupThreads()]);
   }
 

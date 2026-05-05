@@ -53,12 +53,12 @@
 
   function timeAgo(value) {
     var d = new Date(value);
-    if (Number.isNaN(d.getTime())) return "Invited recently";
+    if (Number.isNaN(d.getTime())) return "Received recently";
     var seconds = Math.max(0, Math.floor((Date.now() - d.getTime()) / 1000));
-    if (seconds < 60) return "Invited just now";
-    if (seconds < 3600) return "Invited " + Math.floor(seconds / 60) + "m ago";
-    if (seconds < 86400) return "Invited " + Math.floor(seconds / 3600) + "h ago";
-    return "Invited " + Math.floor(seconds / 86400) + "d ago";
+    if (seconds < 60) return "Received just now";
+    if (seconds < 3600) return "Received " + Math.floor(seconds / 60) + "m ago";
+    if (seconds < 86400) return "Received " + Math.floor(seconds / 3600) + "h ago";
+    return "Received " + Math.floor(seconds / 86400) + "d ago";
   }
 
   function resolveActiveGroupIdFromUrl() {

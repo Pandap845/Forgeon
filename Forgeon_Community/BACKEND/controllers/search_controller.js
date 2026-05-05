@@ -61,10 +61,11 @@ function mapThread(thread) {
     publishTo: thread.publishTo,
     likesCount: thread.likesCount,
     commentsCount: thread.commentsCount,
+    createdAt: thread.createdAt,
     author: thread.author
       ? (() => {
           const a = publicAuthorFromLean(thread.author);
-          return { id: a._id, username: a.username };
+          return { id: a._id, username: a.username, avatarUrl: a.avatarUrl };
         })()
       : null,
     group: thread.group
@@ -115,7 +116,7 @@ async function search(req, res) {
       shouldSearchThreads
         ? Threads.find({
             isDeleted: false,
-            $or: [{ title: regex }, { description: regex }],
+            title: regex,
           })
             .sort({ lastActivityAt: -1, createdAt: -1 })
             .limit(limit)

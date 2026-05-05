@@ -781,6 +781,10 @@ body.dg-page--detail {
   margin-bottom: 32px;
 }
 
+.gd-guest-banner--archived {
+  border-color: rgba(240, 177, 0, 0.4);
+}
+
 .gd-guest-banner__text {
   margin: 0;
   font-size: 14px;
@@ -1365,6 +1369,32 @@ body.dg-page--friend-requests .dg-main {
   align-items: center;
   gap: 16px;
   padding: 16px;
+}
+
+.fr-request__avatar-zone {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.fr-request__level {
+  position: absolute;
+  top: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 3;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 20px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1;
+  white-space: nowrap;
 }
 
 .fr-request__avatar {

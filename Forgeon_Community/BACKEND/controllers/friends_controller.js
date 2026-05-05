@@ -73,8 +73,8 @@ async function getFriends(req, res) {
       $or: [{ userA: targetUserId }, { userB: targetUserId }],
     })
       .sort({ createdAt: -1 })
-      .populate('userA', 'username email avatarUrl')
-      .populate('userB', 'username email avatarUrl')
+      .populate('userA', 'username email avatarUrl level')
+      .populate('userB', 'username email avatarUrl level')
       .populate('connectedBy', 'username email');
 
     return res.status(200).json(friendships);
@@ -92,8 +92,8 @@ async function getFriendById(req, res) {
     }
 
     const friendship = await Friends.findById(id)
-      .populate('userA', 'username email avatarUrl')
-      .populate('userB', 'username email avatarUrl')
+      .populate('userA', 'username email avatarUrl level')
+      .populate('userB', 'username email avatarUrl level')
       .populate('connectedBy', 'username email');
     if (!friendship) {
       return res.status(404).json({ message: 'Friendship not found.' });

@@ -8,6 +8,7 @@
   var activeRequest = 0;
   var debounceTimer = null;
   var currentUserId = "";
+  var activeThreadId = "";
   var friendByUserId = {};
   var sentInvitationByUserId = {};
   var relationshipStateLoaded = false;
@@ -42,6 +43,16 @@
     if (/^https?:\/\//i.test(value)) return value;
     if (value.startsWith("/")) return value;
     return "/" + value;
+  }
+
+  function formatAge(value) {
+    var date = new Date(value);
+    if (Number.isNaN(date.getTime())) return "Just now";
+    var seconds = Math.max(0, Math.floor((Date.now() - date.getTime()) / 1000));
+    if (seconds < 60) return "Just now";
+    if (seconds < 3600) return Math.floor(seconds / 60) + "m ago";
+    if (seconds < 86400) return Math.floor(seconds / 3600) + "h ago";
+    return Math.floor(seconds / 86400) + "d ago";
   }
 
   function toId(value) {
@@ -279,11 +290,215 @@
       renderNoResults();
       return;
     }
-    panel.className = "sr-empty dg-surface-card";
-    panel.innerHTML = [
-      "<h2 class=\"sr-empty__title\">Threads view coming next</h2>",
-      "<p class=\"sr-empty__hint\">Threads are found, but this tab UI is pending.</p>",
-    ].join("");
+
+    panel.className = "dg-surface-card";
+    panel.innerHTML =
+      '<div class="p-3"><ul class="gd-thread-list">' +
+      threads
+        .map(function (thread) {
+          var threadId = thread && (thread.id || thread._id) ? String(thread.id || thread._id) : "";
+          var title = thread && thread.title ? String(thread.title) : "Untitled thread";
+          var author =
+            thread && thread.author && (thread.author.username || thread.author.email)
+              ? String(thread.author.username || thread.author.email)
+              : "Unknown";
+          var avatar =
+            resolveAssetUrl(thread && thread.author && thread.author.avatarUrl) || "/assets/images/default-avatar.svg";
+          var imageUrl = resolveAssetUrl(thread && thread.imageUrl);
+          var likesCount = typeof (thread && thread.likesCount) === "number" ? thread.likesCount : 0;
+          var commentsCount = typeof (thread && thread.commentsCount) === "number" ? thread.commentsCount : 0;
+          var createdAtText = formatAge(thread && thread.createdAt);
+          return [
+            "<li>",
+            '<article class="gd-thread dg-surface-card">',
+            '<div class="avatar-shell avatar-shell--gd-thread avatar-shell--border flex-shrink-0" data-forgeon-avatar data-user-level="1">',
+            '<div class="avatar-frame" aria-hidden="true"></div>',
+            '<img class="gd-thread__avatar" src="' +
+              escapeHtml(avatar) +
+              '" alt="' +
+              escapeHtml(author) +
+              ' avatar" width="45" height="45" />',
+            "</div>",
+            '<div class="gd-thread__body">',
+            '<div class="gd-thread__head">',
+            '<h2 class="gd-thread__title"><a class="gd-thread__title-link" href="#" data-action="open-thread" data-thread-id="' +
+              escapeHtml(threadId) +
+              '">' +
+              escapeHtml(title) +
+              "</a></h2>",
+            "</div>",
+            '<div class="gd-thread__meta">',
+            '<span class="gd-thread__author">' + escapeHtml(author) + "</span>",
+            '<span class="gd-meta-sep" aria-hidden="true">•</span>',
+            '<span class="gd-thread__time">' + escapeHtml(createdAtText) + "</span>",
+            "</div>",
+            imageUrl
+              ? '<div class="gd-thread__media"><img class="gd-thread__preview" src="' +
+                escapeHtml(imageUrl) +
+                '" alt="' +
+                escapeHtml(title) +
+                ' image" /></div>'
+              : "",
+            '<div class="gd-thread__divider" aria-hidden="true"></div>',
+            '<div class="gd-thread__stats">',
+            '<span class="gd-stat"><i class="fa-regular fa-heart"></i> ' + likesCount + "</span>",
+            '<span class="gd-stat"><i class="fa-regular fa-comment"></i> ' + commentsCount + " comments</span>",
+            "</div>",
+            "</div>",
+            "</article>",
+            "</li>",
+          ].join("");
+        })
+        .join("") +
+      "</ul></div>";
+
+    if (window.ForgeonAvatarFrames && typeof window.ForgeonAvatarFrames.refreshAll === "function") {
+      window.ForgeonAvatarFrames.refreshAll();
+    }
+  }
+
+  function buildThreadCommentItem(comment) {
+    var author =
+      comment && comment.author && (comment.author.username || comment.author.email)
+        ? comment.author.username || comment.author.email
+        : "Unknown";
+    var avatar = resolveAssetUrl(comment && comment.author && comment.author.avatarUrl) || "/assets/images/default-avatar.svg";
+    var content = comment && comment.content ? comment.content : "";
+    var dateText = formatAge(comment && comment.createdAt);
+
+    return (
+      '<article class="gtv-comment-item">' +
+      '<img class="gtv-comment-avatar" src="' + escapeHtml(avatar) + '" alt="' + escapeHtml(author) + ' avatar" width="32" height="32" />' +
+      '<div class="gtv-comment-body">' +
+      '<div class="d-flex align-items-center gap-2 mb-1"><span class="fw-medium">' + escapeHtml(author) + '</span><span class="text-muted-2 small">' + escapeHtml(dateText) + "</span></div>" +
+      '<p class="mb-0 text-muted-2">' + escapeHtml(content) + "</p>" +
+      "</div>" +
+      "</article>"
+    );
+  }
+
+  async function loadThreadComments(threadId) {
+    var commentsList = document.getElementById("gtvCommentsList");
+    var commentsCount = document.getElementById("gtvCommentsCount");
+    if (!commentsList || !threadId) return;
+
+    commentsList.innerHTML = '<div class="text-muted-2 small">Loading comments...</div>';
+    try {
+      var response = await fetch("/api/comments?thread=" + encodeURIComponent(threadId), { credentials: "include" });
+      var payload = await response.json().catch(function () {
+        return [];
+      });
+      if (!response.ok) {
+        throw new Error((payload && payload.message) || "Could not load comments.");
+      }
+      var rows = Array.isArray(payload) ? payload : [];
+      commentsList.innerHTML = rows.length
+        ? rows.map(buildThreadCommentItem).join("")
+        : '<div class="text-muted-2 small">No comments yet.</div>';
+      if (commentsCount) commentsCount.textContent = String(rows.length);
+    } catch (error) {
+      commentsList.innerHTML = '<div class="text-muted-2 small">' + escapeHtml(error && error.message ? error.message : "Could not load comments.") + "</div>";
+      if (commentsCount) commentsCount.textContent = "0";
+    }
+  }
+
+  async function openThreadModal(threadId) {
+    if (!threadId) return;
+    activeThreadId = threadId;
+
+    var titleEl = document.getElementById("gtvTitle");
+    var bodyEl = document.getElementById("gtvBody");
+    var authorEl = document.getElementById("gtvAuthorName");
+    var dateEl = document.getElementById("gtvPostDate");
+    var likesEl = document.getElementById("gtvLikesCount");
+    var mediaWrap = document.getElementById("gtvMediaWrap");
+    var mediaEl = document.getElementById("gtvMedia");
+    var avatarEl = document.getElementById("gtvAuthorAvatar");
+    var commentsList = document.getElementById("gtvCommentsList");
+
+    if (titleEl) titleEl.textContent = "Loading...";
+    if (bodyEl) bodyEl.textContent = "";
+    if (authorEl) authorEl.textContent = "";
+    if (dateEl) dateEl.textContent = "";
+    if (likesEl) likesEl.textContent = "0";
+    if (commentsList) commentsList.innerHTML = '<div class="text-muted-2 small">Loading comments...</div>';
+    if (mediaWrap) mediaWrap.hidden = true;
+    if (mediaEl) mediaEl.src = "";
+
+    try {
+      var response = await fetch("/api/threads/" + encodeURIComponent(threadId), { credentials: "include" });
+      var payload = await response.json().catch(function () {
+        return {};
+      });
+      if (!response.ok) {
+        throw new Error(payload.message || "Could not load thread.");
+      }
+
+      var thread = payload || {};
+      if (titleEl) titleEl.textContent = thread.title || "Untitled thread";
+      if (bodyEl) bodyEl.textContent = thread.description || "";
+      if (authorEl) {
+        authorEl.textContent =
+          thread.author && (thread.author.username || thread.author.email)
+            ? thread.author.username || thread.author.email
+            : "Unknown";
+      }
+      if (dateEl) dateEl.textContent = formatAge(thread.createdAt);
+      if (likesEl) likesEl.textContent = String(typeof thread.likesCount === "number" ? thread.likesCount : 0);
+      if (avatarEl) {
+        avatarEl.src = resolveAssetUrl(thread && thread.author && thread.author.avatarUrl) || "/assets/images/default-avatar.svg";
+      }
+
+      var threadImage = resolveAssetUrl(thread && thread.imageUrl);
+      if (threadImage && mediaWrap && mediaEl) {
+        mediaEl.src = threadImage;
+        mediaEl.alt = (thread.title || "Thread") + " image";
+        mediaWrap.hidden = false;
+      }
+
+      await loadThreadComments(threadId);
+
+      var modalEl = document.getElementById("groupThreadViewModal");
+      if (modalEl && window.bootstrap && window.bootstrap.Modal) {
+        var modal = window.bootstrap.Modal.getInstance(modalEl) || new window.bootstrap.Modal(modalEl);
+        modal.show();
+      }
+    } catch (error) {
+      if (titleEl) titleEl.textContent = "Could not load thread";
+      if (bodyEl) bodyEl.textContent = error && error.message ? error.message : "Unexpected error.";
+    }
+  }
+
+  async function postThreadComment() {
+    if (!activeThreadId) return;
+    var inputEl = document.getElementById("gtvCommentInput");
+    var buttonEl = document.getElementById("gtvPostCommentBtn");
+    if (!inputEl || !buttonEl) return;
+
+    var content = String(inputEl.value || "").trim();
+    if (!content) return;
+
+    buttonEl.disabled = true;
+    try {
+      var response = await fetch("/api/comments", {
+        method: "POST",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ thread: activeThreadId, content: content }),
+      });
+      var payload = await response.json().catch(function () {
+        return {};
+      });
+      if (!response.ok) {
+        throw new Error(payload.message || "Could not post comment.");
+      }
+      inputEl.value = "";
+      await loadThreadComments(activeThreadId);
+    } catch (error) {
+      window.alert(error && error.message ? error.message : "Could not post comment.");
+    } finally {
+      buttonEl.disabled = false;
+    }
   }
 
   function renderResults(data) {
@@ -398,6 +613,13 @@
   });
 
   panel.addEventListener("click", function (event) {
+    var threadLink = event.target.closest("[data-action='open-thread'][data-thread-id]");
+    if (threadLink) {
+      event.preventDefault();
+      openThreadModal(threadLink.getAttribute("data-thread-id"));
+      return;
+    }
+
     var inviteButton = event.target.closest("[data-action='send-friend-invitation']");
     if (!inviteButton) return;
     event.preventDefault();
@@ -405,6 +627,19 @@
   });
 
   input.addEventListener("input", triggerSearch);
+
+  var postThreadCommentButton = document.getElementById("gtvPostCommentBtn");
+  var threadCommentInput = document.getElementById("gtvCommentInput");
+  if (postThreadCommentButton) {
+    postThreadCommentButton.addEventListener("click", postThreadComment);
+  }
+  if (threadCommentInput) {
+    threadCommentInput.addEventListener("keydown", function (event) {
+      if (event.key !== "Enter") return;
+      event.preventDefault();
+      postThreadComment();
+    });
+  }
 
   var initialParams = new URLSearchParams(window.location.search);
   var initialScope = String(initialParams.get("scope") || "").toLowerCase().trim();

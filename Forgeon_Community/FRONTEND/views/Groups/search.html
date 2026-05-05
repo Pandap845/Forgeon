@@ -147,6 +147,54 @@
       </div>
     </main>
 
+    <div class="modal fade" id="groupThreadViewModal" tabindex="-1" aria-labelledby="groupThreadViewModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content forgeon-modal">
+          <div class="modal-body p-4 p-md-5">
+            <div class="d-flex align-items-start justify-content-between gap-3 mb-3">
+              <h2 class="h4 mb-0" id="groupThreadViewModalLabel">Thread</h2>
+              <button type="button" class="btn btn-link text-muted-2 p-0" data-bs-dismiss="modal" aria-label="Close">
+                <i class="fa-solid fa-xmark"></i>
+              </button>
+            </div>
+
+            <article class="gtv-post-card mb-4">
+              <div class="d-flex align-items-center gap-3 flex-wrap mb-3">
+                <img id="gtvAuthorAvatar" class="gtv-author-avatar" src="/assets/images/default-avatar.svg" alt="" width="42" height="42" />
+                <div class="d-flex flex-column">
+                  <span id="gtvAuthorName" class="fw-medium">Unknown</span>
+                  <span id="gtvPostDate" class="text-muted-2 small">Just now</span>
+                </div>
+              </div>
+              <h3 id="gtvTitle" class="h4 mb-3">Thread title</h3>
+              <p id="gtvBody" class="text-muted-2 mb-3"></p>
+              <div id="gtvMediaWrap" class="gtv-media-wrap mb-3" hidden>
+                <img id="gtvMedia" class="gtv-media" src="" alt="" />
+              </div>
+              <div class="d-flex align-items-center gap-4 text-muted-2 small">
+                <span class="d-inline-flex align-items-center gap-2"><i class="fa-regular fa-heart"></i><span id="gtvLikesCount">0</span></span>
+                <span class="d-inline-flex align-items-center gap-2"><i class="fa-regular fa-comment"></i><span id="gtvCommentsCount">0</span></span>
+              </div>
+            </article>
+
+            <section class="gtv-comments-card">
+              <div class="d-flex align-items-center gap-2 mb-3">
+                <i class="fa-regular fa-comment text-muted-2"></i>
+                <h4 class="h5 mb-0">Comments</h4>
+              </div>
+              <div id="gtvCommentsList" class="d-flex flex-column gap-3 mb-3">
+                <div class="text-muted-2 small">Loading comments...</div>
+              </div>
+              <div class="d-flex gap-2 align-items-center">
+                <input id="gtvCommentInput" type="text" class="form-control forgeon-input" placeholder="Add a comment..." />
+                <button id="gtvPostCommentBtn" type="button" class="btn btn-outline-light">Post</button>
+              </div>
+            </section>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div class="modal fade" id="notificationsModal" tabindex="-1" aria-labelledby="notificationsModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content forgeon-modal">

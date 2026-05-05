@@ -18,6 +18,9 @@ async function createThread(req, res) {
 
     if (publishTo === 'group') {
       if (!group || !isObjectId(group)) return res.status(400).json({ message: 'Valid group id is required.' });
+      const groupDoc = await Groups.findOne({ _id: group, isDeleted: false }).select('_id isArchived').lean();
+      if (!groupDoc) return res.status(404).json({ message: 'Group not found.' });
+      if (groupDoc.isArchived) return res.status(403).json({ message: 'This group is archived and read-only.' });
       // assert membership
       const membership = await GroupMemberships.findOne({ group, user: req.user.userId });
       if (!membership) return res.status(403).json({ message: 'Only group members can post to this group.' });
@@ -82,7 +85,7 @@ async function listThreads(req, res) {
         return res.status(200).json([]);
       }
 
-      const groupDoc = await Groups.findOne({ _id: groupFilter, isDeleted: false, isArchived: false })
+      const groupDoc = await Groups.findOne({ _id: groupFilter, isDeleted: false })
         .select('_id')
         .lean();
       if (!groupDoc) {

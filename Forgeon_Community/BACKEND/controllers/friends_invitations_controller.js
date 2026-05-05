@@ -77,8 +77,8 @@ async function getFriendsInvitations(req, res) {
 
     const invitations = await FriendsInvitation.find(query)
       .sort({ createdAt: -1 })
-      .populate('sender', 'username email')
-      .populate('recipient', 'username email');
+      .populate('sender', 'username email avatarUrl level')
+      .populate('recipient', 'username email avatarUrl level');
 
     return res.status(200).json(invitations);
   } catch (error) {
@@ -94,8 +94,8 @@ async function getFriendsInvitationById(req, res) {
     }
 
     const invitation = await FriendsInvitation.findById(id)
-      .populate('sender', 'username email')
-      .populate('recipient', 'username email');
+      .populate('sender', 'username email avatarUrl level')
+      .populate('recipient', 'username email avatarUrl level');
     if (!invitation) {
       return res.status(404).json({ message: 'Invitation not found.' });
     }

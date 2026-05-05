@@ -105,6 +105,41 @@
       .replace(/'/g, "&#39;");
   }
 
+  function resolveAssetUrl(url) {
+    var value = String(url || "").trim();
+    if (!value) return "";
+    if (/^https?:\/\//i.test(value)) return value;
+    if (value.startsWith("/")) return value;
+    return "/" + value;
+  }
+
+  function getUserLevel(user) {
+    var level = Number(user && user.level);
+    return Number.isFinite(level) && level > 0 ? Math.floor(level) : 1;
+  }
+
+  function buildAvatarBlock(user, userName) {
+    var level = getUserLevel(user);
+    var avatarUrl = resolveAssetUrl(user && user.avatarUrl) || "/assets/images/default-avatar.svg";
+    return (
+      '<div class="gd-profile-card__avatar-zone">' +
+      '<span class="gd-profile-card__level">Lvl ' +
+      escapeHtml(level) +
+      "</span>" +
+      '<div class="avatar-shell avatar-shell--gd-profile avatar-shell--border flex-shrink-0" data-forgeon-avatar data-user-level="' +
+      escapeHtml(level) +
+      '">' +
+      '<div class="avatar-frame" aria-hidden="true"></div>' +
+      '<img class="gd-profile-card__avatar" src="' +
+      escapeHtml(avatarUrl) +
+      '" alt="' +
+      escapeHtml(userName) +
+      ' avatar" width="72" height="72" />' +
+      "</div>" +
+      "</div>"
+    );
+  }
+
   function formatRelativeTime(inputDate) {
     if (!inputDate) return "Unknown time";
 
@@ -129,15 +164,13 @@
 
   function buildIncomingItem(item) {
     var sender = item.sender || {};
-    var senderName = escapeHtml(getName(sender));
+    var senderNameRaw = getName(sender);
+    var senderName = escapeHtml(senderNameRaw);
     var mutualFriends = Number(item.mutualFriends || 0);
 
     return (
       '<li><article class="fr-request dg-surface-card">' +
-      '<div class="avatar-shell avatar-shell--fr avatar-shell--border flex-shrink-0" data-forgeon-avatar data-user-level="1">' +
-      '<div class="avatar-frame" aria-hidden="true"></div>' +
-      '<div class="fr-request__avatar fr-request__avatar--placeholder" aria-hidden="true"></div>' +
-      "</div>" +
+      buildAvatarBlock(sender, senderNameRaw) +
       '<div class="fr-request__body">' +
       '<div class="fr-request__top"><span class="fr-request__name">' +
       senderName +
@@ -150,6 +183,7 @@
       "</span>" +
       '<span class="gd-meta-sep" aria-hidden="true">•</span>' +
       '<span class="fr-meta">' +
+      "Received " +
       escapeHtml(formatRelativeTime(item.createdAt)) +
       "</span>" +
       "</div>" +
@@ -168,14 +202,12 @@
 
   function buildSentItem(item) {
     var recipient = item.recipient || {};
-    var recipientName = escapeHtml(getName(recipient));
+    var recipientNameRaw = getName(recipient);
+    var recipientName = escapeHtml(recipientNameRaw);
 
     return (
       '<li><article class="fr-request fr-request--sent dg-surface-card">' +
-      '<div class="avatar-shell avatar-shell--fr avatar-shell--border flex-shrink-0" data-forgeon-avatar data-user-level="1">' +
-      '<div class="avatar-frame" aria-hidden="true"></div>' +
-      '<div class="fr-request__avatar fr-request__avatar--placeholder" aria-hidden="true"></div>' +
-      "</div>" +
+      buildAvatarBlock(recipient, recipientNameRaw) +
       '<div class="fr-request__body">' +
       '<div class="fr-request__top"><span class="fr-request__name">' +
       recipientName +
@@ -223,7 +255,8 @@
           else if (userBId === currentUserId) resolvedFriend = userA;
         }
 
-        var friendName = escapeHtml(getName(resolvedFriend));
+        var friendNameRaw = getName(resolvedFriend);
+        var friendName = escapeHtml(friendNameRaw);
         var connectedAt = formatRelativeTime(friendship && (friendship.connectedAt || friendship.createdAt));
         var removeButtonHtml = friendshipId
           ? '<div class="fr-request__actions"><button type="button" class="fr-btn fr-btn--reject fr-btn--cancel" data-action="remove-friend" data-friendship-id="' +
@@ -232,10 +265,7 @@
           : "";
         return (
           '<li><article class="fr-request fr-request--sent dg-surface-card">' +
-          '<div class="avatar-shell avatar-shell--fr avatar-shell--border flex-shrink-0" data-forgeon-avatar data-user-level="1">' +
-          '<div class="avatar-frame" aria-hidden="true"></div>' +
-          '<div class="fr-request__avatar fr-request__avatar--placeholder" aria-hidden="true"></div>' +
-          "</div>" +
+          buildAvatarBlock(resolvedFriend, friendNameRaw) +
           '<div class="fr-request__body">' +
           '<div class="fr-request__top"><span class="fr-request__name">' +
           friendName +

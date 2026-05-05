@@ -9,6 +9,8 @@
   var iconInput = document.getElementById("iconInput");
   var removeIconBtn = document.querySelector(".gs-btn-remove");
   var archiveBtn = document.querySelector(".gs-btn-archive");
+  var archiveTitle = document.getElementById("gsArchiveTitle");
+  var archiveDesc = document.getElementById("gsArchiveDesc");
   var deleteBtn = document.querySelector(".gs-btn-delete");
   var pageTitle = document.getElementById("gsPageTitle");
   var metaInfo = document.getElementById("gsMetaInfo");
@@ -125,6 +127,19 @@
       );
     }
 
+    if (archiveBtn) {
+      var isArchived = Boolean(group && group.isArchived);
+      if (archiveTitle) archiveTitle.textContent = isArchived ? "Restore Group" : "Archive Group";
+      if (archiveDesc) {
+        archiveDesc.textContent = isArchived
+          ? "Allow members to join and post again."
+          : "Make group read-only. No new posts or members allowed.";
+      }
+      archiveBtn.innerHTML = isArchived
+        ? '<i class="fa-solid fa-box-open" aria-hidden="true"></i> Restore'
+        : '<i class="fa-solid fa-box-archive" aria-hidden="true"></i> Archive';
+    }
+
     updateCount();
   }
 
@@ -182,12 +197,14 @@
 
   async function onArchive() {
     if (!groupId) return;
+    var isArchived = Boolean(currentGroup && currentGroup.isArchived);
+    var nextValue = !isArchived;
     try {
-      await window.ForgeonGroupsController.update(groupId, { isArchived: true });
-      setMessage("Group archived.");
+      await window.ForgeonGroupsController.update(groupId, { isArchived: nextValue });
+      setMessage(nextValue ? "Group archived." : "Group restored.");
       await loadGroup();
     } catch (error) {
-      setMessage(error.message || "Could not archive group.", true);
+      setMessage(error.message || (nextValue ? "Could not archive group." : "Could not restore group."), true);
     }
   }
 

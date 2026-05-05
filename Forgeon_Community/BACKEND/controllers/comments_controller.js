@@ -67,6 +67,11 @@ async function createComment(req, res) {
 
     const threadDoc = await Models.Threads.findOne({ _id: thread, isDeleted: false });
     if (!threadDoc) return res.status(404).json({ message: 'Thread not found.' });
+    if (threadDoc.publishTo === 'group' && threadDoc.group) {
+      const groupDoc = await Models.Groups.findOne({ _id: threadDoc.group, isDeleted: false }).select('_id isArchived').lean();
+      if (!groupDoc) return res.status(404).json({ message: 'Group not found.' });
+      if (groupDoc.isArchived) return res.status(403).json({ message: 'This group is archived and read-only.' });
+    }
 
     const comment = await Models.Comments.create({ thread: threadDoc._id, author: userId, content: String(content).trim() });
 

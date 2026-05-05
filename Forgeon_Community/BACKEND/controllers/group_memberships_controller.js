@@ -29,9 +29,12 @@ async function createGroupMembership(req, res) {
       return res.status(400).json({ message: 'Invalid user id.' });
     }
 
-    const groupDoc = await Groups.findOne({ _id: group, isDeleted: false, isArchived: false });
+    const groupDoc = await Groups.findOne({ _id: group, isDeleted: false }).select('_id isArchived');
     if (!groupDoc) {
       return res.status(404).json({ message: 'Group not found.' });
+    }
+    if (groupDoc.isArchived) {
+      return res.status(403).json({ message: 'This group is archived and cannot accept new members.' });
     }
 
     const targetUser = await User.findOne({ _id: targetUserId, isDeleted: false });
