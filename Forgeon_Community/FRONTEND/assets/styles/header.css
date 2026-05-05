@@ -146,6 +146,35 @@
   color: var(--forgeon-text) !important;
 }
 
+.forgeon-navbar .forgeon-notif-btn {
+  position: relative;
+}
+
+.forgeon-navbar .forgeon-notif-badge {
+  position: absolute;
+  top: -1px;
+  right: -1px;
+  min-width: 1.1rem;
+  height: 1.1rem;
+  border-radius: 999px;
+  padding: 0 0.28rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #e5484d;
+  color: #ffffff;
+  font-size: 0.67rem;
+  font-weight: 700;
+  line-height: 1;
+  border: 1px solid rgba(18, 18, 26, 0.9);
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.18);
+  pointer-events: none;
+}
+
+.forgeon-navbar .forgeon-notif-badge.is-hidden {
+  display: none;
+}
+
 .forgeon-navbar .nav-profile-avatar.btn-link {
   line-height: 0;
 }

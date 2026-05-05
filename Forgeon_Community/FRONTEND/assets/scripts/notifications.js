@@ -1,7 +1,39 @@
 (function () {
   var modal = document.getElementById("notificationsModal");
   var notificationsController = window.ForgeonNotificationController;
-  if (!modal || !notificationsController) return;
+  var notificationButtons = Array.from(
+    document.querySelectorAll('button[aria-label="Notifications"][data-bs-target="#notificationsModal"]')
+  );
+  if (!modal || !notificationsController || !notificationButtons.length) return;
+
+  // Adds a visual unread count badge to each header notification trigger.
+  function ensureBadge(button) {
+    button.classList.add("forgeon-notif-btn");
+    var badge = button.querySelector(".forgeon-notif-badge");
+    if (badge) return badge;
+    badge = document.createElement("span");
+    badge.className = "forgeon-notif-badge is-hidden";
+    badge.setAttribute("aria-hidden", "true");
+    button.appendChild(badge);
+    return badge;
+  }
+
+  var badgeEls = notificationButtons.map(ensureBadge);
+
+  function setUnreadBadgeCount(count) {
+    var safeCount = Number(count) || 0;
+    var text = safeCount > 99 ? "99+" : String(safeCount);
+    badgeEls.forEach(function (badge) {
+      if (!badge) return;
+      if (safeCount <= 0) {
+        badge.classList.add("is-hidden");
+        badge.textContent = "";
+        return;
+      }
+      badge.classList.remove("is-hidden");
+      badge.textContent = text;
+    });
+  }
 
   // Escapes HTML-sensitive characters.
   function escapeHtml(value) {
@@ -87,12 +119,28 @@
       if (typeof notificationsController.markAsSeen === "function") {
         notificationsController.markAsSeen(items);
       }
+      setUnreadBadgeCount(0);
     } catch (_error) {
       host.innerHTML =
         '<div class="forgeon-card p-3"><div class="text-muted-2 small">Could not load notifications.</div></div>';
     }
   }
 
+  // Loads unseen notifications count for header badge.
+  async function refreshUnreadCount() {
+    try {
+      var unseenItems = await notificationsController.listReceivedNotifications();
+      setUnreadBadgeCount(Array.isArray(unseenItems) ? unseenItems.length : 0);
+    } catch (_error) {
+      setUnreadBadgeCount(0);
+    }
+  }
+
   // Refreshes notifications each time modal opens.
   modal.addEventListener("show.bs.modal", loadNotifications);
+  window.addEventListener("pageshow", refreshUnreadCount);
+  document.addEventListener("visibilitychange", function () {
+    if (document.visibilityState === "visible") refreshUnreadCount();
+  });
+  refreshUnreadCount();
 })();
