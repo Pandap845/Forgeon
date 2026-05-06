@@ -1,4 +1,7 @@
 {
+  "scripts": {
+    "seed:sample": "node sample-seeding.js"
+  },
   "dependencies": {
     "bcryptjs": "^3.0.2",
     "dotenv": "^17.4.2",
