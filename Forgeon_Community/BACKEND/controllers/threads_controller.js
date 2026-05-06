@@ -58,7 +58,11 @@ async function createThread(req, res) {
 async function listThreads(req, res) {
   try {
     const actorId = req.user && req.user.userId;
-    const limit = Math.min(100, parseInt(req.query.limit || '10', 10));
+    const pageProvided = typeof req.query.page !== 'undefined';
+    const limit = pageProvided
+      ? Math.min(100, parseInt(req.query.limit || '5', 10))
+      : Math.min(100, parseInt(req.query.limit || '10', 10));
+    const page = pageProvided ? Math.max(1, parseInt(req.query.page || '1', 10)) : 1;
 
     // Cleanup: soft-delete threads that are "floating" (publishTo=forum but forum missing)
     try {
@@ -138,6 +142,25 @@ async function listThreads(req, res) {
       }
     }
 
+    // If a `page` query param was provided, return paginated metadata
+    if (pageProvided) {
+      const skip = (page - 1) * limit;
+      const total = await Threads.countDocuments(query);
+      const threads = await Threads.find(query)
+        .sort({ createdAt: -1 })
+        .skip(skip)
+        .limit(limit)
+        .populate('author', PUBLIC_USER_AUTHOR_FIELDS)
+        .populate('group', 'name')
+        .populate('forum', 'name slug')
+        .lean();
+
+      const mapped = mapThreadsAuthors(threads);
+      const pages = Math.ceil(total / limit) || 1;
+      return res.status(200).json({ items: mapped, total, page, pages });
+    }
+
+    // legacy: no page param -> return simple array (backwards compatibility)
     const threads = await Threads.find(query)
       .sort({ createdAt: -1 })
       .limit(limit)

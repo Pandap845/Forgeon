@@ -12,6 +12,67 @@
     });
   }
 
+  function setPageParamInUrl(page) {
+    try {
+      const params = new URLSearchParams(window.location.search);
+      if (!page || parseInt(page, 10) <= 1) {
+        params.delete('page');
+      } else {
+        params.set('page', String(page));
+      }
+      const next = window.location.pathname + (params.toString() ? ('?' + params.toString()) : '');
+      history.pushState(null, '', next);
+    } catch (e) {
+      // ignore
+    }
+  }
+
+  function renderPagination(currentPage, totalPages) {
+    const el = document.getElementById('threadPagination');
+    if (!el) return;
+    if (!totalPages || totalPages <= 1) {
+      el.innerHTML = '';
+      return;
+    }
+    const ul = document.createElement('ul');
+    ul.className = 'pagination';
+
+    function makeItem(pageNum, label, disabled, active) {
+      const li = document.createElement('li');
+      li.className = 'page-item' + (disabled ? ' disabled' : '') + (active ? ' active' : '');
+      const a = document.createElement('a');
+      a.className = 'page-link';
+      a.href = '#';
+      a.textContent = label;
+      a.addEventListener('click', (e) => {
+        e.preventDefault();
+        if (disabled || active) return;
+        setPageParamInUrl(pageNum);
+        loadThreads();
+      });
+      li.appendChild(a);
+      return li;
+    }
+
+    ul.appendChild(makeItem(Math.max(1, currentPage - 1), 'Previous', currentPage <= 1, false));
+
+    // show a window of pages around current
+    const start = Math.max(1, currentPage - 2);
+    const end = Math.min(totalPages, currentPage + 2);
+    for (let p = start; p <= end; p++) {
+      ul.appendChild(makeItem(p, String(p), false, p === currentPage));
+    }
+
+    ul.appendChild(makeItem(Math.min(totalPages, currentPage + 1), 'Next', currentPage >= totalPages, false));
+
+    el.innerHTML = '';
+    el.appendChild(ul);
+  }
+
+  window.addEventListener('popstate', () => {
+    loadThreads();
+  });
+
   function timeAgo(date) {
     const seconds = Math.floor((Date.now() - new Date(date)) / 1000);
     if (seconds < 60) return seconds + 's';
@@ -25,19 +86,37 @@
 
   async function loadThreads() {
     const container = document.getElementById('threadFeed');
+    const paginationEl = document.getElementById('threadPagination');
     if (!container) return;
+    if (paginationEl) paginationEl.innerHTML = '';
     container.innerHTML = '<div class="text-muted-2">Loading threads...</div>';
     try {
       // support filtering by forum via query param
       const forumId = getQueryParam('forum');
-      const qs = new URLSearchParams({ limit: '10' });
+      const page = parseInt(getQueryParam('page') || '1', 10) || 1;
+      const qs = new URLSearchParams({ limit: '5', page: String(page) });
       if (forumId) qs.set('forum', forumId);
       const res = await fetch('/api/threads?' + qs.toString(), { credentials: 'include' });
       if (!res.ok) {
         container.innerHTML = '<div class="text-danger">Failed to load threads</div>';
         return;
       }
-      const threads = await res.json();
+      const payload = await res.json();
+      let threads = [];
+      let pageInfo = null;
+      if (Array.isArray(payload)) {
+        threads = payload;
+        if (paginationEl) paginationEl.style.display = 'none';
+      } else if (payload && payload.items) {
+        threads = payload.items;
+        pageInfo = { page: payload.page || page, pages: payload.pages || 1, total: payload.total || 0 };
+        if (paginationEl) {
+          paginationEl.style.display = '';
+          renderPagination(pageInfo.page, pageInfo.pages);
+        }
+      } else {
+        threads = [];
+      }
       // if no forum query param but threads belong to a forum, set title from first forum found
       if (!forumId && threads && threads.length) {
         const ft = threads.find(x => x.forum && (x.forum.name || x.forum));
