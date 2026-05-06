@@ -258,6 +258,16 @@
       setText('tvAuthorName', authorName);
       const avatar = resolveAvatarUrl((thread.author && (thread.author.avatarUrl || thread.author.avatar)) || '');
       setAttr('tvAuthorAvatar', 'src', avatar);
+      var authorLevel = Number(thread.author && thread.author.level);
+      if (!Number.isFinite(authorLevel) || authorLevel < 1) authorLevel = 1;
+      const authorAvatar = document.getElementById('tvAuthorAvatar');
+      const authorShell = authorAvatar && authorAvatar.closest ? authorAvatar.closest('[data-forgeon-avatar]') : null;
+      if (authorShell) {
+        authorShell.setAttribute('data-user-level', String(Math.floor(authorLevel)));
+      }
+      if (window.ForgeonAvatarFrames && typeof window.ForgeonAvatarFrames.applyShell === 'function' && authorShell) {
+        window.ForgeonAvatarFrames.applyShell(authorShell);
+      }
 
       // Date
       setText('tvPostDate', thread.createdAt ? ('Published ' + timeAgo(thread.createdAt) + ' ago') : '');
