@@ -103,7 +103,7 @@ async function getGroupsInvitations(req, res) {
 
     const invitations = await GroupsInvitation.find(query)
       .sort({ createdAt: -1 })
-      .populate('group', 'name')
+      .populate('group', 'name iconImageUrl coverImageUrl')
       .populate('sender', 'username email')
       .populate('invitee', 'username email');
 
@@ -121,7 +121,7 @@ async function getGroupsInvitationById(req, res) {
     }
 
     const invitation = await GroupsInvitation.findById(id)
-      .populate('group', 'name')
+      .populate('group', 'name iconImageUrl coverImageUrl')
       .populate('sender', 'username email')
       .populate('invitee', 'username email');
     if (!invitation) {

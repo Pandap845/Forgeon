@@ -136,13 +136,16 @@
     var groupName = group.name || "Unknown group";
     var senderName = sender.username || sender.email || "Unknown user";
     var message = item.message || "";
+    var iconImageUrl = group.iconImageUrl || group.coverImageUrl || "";
 
     return (
       '<article class="ug-card" data-searchable-name="' +
       escapeHtml(groupName.toLowerCase()) +
       '">' +
       '<div class="ug-card__top">' +
-      '<img class="ug-thumb" src="https://via.placeholder.com/64x64?text=I" alt="" width="64" height="64" />' +
+      '<img class="ug-thumb" src="' +
+      escapeHtml(iconImageUrl || "https://via.placeholder.com/64x64?text=I") +
+      '" alt="" width="64" height="64" />' +
       '<div class="ug-content">' +
       '<h2 class="ug-title">' +
       escapeHtml(groupName) +
@@ -239,9 +242,22 @@
           return item.group && item.group.isDeleted !== true;
         });
 
-      invitationItems = (Array.isArray(invitations) ? invitations : []).filter(function (invitation) {
-        return invitation && invitation.status === "pending";
-      });
+      invitationItems = (Array.isArray(invitations) ? invitations : [])
+        .filter(function (invitation) {
+          return invitation && invitation.status === "pending";
+        })
+        .map(function (invitation) {
+          var invitationGroup = invitation.group || {};
+          var groupId = String(invitationGroup._id || invitationGroup.id || invitationGroup || "");
+          var detailedGroup = groupsById[groupId] || invitationGroup;
+          return {
+            _id: invitation._id,
+            status: invitation.status,
+            message: invitation.message,
+            sender: invitation.sender,
+            group: detailedGroup,
+          };
+        });
 
       updateCounts();
       renderActiveTab();
