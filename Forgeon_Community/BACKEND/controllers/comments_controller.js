@@ -141,7 +141,7 @@ async function deleteComment(req, res) {
     comment.isDeleted = true;
     await comment.save();
 
-    // decrement thread comment count (ensure non-negative)
+    // decrement thread comment count 
     try {
       await Models.Threads.updateOne({ _id: comment.thread }, { $inc: { commentsCount: -1 } });
       const t = await Models.Threads.findById(comment.thread);

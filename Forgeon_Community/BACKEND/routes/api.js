@@ -9,6 +9,7 @@ const AUTH_COOKIE_NAME = 'forgeon_auth_token';
 // API Router
 const routerApi = express.Router();
 
+
 function hasValidJwt(req) {
   const authHeader = req.get('authorization') || '';
   const bearerToken = authHeader.startsWith('Bearer ') ? authHeader.slice(7) : null;

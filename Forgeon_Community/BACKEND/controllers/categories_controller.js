@@ -5,6 +5,7 @@ function isObjectId(value) {
   return mongoose.isValidObjectId(value);
 }
 
+//idk i found this on internet and it works fr 
 function escapeRegex(value) {
   return String(value).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }

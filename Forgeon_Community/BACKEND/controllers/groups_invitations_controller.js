@@ -5,9 +5,30 @@ const {
   Groups,
   User,
 } = require('../models');
+const { publicAuthorFromLean, PUBLIC_USER_AUTHOR_FIELDS } = require('../utils/publicAuthor');
 
 function isObjectId(value) {
   return mongoose.isValidObjectId(value);
+}
+
+const PUBLIC_GROUP_INVITATION_USER_FIELDS = `${PUBLIC_USER_AUTHOR_FIELDS} email level`;
+
+function mapInvitationUser(user) {
+  const pub = publicAuthorFromLean(user);
+  return {
+    ...pub,
+    email: user && user.isDeleted ? '' : ((user && user.email) || ''),
+    level: Number(user && user.level) || 1,
+  };
+}
+
+function mapInvitation(invitation) {
+  if (!invitation || typeof invitation !== 'object') return invitation;
+  return {
+    ...invitation,
+    sender: mapInvitationUser(invitation.sender),
+    invitee: invitation.invitee ? mapInvitationUser(invitation.invitee) : invitation.invitee,
+  };
 }
 
 async function createGroupsInvitation(req, res) {
@@ -104,10 +125,11 @@ async function getGroupsInvitations(req, res) {
     const invitations = await GroupsInvitation.find(query)
       .sort({ createdAt: -1 })
       .populate('group', 'name iconImageUrl coverImageUrl')
-      .populate('sender', 'username email')
-      .populate('invitee', 'username email');
+      .populate('sender', PUBLIC_GROUP_INVITATION_USER_FIELDS)
+      .populate('invitee', PUBLIC_GROUP_INVITATION_USER_FIELDS)
+      .lean();
 
-    return res.status(200).json(invitations);
+    return res.status(200).json((invitations || []).map(mapInvitation));
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
@@ -122,8 +144,9 @@ async function getGroupsInvitationById(req, res) {
 
     const invitation = await GroupsInvitation.findById(id)
       .populate('group', 'name iconImageUrl coverImageUrl')
-      .populate('sender', 'username email')
-      .populate('invitee', 'username email');
+      .populate('sender', PUBLIC_GROUP_INVITATION_USER_FIELDS)
+      .populate('invitee', PUBLIC_GROUP_INVITATION_USER_FIELDS)
+      .lean();
     if (!invitation) {
       return res.status(404).json({ message: 'Invitation not found.' });
     }
@@ -138,7 +161,7 @@ async function getGroupsInvitationById(req, res) {
       return res.status(403).json({ message: 'Forbidden invitation access.' });
     }
 
-    return res.status(200).json(invitation);
+    return res.status(200).json(mapInvitation(invitation));
   } catch (error) {
     return res.status(400).json({ message: error.message });
   }

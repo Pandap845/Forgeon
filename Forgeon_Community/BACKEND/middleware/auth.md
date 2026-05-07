@@ -81,11 +81,4 @@ router.get('/public-feed', getPublicFeed);
 router.get('/me', authenticateToken, getCurrentUser);
 ```
 
-Use this when protected and public endpoints are mixed.
-
-## Notes for endpoint developers
-
-1. Keep `login/register` public (define them **before** `router.use(authenticateToken)` if using Pattern A).
-2. Do not trust client-sent user IDs when auth exists; prefer `req.user.userId`.
-3. For browser page navigation protection, cookie JWT is useful because browsers send cookies automatically.
-4. For API clients/tools, Bearer token in `Authorization` is usually the best option.
+-

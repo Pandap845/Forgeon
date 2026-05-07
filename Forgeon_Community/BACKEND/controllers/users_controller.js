@@ -34,7 +34,7 @@ async function userPayloadWithStats(userDoc) {
 }
 
 const SALT_ROUNDS = 10;
-const AUTH_COOKIE_NAME = 'forgeon_auth_token';
+const AUTH_COOKIE_NAME = 'forgeon_auth_token'; // The most important shit ever
 
 function toPublicUser(userDoc) {
   ensureProgressionFields(userDoc);
@@ -63,12 +63,14 @@ function toPublicUser(userDoc) {
   };
 }
 
+//token generator
 function createToken(userDoc) {
   const secret = process.env.JWT_SECRET;
   if (!secret) {
     throw new Error('JWT secret is not configured.');
   }
 
+  //Return the token  
   return jwt.sign(
     {
       userId: userDoc._id.toString(),
@@ -80,6 +82,7 @@ function createToken(userDoc) {
   );
 }
 
+//Auth cookie 
 function setAuthCookie(res, token) {
   const secure = process.env.NODE_ENV === 'production';
   res.cookie(AUTH_COOKIE_NAME, token, {
@@ -88,7 +91,7 @@ function setAuthCookie(res, token) {
     secure,
     path: '/',
     maxAge: 24 * 60 * 60 * 1000,
-  });
+  })
 }
 
 function clearAuthCookie(res) {
@@ -125,6 +128,7 @@ async function createUser(req, res) {
       return res.status(409).json({ message: 'Email already exists.' });
     }
 
+    //Hash the password before saving the user
     const passwordHash = await bcrypt.hash(password, SALT_ROUNDS);
     const user = await User.create({
       username: normalizedUsername,
@@ -174,6 +178,7 @@ async function loginUser(req, res) {
 
     await persistProgressionIfNeeded(user);
 
+    //Create a JWT token for the authenticated user
     const token = createToken(user);
     setAuthCookie(res, token);
     return res.status(200).json({
