@@ -317,7 +317,7 @@
     try {
       const [gmRes, fRes] = await Promise.all([
         fetch('/api/group-memberships', { credentials: 'include' }),
-        fetch('/api/forums', { credentials: 'include' }),
+        fetch('/api/forums?mine=1', { credentials: 'include' }),
       ]);
 
       if (gmRes && gmRes.ok) {
@@ -402,19 +402,6 @@
       }));
 
     const userForums = (Array.isArray(forums) ? forums : [])
-      .filter(f => {
-        // only include forums that were created by the current user
-        if (!f) return false;
-        let cb = null;
-        if (f.createdBy) {
-          if (typeof f.createdBy === 'string') cb = f.createdBy;
-          else if (f.createdBy._id) cb = f.createdBy._id;
-          else if (f.createdBy.id) cb = f.createdBy.id;
-        }
-        cb = cb || f.createdBy_id || f.createdById;
-        if (!cb || !currentUserId) return false;
-        return String(cb) === String(currentUserId);
-      })
       .map(f => ({
         type: 'forum',
         _id: f._id || f.id,
@@ -448,20 +435,7 @@
         .map(m => ({ type: 'group', id: (m.group._id || m.group.id), name: m.group.name, createdAt: m.createdAt || m.joinedAt || null }));
 
       const matchedForums = (Array.isArray(forums) ? forums : [])
-        .filter(f => {
-          // only consider forums created by the current user
-          if (!f) return false;
-          let cb = null;
-          if (f.createdBy) {
-            if (typeof f.createdBy === 'string') cb = f.createdBy;
-            else if (f.createdBy._id) cb = f.createdBy._id;
-            else if (f.createdBy.id) cb = f.createdBy.id;
-          }
-          cb = cb || f.createdBy_id || f.createdById;
-          const isMine = currentUserId && cb && String(cb) === String(currentUserId);
-          if (!isMine) return false;
-          return (String(f.name || '').toLowerCase().includes(q) || String(f.description || '').toLowerCase().includes(q));
-        })
+        .filter(f => (String(f.name || '').toLowerCase().includes(q) || String(f.description || '').toLowerCase().includes(q)))
         .map(f => ({ type: 'forum', _id: f._id || f.id, name: f.name, description: f.description, createdAt: f.createdAt || null }));
 
       const matched = matchedGroups.concat(matchedForums)

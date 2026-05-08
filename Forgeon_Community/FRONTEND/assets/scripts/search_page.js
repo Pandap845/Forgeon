@@ -15,6 +15,7 @@
 
   var scopeByTabId = {
     "sr-tab-groups": "groups",
+    "sr-tab-forums": "forums",
     "sr-tab-threads": "threads",
     "sr-tab-users": "users",
   };
@@ -142,7 +143,7 @@
     panel.innerHTML = [
       '<i class="sr-empty__icon fa-solid fa-magnifying-glass" aria-hidden="true"></i>',
       "<h2 class=\"sr-empty__title\">Start Searching</h2>",
-      "<p class=\"sr-empty__hint\">Type in the search bar above to find groups, threads, or users.</p>",
+      "<p class=\"sr-empty__hint\">Type in the search bar above to find groups, forums, threads, or users.</p>",
       '<a class="sr-empty__link" href="./discover_groups.html">Browse Discover Groups</a>',
     ].join("");
   }
@@ -206,6 +207,45 @@
             '<footer class="dg-card-footer">',
             '<div class="dg-members"><span>' + memberCount + " members</span></div>",
             '<div class="dg-card-actions"><a class="dg-btn dg-btn--ghost" href="./group_detail.html?groupId=' + encodeURIComponent(id) + '">View</a></div>',
+            "</footer>",
+            "</div>",
+            "</article>",
+          ].join("");
+        })
+        .join("") +
+      "</div>";
+  }
+
+  function renderForumResults(forums) {
+    if (!forums.length) {
+      renderNoResults();
+      return;
+    }
+
+    panel.className = "dg-surface-card";
+    panel.innerHTML =
+      '<div class="dg-cards dg-cards--grid p-3">' +
+      forums
+        .map(function (f) {
+          var id = f && (f.id || f._id) ? String(f.id || f._id) : "";
+          var name = escapeHtml(f && f.name ? f.name : "Untitled forum");
+          var description = escapeHtml(f && f.description ? f.description : "");
+          var cover = resolveAssetUrl(f && f.imageUrl);
+
+          return [
+            '<article class="dg-card">',
+            '<div class="dg-card-media">',
+            cover
+              ? '<img class="dg-card-img" src="' + escapeHtml(cover) + '" alt="" width="344" height="194" />'
+              : '<div class="dg-card-img"></div>',
+            "</div>",
+            '<div class="dg-card-body">',
+            '<div class="dg-card-main">',
+            '<h2 class="dg-card-title">' + name + "</h2>",
+            '<p class="dg-card-desc">' + description + "</p>",
+            "</div>",
+            '<footer class="dg-card-footer">',
+            '<div class="dg-card-actions"><a class="dg-btn dg-btn--ghost" href="./forumpage.html?forum=' + encodeURIComponent(id) + '">View</a></div>',
             "</footer>",
             "</div>",
             "</article>",
@@ -504,9 +544,14 @@
     var groups = data.results && Array.isArray(data.results.groups) ? data.results.groups : [];
     var users = data.results && Array.isArray(data.results.users) ? data.results.users : [];
     var threads = data.results && Array.isArray(data.results.threads) ? data.results.threads : [];
+    var forums = data.results && Array.isArray(data.results.forums) ? data.results.forums : [];
 
     if (currentScope === "groups") {
       renderGroupResults(groups);
+      return;
+    }
+    if (currentScope === "forums") {
+      renderForumResults(forums);
       return;
     }
     if (currentScope === "users") {

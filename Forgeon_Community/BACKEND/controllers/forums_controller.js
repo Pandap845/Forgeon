@@ -42,8 +42,42 @@ exports.createForum = async (req, res) => {
   }
 };
 
-exports.listForums = async (_req, res) => {
+exports.listForums = async (req, res) => {
   try {
+    // If caller requests their own forums (`?mine=1`), return forums
+    // created by the user OR forums where the user has authored threads.
+    const mine = req.query && (req.query.mine === '1' || req.query.mine === 'true');
+    if (mine) {
+      const actorId = req.user && (req.user.userId || req.user.id || req.user._id);
+      if (!actorId) return res.status(200).json([]);
+
+      // find forum ids where this user authored threads
+      const Threads = require('../models').Threads;
+      let forumIds = [];
+      try {
+        forumIds = await Threads.distinct('forum', { author: actorId });
+      } catch (e) {
+        forumIds = [];
+      }
+
+      const query = {
+        isDeleted: { $ne: true },
+        $or: [{ createdBy: actorId }, { _id: { $in: forumIds.filter(Boolean) } }],
+      };
+
+      const forums = await Forum.find(query)
+        .sort({ createdAt: -1 })
+        .limit(100)
+        .populate('createdBy', PUBLIC_USER_AUTHOR_FIELDS)
+        .lean();
+
+      const out = (forums || []).map((f) => ({
+        ...f,
+        createdBy: publicAuthorFromLean(f.createdBy),
+      }));
+      return res.json(out);
+    }
+
     const forums = await Forum.find()
       .sort({ createdAt: -1 })
       .limit(100)
