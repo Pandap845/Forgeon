@@ -2,7 +2,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { User, Threads, GroupMemberships } = require('../models');
 const { runAccountDeletionSideEffects, tryRemoveUploadedProfilePicture } = require('../services/accountDeletionService');
-const loadForgeonProgression = require('../utils/loadForgeonProgression');
+const { progressionPayload, ensureProgressionFields, syncFrameBadgesForLevel, getLevelFromXp } = require('../utils/forgeonProgression');
 const userProgressionService = require('../services/userProgressionService');
 
 async function syncPostsPublishedFromThreads(userDoc) {
@@ -19,7 +19,6 @@ async function countActiveGroupMemberships(userId) {
 
 async function persistProgressionIfNeeded(userDoc) {
   await syncPostsPublishedFromThreads(userDoc);
-  const { ensureProgressionFields, getLevelFromXp, syncFrameBadgesForLevel } = loadForgeonProgression();
   ensureProgressionFields(userDoc);
   userDoc.level = getLevelFromXp(userDoc.experiencePoints);
   syncFrameBadgesForLevel(userDoc);
@@ -38,7 +37,6 @@ const SALT_ROUNDS = 10;
 const AUTH_COOKIE_NAME = 'forgeon_auth_token'; // The most important shit ever
 
 function toPublicUser(userDoc) {
-  const { progressionPayload, ensureProgressionFields } = loadForgeonProgression();
   ensureProgressionFields(userDoc);
   const prog = progressionPayload(userDoc);
   return {
@@ -62,8 +60,6 @@ function toPublicUser(userDoc) {
     maxLevel: prog.maxLevel,
     badgesEarned: prog.badgesEarned,
     badgeCatalogTotal: prog.badgeCatalogTotal,
-    xpRewards: prog.xpRewards,
-    xpCurveMultiplier: prog.xpCurveMultiplier,
   };
 }
 
@@ -201,17 +197,8 @@ function logoutUser(_req, res) {
 }
 
 function getBadgeCatalog(_req, res) {
-  const { BADGE_CATALOG } = loadForgeonProgression();
+  const { BADGE_CATALOG } = require('../utils/forgeonProgression');
   return res.status(200).json(BADGE_CATALOG);
-}
-
-/** Public XP tuning values from forgeonProgression.js (refresh browser to see updates after server picks up file changes). */
-function getXpRewards(_req, res) {
-  const { XP, XP_CURVE_MULTIPLIER } = loadForgeonProgression();
-  return res.status(200).json({
-    xpRewards: { ...XP },
-    xpCurveMultiplier: XP_CURVE_MULTIPLIER,
-  });
 }
 
 async function getUsers(req, res) {
@@ -351,7 +338,6 @@ module.exports = {
   loginUser,
   logoutUser,
   getBadgeCatalog,
-  getXpRewards,
   getUsers,
   getUserById,
   updateUser,
