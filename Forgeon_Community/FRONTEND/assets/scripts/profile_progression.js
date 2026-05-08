@@ -232,10 +232,18 @@
           "Extra XP no longer increases your level.";
       } else {
         var needForHint = need > 0 ? need : 1;
+        var commentXp =
+          user.xpRewards && user.xpRewards.COMMENT != null ? Number(user.xpRewards.COMMENT) : null;
+        var ratesHint =
+          commentXp != null && !Number.isNaN(commentXp)
+            ? " Comments award " + commentXp + " XP each (live server rates)."
+            : "";
         hint.textContent =
           "Next level at " +
           formatXp((user.experiencePoints || 0) + (needForHint - into)) +
-          " total XP. Keep posting, commenting, building forums and groups, and connecting with friends.";
+          " total XP." +
+          (ratesHint ? " " + ratesHint : "") +
+          " Keep posting, commenting, building forums and groups, and connecting with friends.";
       }
     }
   }
@@ -372,6 +380,14 @@
     if (avatarZone && user.level != null) {
       avatarZone.setAttribute("data-user-level", String(user.level));
     }
+
+    try {
+      var xpCfg = await fetchJson("/api/users/xp-rewards");
+      if (xpCfg && xpCfg.xpRewards) {
+        user.xpRewards = xpCfg.xpRewards;
+        user.xpCurveMultiplier = xpCfg.xpCurveMultiplier;
+      }
+    } catch (_e) { }
 
     applyXpUi(user);
 

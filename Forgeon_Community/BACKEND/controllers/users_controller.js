@@ -62,6 +62,8 @@ function toPublicUser(userDoc) {
     maxLevel: prog.maxLevel,
     badgesEarned: prog.badgesEarned,
     badgeCatalogTotal: prog.badgeCatalogTotal,
+    xpRewards: prog.xpRewards,
+    xpCurveMultiplier: prog.xpCurveMultiplier,
   };
 }
 
@@ -203,6 +205,15 @@ function getBadgeCatalog(_req, res) {
   return res.status(200).json(BADGE_CATALOG);
 }
 
+/** Public XP tuning values from forgeonProgression.js (refresh browser to see updates after server picks up file changes). */
+function getXpRewards(_req, res) {
+  const { XP, XP_CURVE_MULTIPLIER } = loadForgeonProgression();
+  return res.status(200).json({
+    xpRewards: { ...XP },
+    xpCurveMultiplier: XP_CURVE_MULTIPLIER,
+  });
+}
+
 async function getUsers(req, res) {
   try {
     const users = await User.find({ isDeleted: false }).sort({ createdAt: -1 });
@@ -340,6 +351,7 @@ module.exports = {
   loginUser,
   logoutUser,
   getBadgeCatalog,
+  getXpRewards,
   getUsers,
   getUserById,
   updateUser,

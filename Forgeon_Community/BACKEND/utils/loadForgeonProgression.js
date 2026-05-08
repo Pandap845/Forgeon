@@ -1,7 +1,8 @@
 
 function shouldReloadProgressionModule() {
+  if (process.env.FORGEON_HOT_RELOAD_PROGRESSION === '1') return true;
   if (process.env.FORGEON_HOT_RELOAD_PROGRESSION === '0') return false;
-  return process.env.NODE_ENV === 'production' ? false : true;
+  return process.env.NODE_ENV !== 'production';
 }
 
 function loadForgeonProgression() {

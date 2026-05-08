@@ -7,6 +7,7 @@ const {
   loginUser,
   logoutUser,
   getBadgeCatalog,
+  getXpRewards,
   getUsers,
   getUserById,
   updateUser,
@@ -42,6 +43,7 @@ const avatarUpload = multer({
 });
 
 router.get('/badge-catalog', getBadgeCatalog);
+router.get('/xp-rewards', getXpRewards);
 router.post('/login', loginUser);
 router.post('/logout', logoutUser);
 router.post('/', createUser);

@@ -295,6 +295,8 @@ function progressionPayload(userDoc) {
     maxLevel: MAX_LEVEL,
     badgesEarned: earned,
     badgeCatalogTotal: BADGE_CATALOG.length,
+    xpRewards: { ...XP },
+    xpCurveMultiplier: XP_CURVE_MULTIPLIER,
   };
 }
 
