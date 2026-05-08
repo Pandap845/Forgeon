@@ -10,6 +10,7 @@
       crossorigin="anonymous"
     />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
     <title>Forgeon — Group Management</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -103,13 +104,7 @@
       <article class="gm-card dg-surface-card">
         <div class="gm-card__head gm-card__head--inline">
           <h2 class="gm-card__title gm-card__title--plain">Validate account</h2>
-          <img
-            class="gm-title-accent"
-            src="https://www.figma.com/api/mcp/asset/a4d7f8b2-16cb-483f-8f44-002a8cda4d50"
-            alt=""
-            width="17"
-            height="8"
-          />
+          <i class="fa-solid fa-id-card gm-title-accent" aria-hidden="true"></i>
         </div>
         <div class="gm-well">
           <p class="gm-account-line">
@@ -126,7 +121,7 @@
 
       <article class="gm-card dg-surface-card">
         <div class="gm-card__head gm-card__head--icon">
-          <img src="https://www.figma.com/api/mcp/asset/dd084f96-0900-4835-8faa-92ff94af3c0f" alt="" width="20" height="20" />
+          <i class="fa-solid fa-layer-group" aria-hidden="true"></i>
           <h2 class="gm-card__title">My Groups</h2>
         </div>
         <ul id="gmGroupList" class="gm-group-list">
@@ -144,7 +139,7 @@
           Ready to start your own community? Create a new group and invite members to join.
         </p>
         <a id="gmCreateGroupBtn" class="gm-btn-create" href="./group_Creation.html">
-          <img src="https://www.figma.com/api/mcp/asset/80464f30-b2d0-4ea8-a9bd-f5b949abdaca" alt="" width="16" height="16" />
+          <i class="fa-solid fa-plus" aria-hidden="true"></i>
           Create Group
         </a>
       </article>
@@ -203,6 +198,29 @@
                   <div class="text-muted-3 small mt-2">Just now</div>
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="gmDeleteGroupModal" tabindex="-1" aria-labelledby="gmDeleteGroupModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content forgeon-modal">
+          <div class="modal-body p-4">
+            <div class="d-flex align-items-start justify-content-between gap-3 mb-3">
+              <h2 class="h5 mb-0" id="gmDeleteGroupModalLabel">Delete Group</h2>
+              <button type="button" class="btn btn-link text-muted-2 p-0" data-bs-dismiss="modal" aria-label="Close">
+                <i class="bi bi-x-lg"></i>
+              </button>
+            </div>
+            <p class="text-muted-2 mb-4">
+              Are you sure you want to eliminate
+              <strong id="gmDeleteGroupName">this group</strong>?
+            </p>
+            <div class="d-flex gap-2 justify-content-end">
+              <button type="button" class="btn btn-outline-light" data-bs-dismiss="modal">Cancel</button>
+              <button type="button" class="btn btn-danger" id="gmDeleteGroupConfirmBtn">Eliminate</button>
             </div>
           </div>
         </div>

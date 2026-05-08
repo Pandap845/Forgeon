@@ -251,46 +251,46 @@
       inviteState === "self"
         ? "You"
         : inviteState === "friends"
-        ? "Friends"
-        : inviteState === "pending"
-        ? "Invitation sent"
-        : "Send Invitation";
+          ? "Friends"
+          : inviteState === "pending"
+            ? "Invitation sent"
+            : "Send Invitation";
     var inviteDisabled = inviteState !== "available";
     var avatarUrl = resolveAssetUrl(user && user.avatarUrl);
     var avatarMarkup = avatarUrl
       ? '<img class="gd-profile-card__avatar" src="' +
-        escapeHtml(avatarUrl) +
-        '" alt="' +
-        escapeHtml(username) +
-        ' avatar" width="72" height="72" />'
+      escapeHtml(avatarUrl) +
+      '" alt="' +
+      escapeHtml(username) +
+      ' avatar" width="72" height="72" />'
       : '<div class="gd-profile-card__avatar" aria-hidden="true"></div>';
 
     return [
       "<li>",
       '<article class="profile-card gd-profile-card">',
-      '<div class="gd-profile-card__avatar-zone">',
+      '<a class="gd-profile-card__avatar-zone" href="' + escapeHtml(profileHref) + '" aria-label="Open ' + escapeHtml(username) + ' profile">',
       '<span class="gd-profile-card__level">Lvl ' + escapeHtml(level) + "</span>",
       '<div class="avatar-shell avatar-shell--gd-profile avatar-shell--border" data-forgeon-avatar data-user-level="' +
-        escapeHtml(level) +
-        '">',
+      escapeHtml(level) +
+      '">',
       '<div class="avatar-frame" aria-hidden="true"></div>',
       avatarMarkup,
       "</div>",
-      "</div>",
+      "</a>",
       '<div class="gd-profile-card__body">',
-      '<h3 class="gd-profile-card__name">' + escapeHtml(username) + "</h3>",
+      '<h3 class="gd-profile-card__name"><a class="gd-profile-card__link" href="' + escapeHtml(profileHref) + '">' + escapeHtml(username) + "</a></h3>",
       '<p class="gd-profile-card__handle">@' + escapeHtml(username) + "</p>",
       '<p class="gd-profile-card__meta">' + roleLabel + "</p>",
       "</div>",
       '<div class="d-flex align-items-center gap-2">',
       '<a class="gd-profile-card__link" href="' + escapeHtml(profileHref) + '">View profile</a>',
       '<button type="button" class="dg-btn dg-btn--secondary" data-action="send-friend-invitation" data-user-id="' +
-        escapeHtml(memberUserId) +
-        '"' +
-        (inviteDisabled ? " disabled" : "") +
-        ">" +
-        escapeHtml(inviteLabel) +
-        "</button>",
+      escapeHtml(memberUserId) +
+      '"' +
+      (inviteDisabled ? " disabled" : "") +
+      ">" +
+      escapeHtml(inviteLabel) +
+      "</button>",
       "</div>",
       "</article>",
       "</li>",
@@ -316,18 +316,18 @@
       '<div class="avatar-shell avatar-shell--gd-thread avatar-shell--border flex-shrink-0" data-forgeon-avatar data-user-level="1">',
       '<div class="avatar-frame" aria-hidden="true"></div>',
       '<img class="gd-thread__avatar" src="' +
-        escapeHtml(avatar) +
-        '" alt="' +
-        escapeHtml(author) +
-        ' avatar" width="45" height="45" />',
+      escapeHtml(avatar) +
+      '" alt="' +
+      escapeHtml(author) +
+      ' avatar" width="45" height="45" />',
       "</div>",
       '<div class="gd-thread__body">',
       '<div class="gd-thread__head">',
       '<h2 class="gd-thread__title"><a class="gd-thread__title-link" href="#" data-action="open-thread" data-thread-id="' +
-        escapeHtml(threadId) +
-        '">' +
-        escapeHtml(title) +
-        "</a></h2>",
+      escapeHtml(threadId) +
+      '">' +
+      escapeHtml(title) +
+      "</a></h2>",
       "</div>",
       '<div class="gd-thread__meta">',
       '<span class="gd-thread__author">' + escapeHtml(author) + "</span>",
@@ -336,10 +336,10 @@
       "</div>",
       imageUrl
         ? '<div class="gd-thread__media"><img class="gd-thread__preview" src="' +
-          escapeHtml(imageUrl) +
-          '" alt="' +
-          escapeHtml(title) +
-          ' image" /></div>'
+        escapeHtml(imageUrl) +
+        '" alt="' +
+        escapeHtml(title) +
+        ' image" /></div>'
         : "",
       '<div class="gd-thread__divider" aria-hidden="true"></div>',
       '<div class="gd-thread__stats">',
@@ -695,7 +695,7 @@
       }
 
       if (about) about.textContent = group && group.description ? group.description : "";
-    } catch (_error) {}
+    } catch (_error) { }
   }
 
   async function loadMembershipState() {
@@ -715,7 +715,7 @@
               : "";
           return gid === String(groupId);
         }) || null;
-    } catch (_error) {}
+    } catch (_error) { }
   }
 
   async function handleJoinClick(event) {

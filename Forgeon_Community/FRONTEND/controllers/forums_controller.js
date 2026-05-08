@@ -1,4 +1,57 @@
-// Minimal frontend controller for forums page
+const USER_KEY = 'forgeonCurrentUser';
+const MIN_LEVEL_CREATE_FORUM = 5;
+
+let forumCreationEligibility = { canCreate: true, level: null };
+
+function getCurrentUserId() {
+  const raw = localStorage.getItem(USER_KEY);
+  if (!raw) return '';
+  try {
+    const parsed = JSON.parse(raw);
+    return String((parsed && (parsed.id || parsed._id)) || '');
+  } catch (_error) {
+    return '';
+  }
+}
+
+function applyForumCreationUiState() {
+  const triggerBtn = document.querySelector('[data-bs-target="#createForumModal"]');
+  const createBtn = document.getElementById('createForumBtn');
+  const canCreate = Boolean(forumCreationEligibility.canCreate);
+
+  [triggerBtn, createBtn].forEach((btn) => {
+    if (!btn) return;
+    if (canCreate) {
+      btn.style.pointerEvents = '';
+      btn.style.opacity = '';
+      btn.removeAttribute('aria-disabled');
+    } else {
+      btn.style.pointerEvents = 'none';
+      btn.style.opacity = '0.5';
+      btn.setAttribute('aria-disabled', 'true');
+    }
+  });
+}
+
+async function resolveForumCreationEligibility() {
+  const userId = getCurrentUserId();
+  if (!userId || !window.ForgeonUsersController || !window.ForgeonUsersController.getById) {
+    forumCreationEligibility = { canCreate: true, level: null };
+    applyForumCreationUiState();
+    return;
+  }
+
+  try {
+    const user = await window.ForgeonUsersController.getById(userId);
+    const level = parseInt(user && user.level, 10) || 1;
+    forumCreationEligibility = { canCreate: level >= MIN_LEVEL_CREATE_FORUM, level };
+  } catch (_error) {
+    forumCreationEligibility = { canCreate: true, level: null };
+  }
+
+  applyForumCreationUiState();
+}
+
 async function loadForums() {
   try {
     const res = await fetch('/api/forums', { credentials: 'include' });
@@ -29,10 +82,16 @@ async function loadForums() {
 }
 
 function escapeHtml(str) {
-  return (str || '').replace(/[&<>"]/g, s => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[s]));
+  return (str || '').replace(/[&<>"]/g, s => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[s]));
 }
 
 async function createForum() {
+  if (!forumCreationEligibility.canCreate) {
+    const lvl = forumCreationEligibility.level == null ? 1 : forumCreationEligibility.level;
+    alert(`You must be at least level ${MIN_LEVEL_CREATE_FORUM} to create forums. Your level is ${lvl}.`);
+    return;
+  }
+
   const name = document.getElementById('forumTitle').value.trim();
   const description = document.getElementById('forumDescription').value.trim();
   if (!name) return alert('Name is required');
@@ -61,6 +120,7 @@ async function createForum() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+  resolveForumCreationEligibility();
   loadForums();
   const btn = document.getElementById('createForumBtn');
   if (btn) btn.addEventListener('click', createForum);

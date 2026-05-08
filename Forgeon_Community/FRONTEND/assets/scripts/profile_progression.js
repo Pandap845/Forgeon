@@ -1,6 +1,3 @@
-/**
- * Loads XP, level, and badges from the API and wires the profile badge UI.
- */
 (function () {
   var USER_KEY = "forgeonCurrentUser";
   var TOKEN_KEY = "forgeonAuthToken";
@@ -147,14 +144,30 @@
     }
   }
 
-  function fillAllBadgesModal(catalog, earnedIds) {
+  function fillAllBadgesModal(catalog, earnedIds, opts) {
     var intro = document.getElementById("allBadgesModalIntro");
     var list = document.getElementById("allBadgesModalList");
     if (!list) return;
     var nEarned = earnedIds.size;
+    var viewOnly = !!(opts && opts.viewOnly);
+    var username = opts && opts.username ? String(opts.username).trim() : "This user";
     if (intro) {
-      intro.textContent =
-        "You have " + nEarned + " unlocked badge" + (nEarned === 1 ? "" : "s") + " out of " + catalog.length + " total.";
+      intro.textContent = viewOnly
+        ? username +
+        " has " +
+        nEarned +
+        " unlocked badge" +
+        (nEarned === 1 ? "" : "s") +
+        " out of " +
+        catalog.length +
+        " total."
+        : "You have " +
+        nEarned +
+        " unlocked badge" +
+        (nEarned === 1 ? "" : "s") +
+        " out of " +
+        catalog.length +
+        " total.";
     }
     list.innerHTML = "";
     catalog.forEach(function (def) {
@@ -164,6 +177,19 @@
       if (!unlocked) li.style.opacity = "0.55";
       list.appendChild(li);
     });
+  }
+
+  function setProfileOwnershipCopy(viewOnly, user) {
+    var username = user && user.username ? String(user.username).trim() : "This user";
+    var allBadgesButton = document.getElementById("allBadgesButton");
+    var allBadgesIntro = document.getElementById("allBadgesModalIntro");
+
+    if (allBadgesButton) {
+      allBadgesButton.textContent = viewOnly ? username + "'s badges" : "All my badges";
+    }
+    if (allBadgesIntro) {
+      allBadgesIntro.textContent = viewOnly ? username + " has these badges." : "Loading badges…";
+    }
   }
 
   function applyXpUi(user) {
@@ -288,7 +314,7 @@
       try {
         var merged = Object.assign({}, current, user);
         localStorage.setItem(USER_KEY, JSON.stringify(merged));
-      } catch (_e) {}
+      } catch (_e) { }
     }
 
     var banner = document.getElementById("profileViewBanner");
@@ -310,7 +336,11 @@
     if (badgeHeaderLabel) badgeHeaderLabel.textContent = viewOnly ? "Badges" : "My Badges";
 
     var allBadgesTitle = document.getElementById("allBadgesModalTitle");
-    if (allBadgesTitle) allBadgesTitle.textContent = viewOnly ? "All badges" : "All my badges";
+    if (allBadgesTitle) {
+      var profileName = user && user.username ? String(user.username).trim() : "User";
+      allBadgesTitle.textContent = viewOnly ? profileName + "'s Badges" : "All my badges";
+    }
+    setProfileOwnershipCopy(viewOnly, user);
 
     var usernameInput = document.getElementById("username");
     if (usernameInput && user.username) usernameInput.value = String(user.username);
@@ -381,7 +411,7 @@
         if (window.ForgeonMyGroups && typeof window.ForgeonMyGroups.setCount === "function") {
           window.ForgeonMyGroups.setCount(groupCount);
         }
-      } catch (_e) {}
+      } catch (_e) { }
     }
 
     var earned = user.badgesEarned || [];
@@ -404,7 +434,10 @@
     if (allBadgesButton && allBadgesModalBackdrop) {
       allBadgesButton.addEventListener("click", function () {
         var cat = catalog && catalog.length ? catalog : earned;
-        fillAllBadgesModal(cat, earnedIds);
+        fillAllBadgesModal(cat, earnedIds, {
+          viewOnly: viewOnly,
+          username: user && user.username ? user.username : "This user",
+        });
         openModal(allBadgesModalBackdrop);
       });
     }

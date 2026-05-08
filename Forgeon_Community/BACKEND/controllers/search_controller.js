@@ -1,7 +1,7 @@
-const { User, Groups, Threads } = require('../models');
+const { User, Groups, Threads, Forum } = require('../models');
 const { publicAuthorFromLean, PUBLIC_USER_AUTHOR_FIELDS } = require('../utils/publicAuthor');
 
-const ALLOWED_SCOPES = new Set(['all', 'groups', 'threads', 'users']);
+const ALLOWED_SCOPES = new Set(['all', 'groups', 'threads', 'users', 'forums']);
 
 function escapeRegex(value) {
   return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -77,6 +77,22 @@ function mapThread(thread) {
   };
 }
 
+function mapForum(forum) {
+  return {
+    id: forum._id,
+    name: forum.name,
+    description: forum.description,
+    imageUrl: forum.imageUrl,
+    createdAt: forum.createdAt,
+    createdBy: forum.createdBy
+      ? (() => {
+          const c = publicAuthorFromLean(forum.createdBy);
+          return { id: c._id, username: c.username };
+        })()
+      : null,
+  };
+}
+
 async function search(req, res) {
   try {
     const q = String(req.query.q || '').trim();
@@ -84,7 +100,7 @@ async function search(req, res) {
     const limit = parseLimit(req.query.limit);
 
     if (!scope) {
-      return res.status(400).json({ message: 'Invalid scope. Use all, groups, threads, or users.' });
+      return res.status(400).json({ message: 'Invalid scope. Use all, groups, threads, users, or forums.' });
     }
 
     if (!q) {
@@ -100,8 +116,9 @@ async function search(req, res) {
     const shouldSearchGroups = scope === 'all' || scope === 'groups';
     const shouldSearchThreads = scope === 'all' || scope === 'threads';
     const shouldSearchUsers = scope === 'all' || scope === 'users';
+    const shouldSearchForums = scope === 'all' || scope === 'forums';
 
-    const [groups, threads, users] = await Promise.all([
+    const [groups, threads, users, forums] = await Promise.all([
       shouldSearchGroups
         ? Groups.find({
             isDeleted: false,
@@ -130,11 +147,20 @@ async function search(req, res) {
             .sort({ level: -1, createdAt: -1 })
             .limit(limit)
         : Promise.resolve([]),
+      shouldSearchForums
+        ? Forum.find({
+            $or: [{ name: regex }, { description: regex }],
+          })
+            .sort({ createdAt: -1 })
+            .limit(limit)
+            .populate('createdBy', PUBLIC_USER_AUTHOR_FIELDS)
+        : Promise.resolve([]),
     ]);
 
     const mappedGroups = groups.map(mapGroup);
     const mappedThreads = threads.map(mapThread);
     const mappedUsers = users.map(mapUser);
+    const mappedForums = (forums || []).map(mapForum);
 
     return res.status(200).json({
       query: q,
@@ -143,11 +169,13 @@ async function search(req, res) {
         groups: mappedGroups.length,
         threads: mappedThreads.length,
         users: mappedUsers.length,
+        forums: mappedForums.length,
       },
       results: {
         groups: mappedGroups,
         threads: mappedThreads,
         users: mappedUsers,
+        forums: mappedForums,
       },
     });
   } catch (error) {

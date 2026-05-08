@@ -137,7 +137,7 @@ async function createUser(req, res) {
       avatarUrl: '',
     });
 
-    await userProgressionService.afterUserRegistered(user._id).catch(() => {});
+    await userProgressionService.afterUserRegistered(user._id).catch(() => { });
 
     const savedUser = await User.findById(user._id);
     const token = createToken(savedUser || user);

@@ -98,7 +98,7 @@
     <main class="dg-main sr-main">
       <header class="sr-header">
         <h1 class="sr-title">Search</h1>
-        <p class="sr-subtitle">Find groups, threads, and users</p>
+        <p class="sr-subtitle">Find groups, forums, threads, and users</p>
       </header>
 
       <div class="sr-search">
@@ -110,7 +110,7 @@
           id="globalSearch"
           class="sr-search__input"
           type="search"
-          placeholder="Search for groups, threads, or users..."
+          placeholder="Search for groups, forums, threads, or users..."
           autocomplete="off"
           spellcheck="false"
         />
@@ -124,6 +124,13 @@
               Groups
             </span>
           </button>
+          <button type="button" id="sr-tab-forums" class="sr-tab" role="tab" aria-selected="false" aria-controls="sr-panel-results">
+            <span class="sr-tab__content">
+              <i class="fa-solid fa-book" aria-hidden="true"></i>
+              Forums
+            </span>
+          </button>
+
           <button type="button" id="sr-tab-threads" class="sr-tab" role="tab" aria-selected="false" aria-controls="sr-panel-results">
             <span class="sr-tab__content">
               <i class="fa-regular fa-comments" aria-hidden="true"></i>
