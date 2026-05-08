@@ -40,6 +40,19 @@
       .replace(/'/g, "&#39;");
   }
 
+  function resolveAssetUrl(url) {
+    var value = String(url || "").trim();
+    if (!value) return "";
+    if (/^https?:\/\//i.test(value)) return value;
+    if (value.startsWith("/")) return value;
+    return "/" + value;
+  }
+
+  function getUserLevel(user) {
+    var level = Number(user && user.level);
+    return Number.isFinite(level) && level > 0 ? Math.floor(level) : 1;
+  }
+
   function readCurrentUserId() {
     try {
       var raw = localStorage.getItem("forgeonCurrentUser");
@@ -66,18 +79,63 @@
     return String(params.get("groupId") || "").trim();
   }
 
-  function inviteeLabel(invitation) {
+  function findUserByInvitation(invitation) {
+    var inviteeId =
+      invitation && invitation.invitee && (invitation.invitee._id || invitation.invitee.id || invitation.invitee)
+        ? String(invitation.invitee._id || invitation.invitee.id || invitation.invitee)
+        : "";
+    var invitationEmail = String(invitation && invitation.inviteeEmail ? invitation.inviteeEmail : "").toLowerCase();
+
+    return allUsers.find(function (user) {
+      if (!user) return false;
+      var userId = String((user._id || user.id) || "");
+      var userEmail = String(user.email || "").toLowerCase();
+      if (inviteeId && userId && inviteeId === userId) return true;
+      if (invitationEmail && userEmail && invitationEmail === userEmail) return true;
+      return false;
+    });
+  }
+
+  function inviteeProfile(invitation) {
     var invitee = invitation && invitation.invitee;
-    if (invitee && typeof invitee === "object") {
+    var fallbackUser = findUserByInvitation(invitation);
+    var resolvedInvitee = invitee && typeof invitee === "object" ? invitee : fallbackUser;
+
+    if (resolvedInvitee) {
       return {
-        username: invitee.username || invitee.email || "Unknown user",
-        email: invitee.email || invitation.inviteeEmail || "",
+        username: resolvedInvitee.username || resolvedInvitee.email || "Unknown user",
+        email: resolvedInvitee.email || invitation.inviteeEmail || "",
+        level: getUserLevel(resolvedInvitee),
+        avatarUrl: resolveAssetUrl(resolvedInvitee.avatarUrl) || "/assets/images/default-avatar.svg",
       };
     }
+
     return {
       username: invitation.inviteeEmail || "Unknown user",
       email: invitation.inviteeEmail || "",
+      level: 1,
+      avatarUrl: "/assets/images/default-avatar.svg",
     };
+  }
+
+  function buildAvatarBlock(level, avatarUrl, username) {
+    return (
+      '<div class="gd-profile-card__avatar-zone">' +
+      '<span class="gd-profile-card__level">Lvl ' +
+      escapeHtml(level) +
+      "</span>" +
+      '<div class="avatar-shell avatar-shell--gd-profile avatar-shell--border flex-shrink-0" data-forgeon-avatar data-user-level="' +
+      escapeHtml(level) +
+      '">' +
+      '<div class="avatar-frame" aria-hidden="true"></div>' +
+      '<img class="gd-profile-card__avatar" src="' +
+      escapeHtml(avatarUrl) +
+      '" alt="' +
+      escapeHtml(username || "Unknown user") +
+      ' avatar" width="72" height="72" />' +
+      "</div>" +
+      "</div>"
+    );
   }
 
   function renderPendingInvites() {
@@ -91,16 +149,14 @@
 
     inviteList.innerHTML = pendingInvitations
       .map(function (invitation) {
-        var invitee = inviteeLabel(invitation);
+        var invitee = inviteeProfile(invitation);
         var name = escapeHtml(invitee.username);
         var email = escapeHtml(invitee.email);
+        var level = Number(invitee.level) || 1;
         var invitationId = escapeHtml(invitation && invitation._id ? invitation._id : "");
         return (
           '<li class="gi-item" data-invite-item>' +
-          '<div class="avatar-shell avatar-shell--gi avatar-shell--border flex-shrink-0" data-forgeon-avatar data-user-level="1">' +
-          '<div class="avatar-frame" aria-hidden="true"></div>' +
-          '<div class="gi-avatar" aria-hidden="true"></div>' +
-          "</div>" +
+          buildAvatarBlock(level, invitee.avatarUrl, invitee.username) +
           '<div class="gi-user">' +
           '<div class="gi-user-line"><span class="gi-name">' +
           name +
@@ -176,14 +232,11 @@
       .slice(0, 20)
       .map(function (user) {
         var userId = String((user._id || user.id) || "");
+        var level = getUserLevel(user);
+        var avatarUrl = resolveAssetUrl(user && user.avatarUrl) || "/assets/images/default-avatar.svg";
         return (
           '<li class="gi-item">' +
-          '<div class="avatar-shell avatar-shell--gi avatar-shell--border flex-shrink-0" data-forgeon-avatar data-user-level="' +
-          escapeHtml(user.level || 1) +
-          '">' +
-          '<div class="avatar-frame" aria-hidden="true"></div>' +
-          '<div class="gi-avatar" aria-hidden="true"></div>' +
-          "</div>" +
+          buildAvatarBlock(level, avatarUrl, user.username || user.email || "Unknown user") +
           '<div class="gi-user">' +
           '<div class="gi-user-line"><span class="gi-name">' +
           escapeHtml(user.username || user.email || "Unknown user") +
