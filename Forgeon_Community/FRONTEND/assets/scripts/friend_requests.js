@@ -44,7 +44,7 @@
       var parsedCurrentUser = JSON.parse(rawCurrentUser);
       currentUserId = String(parsedCurrentUser && (parsedCurrentUser.id || parsedCurrentUser._id) ? (parsedCurrentUser.id || parsedCurrentUser._id) : "");
     }
-  } catch (_error) {}
+  } catch (_error) { }
 
   function showIncoming() {
     tabIncoming.classList.add("fr-tab--active");
@@ -118,8 +118,20 @@
     return Number.isFinite(level) && level > 0 ? Math.floor(level) : 1;
   }
 
+  function getFrameKeyForLevel(level) {
+    if (level >= 70) return "mythic";
+    if (level >= 60) return "titan";
+    if (level >= 50) return "void";
+    if (level >= 40) return "cyber";
+    if (level >= 30) return "boss";
+    if (level >= 20) return "neon";
+    if (level >= 10) return "pixel";
+    return "starter";
+  }
+
   function buildAvatarBlock(user, userName) {
     var level = getUserLevel(user);
+    var frameKey = getFrameKeyForLevel(level);
     var avatarUrl = resolveAssetUrl(user && user.avatarUrl) || "/assets/images/default-avatar.svg";
     return (
       '<div class="gd-profile-card__avatar-zone">' +
@@ -129,7 +141,9 @@
       '<div class="avatar-shell avatar-shell--gd-profile avatar-shell--border flex-shrink-0" data-forgeon-avatar data-user-level="' +
       escapeHtml(level) +
       '">' +
-      '<div class="avatar-frame" aria-hidden="true"></div>' +
+      '<div class="avatar-frame avatar-frame--' +
+      escapeHtml(frameKey) +
+      '" aria-hidden="true"></div>' +
       '<img class="gd-profile-card__avatar" src="' +
       escapeHtml(avatarUrl) +
       '" alt="' +
@@ -164,17 +178,21 @@
 
   function buildIncomingItem(item) {
     var sender = item.sender || {};
+    var senderId = String(sender && (sender.id || sender._id) ? (sender.id || sender._id) : "");
+    var senderProfileHref = "../Profile/profile.html" + (senderId ? "?id=" + encodeURIComponent(senderId) : "");
     var senderNameRaw = getName(sender);
     var senderName = escapeHtml(senderNameRaw);
     var mutualFriends = Number(item.mutualFriends || 0);
 
     return (
       '<li><article class="fr-request dg-surface-card">' +
+      '<a href="' + escapeHtml(senderProfileHref) + '" aria-label="Open ' + senderName + ' profile">' +
       buildAvatarBlock(sender, senderNameRaw) +
+      "</a>" +
       '<div class="fr-request__body">' +
-      '<div class="fr-request__top"><span class="fr-request__name">' +
+      '<div class="fr-request__top"><a class="fr-request__name" href="' + escapeHtml(senderProfileHref) + '">' +
       senderName +
-      "</span></div>" +
+      "</a></div>" +
       '<div class="fr-request__meta">' +
       '<span class="fr-meta">' +
       mutualFriends +
@@ -202,16 +220,20 @@
 
   function buildSentItem(item) {
     var recipient = item.recipient || {};
+    var recipientId = String(recipient && (recipient.id || recipient._id) ? (recipient.id || recipient._id) : "");
+    var recipientProfileHref = "../Profile/profile.html" + (recipientId ? "?id=" + encodeURIComponent(recipientId) : "");
     var recipientNameRaw = getName(recipient);
     var recipientName = escapeHtml(recipientNameRaw);
 
     return (
       '<li><article class="fr-request fr-request--sent dg-surface-card">' +
+      '<a href="' + escapeHtml(recipientProfileHref) + '" aria-label="Open ' + recipientName + ' profile">' +
       buildAvatarBlock(recipient, recipientNameRaw) +
+      "</a>" +
       '<div class="fr-request__body">' +
-      '<div class="fr-request__top"><span class="fr-request__name">' +
+      '<div class="fr-request__top"><a class="fr-request__name" href="' + escapeHtml(recipientProfileHref) + '">' +
       recipientName +
-      "</span></div>" +
+      "</a></div>" +
       '<div class="fr-request__meta">' +
       '<span class="fr-meta fr-meta--solo">Sent ' +
       escapeHtml(formatRelativeTime(item.createdAt)) +
@@ -256,20 +278,24 @@
         }
 
         var friendNameRaw = getName(resolvedFriend);
+        var friendId = String(resolvedFriend && (resolvedFriend.id || resolvedFriend._id) ? (resolvedFriend.id || resolvedFriend._id) : "");
+        var friendProfileHref = "../Profile/profile.html" + (friendId ? "?id=" + encodeURIComponent(friendId) : "");
         var friendName = escapeHtml(friendNameRaw);
         var connectedAt = formatRelativeTime(friendship && (friendship.connectedAt || friendship.createdAt));
         var removeButtonHtml = friendshipId
           ? '<div class="fr-request__actions"><button type="button" class="fr-btn fr-btn--reject fr-btn--cancel" data-action="remove-friend" data-friendship-id="' +
-            escapeHtml(friendshipId) +
-            '">Remove friend</button></div>'
+          escapeHtml(friendshipId) +
+          '">Remove friend</button></div>'
           : "";
         return (
           '<li><article class="fr-request fr-request--sent dg-surface-card">' +
+          '<a href="' + escapeHtml(friendProfileHref) + '" aria-label="Open ' + friendName + ' profile">' +
           buildAvatarBlock(resolvedFriend, friendNameRaw) +
+          "</a>" +
           '<div class="fr-request__body">' +
-          '<div class="fr-request__top"><span class="fr-request__name">' +
+          '<div class="fr-request__top"><a class="fr-request__name" href="' + escapeHtml(friendProfileHref) + '">' +
           friendName +
-          "</span></div>" +
+          "</a></div>" +
           '<div class="fr-request__meta"><span class="fr-meta fr-meta--solo">Friends since ' +
           escapeHtml(connectedAt) +
           "</span></div>" +

@@ -175,6 +175,111 @@
   display: none;
 }
 
+.forgeon-notif-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+}
+
+.forgeon-notif-tabs-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  flex: 1;
+  padding: 0.35rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  background: #191b24;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.forgeon-notif-tab {
+  flex: 1 1 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  border: 0;
+  border-radius: 10px;
+  padding: 0.44rem 0.7rem;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 0.85rem;
+  font-weight: 600;
+  transition: background 0.18s ease, color 0.18s ease;
+}
+
+.forgeon-notif-tab.is-active {
+  background: rgba(255, 255, 255, 0.09);
+  color: #fff;
+}
+
+.forgeon-notif-tab-count {
+  margin-left: 0.35rem;
+  min-width: 1.15rem;
+  height: 1.15rem;
+  border-radius: 999px;
+  padding: 0 0.28rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.forgeon-notif-tab[data-notif-tab="unread"] .forgeon-notif-tab-count {
+  background: #e5484d;
+}
+
+.forgeon-notif-tab[data-notif-tab="read"] .forgeon-notif-tab-count {
+  background: rgba(255, 255, 255, 0.22);
+}
+
+.forgeon-mark-read-btn {
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.92);
+  font-size: 0.76rem;
+  font-weight: 600;
+  padding: 0.44rem 0.66rem;
+  white-space: nowrap;
+}
+
+.forgeon-mark-read-btn:hover:not(:disabled),
+.forgeon-mark-read-btn:focus-visible:not(:disabled) {
+  background: rgba(125, 143, 245, 0.2);
+  border-color: rgba(125, 143, 245, 0.42);
+}
+
+.forgeon-mark-read-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.forgeon-notif-item {
+  display: block;
+  text-decoration: none;
+}
+
+.forgeon-notif-item .forgeon-card {
+  transition: border-color 0.18s ease, transform 0.18s ease, background 0.18s ease;
+}
+
+.forgeon-notif-item.is-unread .forgeon-card {
+  border: 1px solid rgba(125, 143, 245, 0.42);
+}
+
+.forgeon-notif-item:hover .forgeon-card,
+.forgeon-notif-item:focus-visible .forgeon-card {
+  transform: translateY(-1px);
+  border-color: rgba(125, 143, 245, 0.55);
+  background: rgba(255, 255, 255, 0.04);
+}
+
 .forgeon-navbar .nav-profile-avatar.btn-link {
   line-height: 0;
 }
@@ -195,6 +300,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+
   .forgeon-brand-badge,
   .forgeon-navbar .navbar-brand,
   .forgeon-navbar .navbar-nav .nav-link {

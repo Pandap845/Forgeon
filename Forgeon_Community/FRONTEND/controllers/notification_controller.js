@@ -66,6 +66,8 @@
       type: "friend_invitation",
       createdAt: invitation && invitation.createdAt ? invitation.createdAt : null,
       message: "A friend request has arrived from " + senderName,
+      sourceLabel: "Open friend requests",
+      sourceHref: "../Groups/friend_requests.html",
       raw: invitation,
     };
   }
@@ -74,13 +76,18 @@
   function mapGroupInvitation(invitation) {
     var group = invitation && invitation.group ? invitation.group : {};
     var groupName = group.name || "Unknown group";
+    var groupId = group && (group._id || group.id) ? String(group._id || group.id) : "";
     var notificationId = buildNotificationId("group_invitation", invitation);
+    var href = "../Groups/group_invitations.html";
+    if (groupId) href += "?groupId=" + encodeURIComponent(groupId);
 
     return {
       id: notificationId,
       type: "group_invitation",
       createdAt: invitation && invitation.createdAt ? invitation.createdAt : null,
       message: "Group invitation to " + groupName,
+      sourceLabel: "Open group invitations",
+      sourceHref: href,
       raw: invitation,
     };
   }
@@ -124,7 +131,9 @@
 
   // Returns a unified, time-sorted notifications feed.
   async function listReceivedNotifications(options) {
-    var includeSeen = Boolean(options && options.includeSeen);
+    var opts = options || {};
+    var includeSeen = Boolean(opts.includeSeen);
+    var status = String(opts.status || "").toLowerCase();
     var seenMap = readSeenMap();
     var loaded = await Promise.all([getFriendInvitationNotifications(), getGroupInvitationNotifications()]);
 
@@ -138,7 +147,12 @@
         return new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime();
       });
 
-    if (includeSeen) return notifications;
+    if (status === "all" || includeSeen) return notifications;
+    if (status === "read") {
+      return notifications.filter(function (item) {
+        return item.seen;
+      });
+    }
     return notifications.filter(function (item) {
       return !item.seen;
     });
