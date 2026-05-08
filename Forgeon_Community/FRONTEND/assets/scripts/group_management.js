@@ -9,6 +9,11 @@
   var statusValueEl = document.getElementById("gmStatusValue");
   var groupListEl = document.getElementById("gmGroupList");
   var createBtn = document.getElementById("gmCreateGroupBtn");
+  var deleteNameEl = document.getElementById("gmDeleteGroupName");
+  var deleteConfirmBtn = document.getElementById("gmDeleteGroupConfirmBtn");
+  var deleteModalEl = document.getElementById("gmDeleteGroupModal");
+  var deleteModal = deleteModalEl ? new bootstrap.Modal(deleteModalEl) : null;
+  var pendingDelete = null;
 
   if (!accountNameEl || !createdLineEl || !statusValueEl || !groupListEl || !createBtn) return;
 
@@ -81,14 +86,39 @@
         var id = group && group._id ? group._id : "";
         return [
           "<li>",
-          '<a href="./group_settings.html?groupId=' + encodeURIComponent(id) + '" class="gm-group-pill">',
+          '<span class="gm-group-pill">',
           '<span class="gm-group-pill__name">' + escapeHtml(name) + "</span>",
           '<span class="gm-group-pill__meta">' + members + " members</span>",
-          "</a>",
+          '<span class="d-inline-flex gap-2 ms-auto">',
+          '<a class="dg-btn dg-btn--ghost" href="./group_detail.html?groupId=' + encodeURIComponent(id) + '">View</a>',
+          '<button type="button" class="btn btn-sm btn-outline-danger gm-delete-group-btn" data-group-id="' + encodeURIComponent(id) + '" data-group-name="' + escapeHtml(name) + '">Delete</button>',
+          "</span>",
+          "</span>",
           "</li>",
         ].join("");
       })
       .join("");
+  }
+
+  function openDeleteModal(groupId, groupName) {
+    pendingDelete = { id: groupId, name: groupName };
+    if (deleteNameEl) deleteNameEl.textContent = groupName || "this group";
+    if (deleteModal) deleteModal.show();
+  }
+
+  async function confirmDeleteGroup() {
+    if (!pendingDelete || !pendingDelete.id) return;
+    if (deleteConfirmBtn) deleteConfirmBtn.disabled = true;
+    try {
+      await window.ForgeonGroupsController.remove(pendingDelete.id);
+      if (deleteModal) deleteModal.hide();
+      pendingDelete = null;
+      await loadData();
+    } catch (error) {
+      alert(error && error.message ? error.message : "Could not delete group.");
+    } finally {
+      if (deleteConfirmBtn) deleteConfirmBtn.disabled = false;
+    }
   }
 
   async function loadData() {
@@ -118,6 +148,21 @@
       groupListEl.innerHTML =
         '<li><span class="gm-group-pill"><span class="gm-group-pill__name">Could not load groups.</span></span></li>';
     }
+  }
+
+  groupListEl.addEventListener("click", function (event) {
+    var target = event.target;
+    if (!target) return;
+    var deleteBtn = target.closest(".gm-delete-group-btn");
+    if (!deleteBtn) return;
+    var groupId = deleteBtn.getAttribute("data-group-id");
+    var groupName = deleteBtn.getAttribute("data-group-name");
+    if (!groupId) return;
+    openDeleteModal(decodeURIComponent(groupId), groupName || "this group");
+  });
+
+  if (deleteConfirmBtn) {
+    deleteConfirmBtn.addEventListener("click", confirmDeleteGroup);
   }
 
   loadData();

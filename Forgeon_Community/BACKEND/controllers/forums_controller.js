@@ -1,6 +1,10 @@
 const Forum = require('../models/Forum');
+const User = require('../models/User');
 const userProgressionService = require('../services/userProgressionService');
+const { ensureProgressionFields, getLevelFromXp } = require('../utils/forgeonProgression');
 const { publicAuthorFromLean, PUBLIC_USER_AUTHOR_FIELDS } = require('../utils/publicAuthor');
+
+const MIN_LEVEL_CREATE_FORUM = 5;
 
 function slugify(name) {
   return name.toString().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
@@ -11,8 +15,21 @@ exports.createForum = async (req, res) => {
     const { name, description, imageUrl } = req.body;
     if (!name) return res.status(400).json({ error: 'Name is required' });
 
-    const slug = slugify(name);
     const createdBy = (req.user && (req.user.userId || req.user.id || req.user._id)) || null;
+    if (!createdBy) return res.status(401).json({ error: 'Unauthorized' });
+
+    const creator = await User.findOne({ _id: createdBy, isDeleted: false });
+    if (!creator) return res.status(404).json({ error: 'Creator user not found' });
+
+    ensureProgressionFields(creator);
+    const creatorLevel = getLevelFromXp(creator.experiencePoints);
+    if (creatorLevel < MIN_LEVEL_CREATE_FORUM) {
+      return res.status(403).json({
+        error: `You must be at least level ${MIN_LEVEL_CREATE_FORUM} to create forums. Your level is ${creatorLevel}.`,
+      });
+    }
+
+    const slug = slugify(name);
     const forum = new Forum({ name, slug, description, imageUrl, createdBy });
     await forum.save();
     if (createdBy) {
