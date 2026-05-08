@@ -1,6 +1,6 @@
 /* share_copy.js
-   Copies a thread link to the clipboard when a "Copy" action is clicked.
-   The button shows the clipboard icon and "Copy" by default; clicking only copies.
+  Copies a thread link to the clipboard when a "Share" action is clicked.
+  The button shows the share icon and "Share" by default; clicking only copies.
 */
 (function () {
   'use strict';
@@ -44,23 +44,23 @@
   }
 
   document.addEventListener('click', function (e) {
-    var btn = e.target.closest('a.post-action, .post-action, a.share-thread-btn, .share-thread-btn, button.share-thread-btn, button[aria-label="Copy"]');
+    var btn = e.target.closest('a.post-action, .post-action, a.share-thread-btn, .share-thread-btn, button.share-thread-btn, button[aria-label="Share"]');
     if (!btn) return;
-    var isCopy = btn.getAttribute('aria-label') === 'Copy' || btn.querySelector('i.bi-clipboard') || /\bCopy\b/.test(btn.textContent) || btn.getAttribute('data-thread-href') || btn.dataset.threadId;
-    if (!isCopy) return;
+    var isShare = btn.getAttribute('aria-label') === 'Share' || btn.querySelector('i[class*="bi-share"]') || /\bShare\b/.test(btn.textContent) || btn.getAttribute('data-thread-href') || btn.dataset.threadId;
+    if (!isShare) return;
     e.preventDefault();
     var href = resolveThreadHref(btn);
     copyText(href).then(function () {
       // brief, non-intrusive feedback via title attribute; do not change visible label
       var prevTitle = btn.getAttribute('title');
-      btn.setAttribute('title', 'Copied!');
+      btn.setAttribute('title', 'Shared!');
       setTimeout(function () {
         if (prevTitle !== null) btn.setAttribute('title', prevTitle);
         else btn.removeAttribute('title');
       }, 1200);
     }).catch(function () {
       var prevTitle = btn.getAttribute('title');
-      btn.setAttribute('title', 'Copy failed');
+      btn.setAttribute('title', 'Share failed');
       setTimeout(function () {
         if (prevTitle !== null) btn.setAttribute('title', prevTitle);
         else btn.removeAttribute('title');

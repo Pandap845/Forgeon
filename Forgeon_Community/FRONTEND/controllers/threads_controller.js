@@ -84,6 +84,14 @@
     return days + 'd';
   }
 
+  function resolveAssetUrl(url) {
+    var v = String(url || '').trim();
+    if (!v) return '';
+    if (/^https?:\/\//i.test(v)) return v;
+    if (v.startsWith('/')) return v;
+    return '/' + v;
+  }
+
   async function loadThreads() {
     const container = document.getElementById('threadFeed');
     const paginationEl = document.getElementById('threadPagination');
@@ -151,12 +159,14 @@
         const author = t.author && t.author.username ? t.author.username : 'unknown';
         const target = t.publishTo === 'group' ? (t.group && t.group.name ? t.group.name : 'Group') : (t.publishTo === 'forum' ? (t.forum && (t.forum.name || t.forum) ? (t.forum.name || t.forum) : 'Forum') : 'General');
           const threadHref = './threadview.html' + (t._id || t.id ? ('?thread=' + encodeURIComponent(t._id || t.id)) : '');
+        const imageUrl = resolveAssetUrl(t.imageUrl);
         postCard.innerHTML = `
           <div class="post-meta mb-2">${escapeHtml(target)} • Posted by u/${escapeHtml(author)} ${timeAgo(t.createdAt)} ago</div>
           <h2 class="post-title mb-3"><a href="${threadHref}" class="stretched-link text-decoration-none text-white">${escapeHtml(t.title)}</a></h2>
+          ${imageUrl ? `<div class="post-media mb-3"><img src="${escapeHtml(imageUrl)}" alt="${escapeHtml(t.title || 'thread image')}" style="max-width:320px;max-height:180px;object-fit:cover;border-radius:8px;" /></div>` : ''}
           <div class="post-actions d-flex flex-wrap gap-4 position-relative z-1">
             <a href="${threadHref}" class="post-action text-decoration-none"><i class="bi bi-chat"></i> ${t.commentsCount || 0} Comments</a>
-            <a href="#" class="post-action text-decoration-none share-thread-btn" data-thread-href="${threadHref}" data-thread-id="${t._id || t.id}" aria-label="Copy"><i class="bi bi-clipboard"></i> Copy</a>
+            <a href="#" class="post-action text-decoration-none share-thread-btn" data-thread-href="${threadHref}" data-thread-id="${t._id || t.id}" aria-label="Share"><i class="bi bi-share"></i> Share</a>
           </div>
         `;
 
@@ -299,65 +309,180 @@
     if (!container) return;
     container.innerHTML = '<div class="text-muted-2">Loading options...</div>';
 
-    const fragments = [];
+    // We'll fetch the user's memberships and forums, display a short list (5 each) initially,
+    // and add a search box to allow finding other groups/forums.
+    let memberships = [];
+    let forums = [];
 
     try {
-      // groups (user's memberships)
-      const gmRes = await fetch('/api/group-memberships', { credentials: 'include' });
-      if (gmRes.ok) {
-        const memberships = await gmRes.json();
-        if (memberships && memberships.length) {
-          memberships.forEach(m => {
-            if (m.group && m.group._id && m.group.name) {
-              fragments.push(renderRadioOption({
-                id: 'group-' + m.group._id,
-                label: m.group.name + ' (Group)',
-                subtitle: 'Post to this group',
-                value: 'group',
-                dataAttrs: { groupId: m.group._id }
-              }));
-            }
-          });
-        }
+      const [gmRes, fRes] = await Promise.all([
+        fetch('/api/group-memberships', { credentials: 'include' }),
+        fetch('/api/forums', { credentials: 'include' }),
+      ]);
+
+      if (gmRes && gmRes.ok) {
+        memberships = await gmRes.json();
+      }
+      if (fRes && fRes.ok) {
+        forums = await fRes.json();
       }
     } catch (e) {
-      console.warn('Could not load group memberships', e);
+      console.warn('Could not load publish targets', e);
     }
 
-    try {
-      const fRes = await fetch('/api/forums', { credentials: 'include' });
-      if (fRes.ok) {
-        const forums = await fRes.json();
-        if (forums && forums.length) {
-          forums.forEach(f => {
-            fragments.push(renderRadioOption({
-              id: 'forum-' + f._id,
-              label: f.name + ' (Forum)',
-              subtitle: f.description || '',
-              value: 'forum',
-              dataAttrs: { forumId: f._id }
-            }));
-          });
-        }
-      }
-    } catch (e) {
-      console.warn('Could not load forums', e);
-    }
-
-    if (fragments.length === 0) {
-      container.innerHTML = '<div class="text-muted-2">You must join a group or be subscribed to a forum before creating a thread.</div>';
-      const publishBtn = document.getElementById('publishThreadBtn');
-      if (publishBtn) publishBtn.disabled = true;
-      return;
-    }
-
+    // render UI: search input + results container
     container.innerHTML = '';
-    fragments.forEach(frag => container.appendChild(frag));
+    const searchWrap = document.createElement('div');
+    searchWrap.className = 'mb-2';
+    searchWrap.innerHTML = '<input id="publishTargetsSearch" class="form-control form-control-sm" placeholder="Search groups or forums..." type="search" />';
+    container.appendChild(searchWrap);
 
-    // wire change listeners to enable publish button
-    container.querySelectorAll('input[name="publishTo"]').forEach(inp => {
-      inp.addEventListener('change', validateCreateForm);
+    const listHost = document.createElement('div');
+    listHost.id = 'publishTargetsList';
+    listHost.className = 'd-flex flex-column gap-2';
+    container.appendChild(listHost);
+
+    function renderList(items) {
+      listHost.innerHTML = '';
+      if (!items || items.length === 0) {
+        listHost.innerHTML = '<div class="text-muted-2">No matching groups or forums.</div>';
+        return;
+      }
+      items.forEach(it => {
+        if (it.type === 'group') {
+          const frag = renderRadioOption({
+            id: 'group-' + it.id,
+            label: it.name + ' (Group)',
+            subtitle: 'Post to this group',
+            value: 'group',
+            dataAttrs: { groupId: it.id }
+          });
+          listHost.appendChild(frag);
+        } else if (it.type === 'forum') {
+          const frag = renderRadioOption({
+            id: 'forum-' + it._id || it.id,
+            label: (it.name || it.title) + ' (Forum)',
+            subtitle: it.description || '',
+            value: 'forum',
+            dataAttrs: { forumId: it._id || it.id }
+          });
+          listHost.appendChild(frag);
+        }
+      });
+
+      // wire change listeners to enable publish button
+      listHost.querySelectorAll('input[name="publishTo"]').forEach(inp => {
+        inp.addEventListener('change', validateCreateForm);
+      });
+    }
+
+    // Build a combined list of groups (from memberships) and forums
+    // but restrict to items that belong to the current user and show at
+    // most 5 items total. The search will also be limited to those items.
+    function getCurrentUserId() {
+      try {
+        const raw = localStorage.getItem('forgeonCurrentUser');
+        if (!raw) return null;
+        const u = JSON.parse(raw);
+        return u && (u.id || u._id) ? (u.id || u._id) : null;
+      } catch (e) {
+        return null;
+      }
+    }
+
+    const currentUserId = getCurrentUserId();
+
+    const userGroups = (Array.isArray(memberships) ? memberships : [])
+      .filter(m => m && m.group && (m.group._id || m.group.id))
+      .map(m => ({
+        type: 'group',
+        id: (m.group._id || m.group.id),
+        name: (m.group.name || 'Group'),
+        createdAt: m.createdAt || m.joinedAt || (m.group && m.group.createdAt) || null
+      }));
+
+    const userForums = (Array.isArray(forums) ? forums : [])
+      .filter(f => {
+        // only include forums that were created by the current user
+        if (!f) return false;
+        let cb = null;
+        if (f.createdBy) {
+          if (typeof f.createdBy === 'string') cb = f.createdBy;
+          else if (f.createdBy._id) cb = f.createdBy._id;
+          else if (f.createdBy.id) cb = f.createdBy.id;
+        }
+        cb = cb || f.createdBy_id || f.createdById;
+        if (!cb || !currentUserId) return false;
+        return String(cb) === String(currentUserId);
+      })
+      .map(f => ({
+        type: 'forum',
+        _id: f._id || f.id,
+        name: f.name,
+        description: f.description,
+        createdAt: f.createdAt || null
+      }));
+
+    // combine and take top 5 by recency (createdAt where available)
+    const combined = userGroups.concat(userForums).sort((a, b) => {
+      const da = a.createdAt ? new Date(a.createdAt).getTime() : 0;
+      const db = b.createdAt ? new Date(b.createdAt).getTime() : 0;
+      return db - da;
     });
+
+    const topFive = combined.slice(0, 5);
+    renderList(topFive);
+
+    // search handling (client-side across the user's groups & forums only)
+    const searchInput = document.getElementById('publishTargetsSearch');
+    let debounceTimer = null;
+    function handleSearch(term) {
+      const q = String(term || '').trim().toLowerCase();
+      if (!q) {
+        renderList(topFive);
+        return;
+      }
+
+      const matchedGroups = (Array.isArray(memberships) ? memberships : [])
+        .filter(m => m && m.group && (m.group.name || '').toLowerCase().includes(q))
+        .map(m => ({ type: 'group', id: (m.group._id || m.group.id), name: m.group.name, createdAt: m.createdAt || m.joinedAt || null }));
+
+      const matchedForums = (Array.isArray(forums) ? forums : [])
+        .filter(f => {
+          // only consider forums created by the current user
+          if (!f) return false;
+          let cb = null;
+          if (f.createdBy) {
+            if (typeof f.createdBy === 'string') cb = f.createdBy;
+            else if (f.createdBy._id) cb = f.createdBy._id;
+            else if (f.createdBy.id) cb = f.createdBy.id;
+          }
+          cb = cb || f.createdBy_id || f.createdById;
+          const isMine = currentUserId && cb && String(cb) === String(currentUserId);
+          if (!isMine) return false;
+          return (String(f.name || '').toLowerCase().includes(q) || String(f.description || '').toLowerCase().includes(q));
+        })
+        .map(f => ({ type: 'forum', _id: f._id || f.id, name: f.name, description: f.description, createdAt: f.createdAt || null }));
+
+      const matched = matchedGroups.concat(matchedForums)
+        .sort((a, b) => {
+          const da = a.createdAt ? new Date(a.createdAt).getTime() : 0;
+          const db = b.createdAt ? new Date(b.createdAt).getTime() : 0;
+          return db - da;
+        })
+        .slice(0, 5);
+
+      renderList(matched);
+    }
+
+    if (searchInput) {
+      searchInput.addEventListener('input', function (e) {
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(function () {
+          handleSearch(e.target.value);
+        }, 250);
+      });
+    }
   }
 
   async function loadPopularForums() {
