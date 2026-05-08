@@ -1,11 +1,7 @@
 const mongoose = require('mongoose');
 const { Groups, Category, User, GroupMemberships } = require('../models');
 const userProgressionService = require('../services/userProgressionService');
-const {
-  ensureProgressionFields,
-  getLevelFromXp,
-  MIN_LEVEL_CREATE_GROUP,
-} = require('../utils/forgeonProgression');
+const loadForgeonProgression = require('../utils/loadForgeonProgression');
 const { publicAuthorFromLean, PUBLIC_USER_AUTHOR_FIELDS } = require('../utils/publicAuthor');
 
 function isObjectId(value) {
@@ -44,6 +40,7 @@ async function createGroup(req, res) {
       return res.status(404).json({ message: 'Creator user not found.' });
     }
 
+    const { ensureProgressionFields, getLevelFromXp, MIN_LEVEL_CREATE_GROUP } = loadForgeonProgression();
     ensureProgressionFields(creator);
     const creatorLevel = getLevelFromXp(creator.experiencePoints);
     if (creatorLevel < MIN_LEVEL_CREATE_GROUP) {

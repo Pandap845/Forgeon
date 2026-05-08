@@ -1,7 +1,7 @@
 const Forum = require('../models/Forum');
 const User = require('../models/User');
 const userProgressionService = require('../services/userProgressionService');
-const { ensureProgressionFields, getLevelFromXp } = require('../utils/forgeonProgression');
+const loadForgeonProgression = require('../utils/loadForgeonProgression');
 const { publicAuthorFromLean, PUBLIC_USER_AUTHOR_FIELDS } = require('../utils/publicAuthor');
 
 const MIN_LEVEL_CREATE_FORUM = 5;
@@ -21,6 +21,7 @@ exports.createForum = async (req, res) => {
     const creator = await User.findOne({ _id: createdBy, isDeleted: false });
     if (!creator) return res.status(404).json({ error: 'Creator user not found' });
 
+    const { ensureProgressionFields, getLevelFromXp } = loadForgeonProgression();
     ensureProgressionFields(creator);
     const creatorLevel = getLevelFromXp(creator.experiencePoints);
     if (creatorLevel < MIN_LEVEL_CREATE_FORUM) {

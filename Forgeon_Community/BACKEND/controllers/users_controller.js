@@ -2,7 +2,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { User, Threads, GroupMemberships } = require('../models');
 const { runAccountDeletionSideEffects, tryRemoveUploadedProfilePicture } = require('../services/accountDeletionService');
-const { progressionPayload, ensureProgressionFields, syncFrameBadgesForLevel, getLevelFromXp } = require('../utils/forgeonProgression');
+const loadForgeonProgression = require('../utils/loadForgeonProgression');
 const userProgressionService = require('../services/userProgressionService');
 
 async function syncPostsPublishedFromThreads(userDoc) {
@@ -19,6 +19,7 @@ async function countActiveGroupMemberships(userId) {
 
 async function persistProgressionIfNeeded(userDoc) {
   await syncPostsPublishedFromThreads(userDoc);
+  const { ensureProgressionFields, getLevelFromXp, syncFrameBadgesForLevel } = loadForgeonProgression();
   ensureProgressionFields(userDoc);
   userDoc.level = getLevelFromXp(userDoc.experiencePoints);
   syncFrameBadgesForLevel(userDoc);
@@ -37,6 +38,7 @@ const SALT_ROUNDS = 10;
 const AUTH_COOKIE_NAME = 'forgeon_auth_token'; // The most important shit ever
 
 function toPublicUser(userDoc) {
+  const { progressionPayload, ensureProgressionFields } = loadForgeonProgression();
   ensureProgressionFields(userDoc);
   const prog = progressionPayload(userDoc);
   return {
@@ -137,7 +139,7 @@ async function createUser(req, res) {
       avatarUrl: '',
     });
 
-    await userProgressionService.afterUserRegistered(user._id).catch(() => {});
+    await userProgressionService.afterUserRegistered(user._id).catch(() => { });
 
     const savedUser = await User.findById(user._id);
     const token = createToken(savedUser || user);
@@ -197,7 +199,7 @@ function logoutUser(_req, res) {
 }
 
 function getBadgeCatalog(_req, res) {
-  const { BADGE_CATALOG } = require('../utils/forgeonProgression');
+  const { BADGE_CATALOG } = loadForgeonProgression();
   return res.status(200).json(BADGE_CATALOG);
 }
 

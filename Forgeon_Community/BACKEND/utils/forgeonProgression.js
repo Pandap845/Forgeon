@@ -157,6 +157,12 @@ const MAX_LEVEL = 70;
 /** Minimum level required to create a group (enforced in groups_controller). */
 const MIN_LEVEL_CREATE_GROUP = 10;
 
+/**
+ * XP curve: step cost scales by current level index (used by xpTotalForLevel / xpStepForLevel).
+ * Tune together with `XP` rewards below.
+ */
+const XP_CURVE_MULTIPLIER = 100;
+
 const FRAME_BADGE_THRESHOLDS = BADGE_CATALOG.filter((b) => b.category === 'frame').map((b) => ({
   id: b.id,
   minLevel: b.minLevel,
@@ -167,14 +173,14 @@ function xpTotalForLevel(level) {
   if (level <= 1) return 0;
   let sum = 0;
   for (let L = 1; L < level; L += 1) {
-    sum += 100 * L;
+    sum += XP_CURVE_MULTIPLIER * L;
   }
   return sum;
 }
 
 /** XP needed to go from `level` → `level + 1`. */
 function xpStepForLevel(level) {
-  return 100 * Math.max(1, level);
+  return XP_CURVE_MULTIPLIER * Math.max(1, level);
 }
 
 function getUncappedLevelFromXp(totalXp) {
@@ -292,7 +298,7 @@ function progressionPayload(userDoc) {
   };
 }
 
-/** XP rewards per action — tune here only (used by userProgressionService). */
+/** XP rewards per action — tune here (used by userProgressionService via loadForgeonProgression in dev). */
 const XP = {
   THREAD: 120,
   THREAD_IMAGE_BONUS: 55,
@@ -309,6 +315,7 @@ module.exports = {
   BADGE_IDS,
   MAX_LEVEL,
   MIN_LEVEL_CREATE_GROUP,
+  XP_CURVE_MULTIPLIER,
   xpTotalForLevel,
   getLevelFromXp,
   getXpProgress,

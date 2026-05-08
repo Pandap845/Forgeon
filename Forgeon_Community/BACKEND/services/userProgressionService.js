@@ -1,13 +1,8 @@
 const { User, Threads, Comments, GroupMemberships, Friends } = require('../models');
-const {
-  ensureProgressionFields,
-  getLevelFromXp,
-  syncFrameBadgesForLevel,
-  pushBadge,
-  XP,
-} = require('../utils/forgeonProgression');
+const loadForgeonProgression = require('../utils/loadForgeonProgression');
 
 async function saveProgressionState(userDoc) {
+  const { ensureProgressionFields, getLevelFromXp, syncFrameBadgesForLevel } = loadForgeonProgression();
   ensureProgressionFields(userDoc);
   userDoc.level = getLevelFromXp(userDoc.experiencePoints);
   syncFrameBadgesForLevel(userDoc);
@@ -19,16 +14,19 @@ async function grantXp(userId, amount) {
   if (!amount) return null;
   const user = await User.findOne({ _id: userId, isDeleted: false });
   if (!user) return null;
+  const { ensureProgressionFields } = loadForgeonProgression();
   ensureProgressionFields(user);
   user.experiencePoints = (user.experiencePoints || 0) + amount;
   return saveProgressionState(user);
 }
 
 async function afterUserRegistered(userId) {
+  const { XP } = loadForgeonProgression();
   return grantXp(userId, XP.REGISTER);
 }
 
 async function afterThreadCreated(userId, threadPayload) {
+  const { XP, pushBadge } = loadForgeonProgression();
   const user = await grantXp(userId, XP.THREAD);
   if (!user) return;
   if (threadPayload && threadPayload.imageUrl && String(threadPayload.imageUrl).trim()) {
@@ -44,6 +42,7 @@ async function afterThreadCreated(userId, threadPayload) {
 }
 
 async function afterCommentCreated(userId) {
+  const { XP, pushBadge } = loadForgeonProgression();
   await grantXp(userId, XP.COMMENT);
   const n = await Comments.countDocuments({ author: userId, isDeleted: false });
   if (n >= 10) {
@@ -53,18 +52,21 @@ async function afterCommentCreated(userId) {
 }
 
 async function afterForumCreated(userId) {
+  const { XP, pushBadge } = loadForgeonProgression();
   await grantXp(userId, XP.FORUM_CREATED);
   const u = await User.findById(userId);
   if (u && pushBadge(u, 'forum_founder')) await u.save();
 }
 
 async function afterGroupCreated(userId) {
+  const { XP, pushBadge } = loadForgeonProgression();
   await grantXp(userId, XP.GROUP_CREATED);
   const u = await User.findById(userId);
   if (u && pushBadge(u, 'guild_forge')) await u.save();
 }
 
 async function afterGroupMembershipCreated(userId, role) {
+  const { XP, pushBadge } = loadForgeonProgression();
   await grantXp(userId, XP.GROUP_JOIN);
   if (role === 'member') {
     const u = await User.findById(userId);
@@ -73,6 +75,7 @@ async function afterGroupMembershipCreated(userId, role) {
 }
 
 async function afterFriendCreated(userId) {
+  const { XP, pushBadge } = loadForgeonProgression();
   await grantXp(userId, XP.FRIEND_ADDED);
   const n = await Friends.countDocuments({
     $or: [{ userA: userId }, { userB: userId }],
