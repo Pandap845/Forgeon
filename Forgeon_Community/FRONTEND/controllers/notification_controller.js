@@ -67,7 +67,7 @@
       createdAt: invitation && invitation.createdAt ? invitation.createdAt : null,
       message: "A friend request has arrived from " + senderName,
       sourceLabel: "Open friend requests",
-      sourceHref: "../Groups/friend_requests.html",
+      sourceHref: "/friend_requests.html",
       raw: invitation,
     };
   }
@@ -76,18 +76,15 @@
   function mapGroupInvitation(invitation) {
     var group = invitation && invitation.group ? invitation.group : {};
     var groupName = group.name || "Unknown group";
-    var groupId = group && (group._id || group.id) ? String(group._id || group.id) : "";
     var notificationId = buildNotificationId("group_invitation", invitation);
-    var href = "../Groups/group_invitations.html";
-    if (groupId) href += "?groupId=" + encodeURIComponent(groupId);
 
     return {
       id: notificationId,
       type: "group_invitation",
       createdAt: invitation && invitation.createdAt ? invitation.createdAt : null,
       message: "Group invitation to " + groupName,
-      sourceLabel: "Open group invitations",
-      sourceHref: href,
+      sourceLabel: "Open My Groups",
+      sourceHref: "/user_groups.html?tab=invitations",
       raw: invitation,
     };
   }

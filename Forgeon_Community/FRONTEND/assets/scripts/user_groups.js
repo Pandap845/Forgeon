@@ -13,6 +13,11 @@
   var invitationsList = document.getElementById("ugInvitationsList");
   var joinedTabCount = document.getElementById("ugJoinedTabCount");
   var invitationsTabCount = document.getElementById("ugInvitationsTabCount");
+  var deleteNameEl = document.getElementById("ugDeleteGroupName");
+  var deleteConfirmBtn = document.getElementById("ugDeleteGroupConfirmBtn");
+  var deleteModalEl = document.getElementById("ugDeleteGroupModal");
+  var deleteModal = deleteModalEl && typeof bootstrap !== "undefined" ? new bootstrap.Modal(deleteModalEl) : null;
+  var pendingDelete = null;
 
   if (
     !membershipsController ||
@@ -106,27 +111,31 @@
       escapeHtml(description) +
       "</p>" +
       '<div class="ug-meta">' +
-       '<span class="dg-badge dg-badge--category">' +
-       escapeHtml(categoryName) +
-       "</span>" +
-       (isOwner ? '<span class="dg-badge dg-badge--category">Owner</span>' : "") +
-       '<span class="dg-members"><span>' +
-       escapeHtml(formatCount(memberCount, "member")) +
-       "</span></span>" +
-       "</div>" +
-       "</div>" +
-       '<div class="ug-actions">' +
-       '<a class="dg-btn dg-btn--ghost ug-btn" href="./group_detail.html?groupId=' +
-       encodeURIComponent(group._id || "") +
-       '">View</a>' +
-       (isOwner
-         ? ""
-         : '<button type="button" class="dg-btn dg-btn--secondary ug-btn ug-btn--leave" data-membership-id="' +
-           escapeHtml(item._id) +
-           '">Leave</button>') +
-       "</div>" +
-       "</div>" +
-       "</article>"
+      '<span class="dg-badge dg-badge--category">' +
+      escapeHtml(categoryName) +
+      "</span>" +
+      (isOwner ? '<span class="dg-badge dg-badge--category">Owner</span>' : "") +
+      '<span class="dg-members"><span>' +
+      escapeHtml(formatCount(memberCount, "member")) +
+      "</span></span>" +
+      "</div>" +
+      "</div>" +
+      '<div class="ug-actions">' +
+      '<a class="dg-btn dg-btn--ghost ug-btn" href="./group_detail.html?groupId=' +
+      encodeURIComponent(group._id || "") +
+      '">View</a>' +
+      (isOwner
+        ? '<button type="button" class="btn btn-sm btn-outline-danger gm-delete-group-btn ug-btn" data-group-id="' +
+        encodeURIComponent(group._id || "") +
+        '" data-group-name="' +
+        escapeHtml(groupName) +
+        '">Delete</button>'
+        : '<button type="button" class="dg-btn dg-btn--secondary ug-btn ug-btn--leave" data-membership-id="' +
+        escapeHtml(item._id) +
+        '">Leave</button>') +
+      "</div>" +
+      "</div>" +
+      "</article>"
     );
   }
 
@@ -272,7 +281,37 @@
     }
   }
 
-  async function handleLeaveClick(event) {
+  function openDeleteModal(groupId, groupName) {
+    pendingDelete = { id: groupId, name: groupName };
+    if (deleteNameEl) deleteNameEl.textContent = groupName || "this group";
+    if (deleteModal) deleteModal.show();
+  }
+
+  async function confirmDeleteGroup() {
+    if (!pendingDelete || !pendingDelete.id) return;
+    if (deleteConfirmBtn) deleteConfirmBtn.disabled = true;
+    try {
+      await groupsController.remove(pendingDelete.id);
+      if (deleteModal) deleteModal.hide();
+      pendingDelete = null;
+      await loadData();
+    } catch (error) {
+      window.alert(error && error.message ? error.message : "Could not delete group.");
+    } finally {
+      if (deleteConfirmBtn) deleteConfirmBtn.disabled = false;
+    }
+  }
+
+  async function handleJoinedActionsClick(event) {
+    var deleteBtn = event.target.closest(".gm-delete-group-btn");
+    if (deleteBtn) {
+      var groupId = deleteBtn.getAttribute("data-group-id");
+      var groupName = deleteBtn.getAttribute("data-group-name");
+      if (!groupId) return;
+      openDeleteModal(decodeURIComponent(groupId), groupName || "this group");
+      return;
+    }
+
     var button = event.target.closest(".ug-btn--leave[data-membership-id]");
     if (!button) return;
 
@@ -288,6 +327,10 @@
       button.disabled = false;
       window.alert(error && error.message ? error.message : "Could not leave group.");
     }
+  }
+
+  if (deleteConfirmBtn) {
+    deleteConfirmBtn.addEventListener("click", confirmDeleteGroup);
   }
 
   async function handleInvitationAction(event) {
@@ -312,8 +355,15 @@
   tabJoined.addEventListener("click", showJoinedTab);
   tabInvitations.addEventListener("click", showInvitationsTab);
   searchInput.addEventListener("input", renderActiveTab);
-  joinedList.addEventListener("click", handleLeaveClick);
+  joinedList.addEventListener("click", handleJoinedActionsClick);
   invitationsList.addEventListener("click", handleInvitationAction);
+
+  try {
+    var params = new URLSearchParams(window.location.search);
+    if (params.get("tab") === "invitations") {
+      showInvitationsTab();
+    }
+  } catch (_e) { }
 
   loadData();
 })();
